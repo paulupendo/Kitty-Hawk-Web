@@ -10,6 +10,7 @@
 /build
 
 # css files
+/src/**/*.css
 /src/*.css
 
 # misc
