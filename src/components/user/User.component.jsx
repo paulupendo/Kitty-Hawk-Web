@@ -7,8 +7,8 @@ import './User.css';
 // componnents
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import { CallOptions } from '../../common/DropdownOptions.component';
-import GetUsers from './subComponents/GetUsers.component';
-import GetUser from './subComponents/GetUser.component';
+import GetUsers from "./subComponents/GetUsers/GetUsers.component";
+import GetUser from './subComponents/GetUser/GetUser.component'
 
 export default class User extends Component {
   state = {
