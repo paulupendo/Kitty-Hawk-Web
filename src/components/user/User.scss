@@ -1,7 +1,7 @@
 @import "../../common/theme.css";
 
 .user-container {
-  padding: 9rem 5rem;
+  padding: 10rem 5rem;
   width: 54vw;
 
   .header-nav {
@@ -15,8 +15,9 @@
 
       .ui.selection.dropdown {
         margin-right: 3rem;
+          border-radius: 8px;
       }
-      
+
       .ui.fluid.dropdown {
         width: 83%;
       }
@@ -25,17 +26,16 @@
       margin-left: auto;
 
       .ui.button {
-        width: 78px;
-        height: 32px;
-        border-radius: 23px;
-        background-color: #49cc90;
-        color: #ffffff;
-        font-family: Lato;
+        width: 7.5rem;
+        margin-right: 1rem;
+        background: #49cc90;;
+        color: #fff;
         font-weight: 400;
+        border-radius: 1.5rem;
       }
       span {
-          font-size: 16px;
-          font-weight: 600;
+        font-size: 16px;
+        font-weight: 600;
       }
     }
   }
