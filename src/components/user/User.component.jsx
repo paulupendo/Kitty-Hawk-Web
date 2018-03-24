@@ -8,9 +8,10 @@ import './User.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import { CallOptions } from '../../common/DropdownOptions.component';
 
+import SubHeader from './SubHeader.component';
 import GetUsers from './subComponents/GetUsers.component';
 import GetUser from './subComponents/GetUser.component';
-import CreateUser from './subComponents/CreateUser.component';
+import CreateUser from './subComponents/CreateUser/CreateUser.component';
 
 export default class User extends Component {
   state = {
@@ -20,7 +21,7 @@ export default class User extends Component {
   data = [
     { key: 'POST', value: 'Get User', text: 'Get User' },
     { key: 'GET', value: 'Get Users', text: 'Get Users' },
-    { key: 'POST', value: 'Create User', text: 'Create User' },
+    { key: 'POST-user', value: 'Create User', text: 'Create User' },
   ];
 
   handleChange = (e, { value }) => {
@@ -30,13 +31,33 @@ export default class User extends Component {
   switchComponents = () => {
     switch (this.state.activeComponent) {
       case 'Get User':
-        return <GetUser />;
+        return (
+          <div>
+            <GetUser />
+          </div>
+        );
       case 'Get Users':
         return <GetUsers />;
       case 'Create User':
-        return <CreateUser />;
+        return (
+          <div>
+            <SubHeader
+              info="Create a new User. This requires a unique email address for the
+              User being created"
+            />
+            <CreateUser />
+          </div>
+        );
       default:
-        return <GetUser />;
+        return (
+          <div>
+            <SubHeader
+              info="Create a new User. This requires a unique email address for the
+              User being created"
+            />
+            <GetUser />
+          </div>
+        );
     }
   };
 
@@ -52,7 +73,7 @@ export default class User extends Component {
 
             <div>
               <Dropdown
-                placeholder="Create User"
+                placeholder="Select Endpoint"
                 fluid
                 selection
                 options={this.data}
