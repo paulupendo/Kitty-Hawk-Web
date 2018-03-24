@@ -15,8 +15,9 @@
 
       .ui.selection.dropdown {
         margin-right: 3rem;
+          border-radius: 8px;
       }
-      
+
       .ui.fluid.dropdown {
         width: 83%;
       }
@@ -25,14 +26,15 @@
       margin-left: auto;
 
       .ui.button {
-      background: #38b557;
-      color: #fff;
-      font-weight: 400;
-      border-radius: 0.9rem;
+        margin-right: 1rem;
+        background: #38b557;
+        color: #fff;
+        font-weight: 400;
+        border-radius: 1.5rem;
       }
       span {
-          font-size: 16px;
-          font-weight: 600;
+        font-size: 16px;
+        font-weight: 600;
       }
     }
   }
