@@ -19,8 +19,8 @@ export default class User extends Component {
         <BreadcrumbComponent page="User API" selection="Get Users" />
         <div className="header-nav">
           <div classNaame="dropdwn-nav">
-            <Dropdown placeholder="State" search selection erg />
-            <Dropdown placeholder="GET" fluid selection options={this.data} />
+            <Dropdown placeholder="Select Company" search selection/>
+            <Dropdown placeholder="Create User" fluid selection options={this.data} />
           </div>
           <div className="call-btn">
             <Button content="GET" />
