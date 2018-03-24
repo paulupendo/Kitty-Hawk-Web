@@ -17,7 +17,7 @@ import Threat from '../components/threat/Threat.component';
 import './Main.css';
 
 export default class Main extends Component {
-  state = { activeItem: 'admin' };
+  state = { activeItem: 'user' };
 
   handleItemClick = (e, { name }) => {
     let names_sub = name.split(' ');

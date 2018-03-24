@@ -1,4 +1,37 @@
+@import "../../common/theme.css";
+
 .user-container {
-    padding: 9rem 5rem;
-    width: 100%;
+  padding: 9rem 5rem;
+  width: 54vw;
+
+  .header-nav {
+    display: flex;
+    flex-direction: row;
+    padding-top: 35px;
+
+    .dropdwn-nav {
+      display: flex;
+      flex-direction: row;
+
+      .ui.selection.dropdown {
+        padding-left: 2rem;
+      }
+    }
+    .call-btn {
+      margin-left: auto;
+
+      .ui.button {
+        width: 78px;
+        height: 32px;
+        border-radius: 23px;
+        background-color: #49cc90;
+        color: #ffffff;
+        font-family: Lato;
+        font-weight: 400;
+      }
+    }
+  }
+  .ui.segemnt {
+    border: 0;
+  }
 }
