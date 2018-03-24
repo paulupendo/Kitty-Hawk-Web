@@ -1,7 +1,7 @@
 @import "../../common/theme.css";
 
 .user-container {
-  padding: 9rem 5rem;
+  padding: 10rem 5rem;
   width: 54vw;
 
   .header-nav {
@@ -26,6 +26,7 @@
       margin-left: auto;
 
       .ui.button {
+        width: 7.5rem;
         margin-right: 1rem;
         background: #49cc90;;
         color: #fff;
