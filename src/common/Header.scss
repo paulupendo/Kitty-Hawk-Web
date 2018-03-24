@@ -1,0 +1,14 @@
+.header-container {
+    position: fixed;
+    width: 100%;
+    background: #272727;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    img {
+        height: 2.5rem;
+        margin-left: 2rem;
+        cursor: pointer;
+    }
+}
