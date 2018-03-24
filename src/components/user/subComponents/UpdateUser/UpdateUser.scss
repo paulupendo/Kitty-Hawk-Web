@@ -1,4 +1,4 @@
-.create-user-container {
+.update-user-container {
     display: flex;
     flex-direction: column;
     border: none;
@@ -14,8 +14,13 @@
             display: flex;
             flex-direction: row;
             margin-bottom: 1.5rem;
+            id {
+                .ui.input>input {
+                    width: 3rem;
+                }
+            }
             div {
-                margin-right: 3rem;
+                margin-right: 1.5rem;
             }
             .ui.input {
                 width: 18rem;
@@ -23,6 +28,7 @@
             }
             .ui.input>input {
                 border-radius: 8px;
+                max-width: 13rem;
                 &:focus {
                     border: solid 1px #38b557;
                 }
@@ -31,6 +37,7 @@
                     font-style: italic;
                     letter-spacing: 1px;
                 }
+                
             }
         }
         .ui.selection.dropdown {

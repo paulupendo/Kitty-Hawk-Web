@@ -11,20 +11,40 @@ import GetUsers from './subComponents/GetUsers/GetUsers.component';
 import GetUser from './subComponents/GetUser/GetUser.component';
 import SubHeader from './SubHeader.component';
 import CreateUser from './subComponents/CreateUser/CreateUser.component';
+import UpdateUser from './subComponents/UpdateUser/UpdateUser.component';
 
 export default class User extends Component {
   state = {
     activeComponent: 'Create User',
+    endpoint: '/users/v2',
+    method: 'POST',
+    selection: 'Create User',
   };
 
   data = [
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
+    { key: 'PUT', value: 'Update User', text: 'Update User'},
     { key: 'POST', value: 'Get User', text: 'Get User' },
     { key: 'GET', value: 'Get Users', text: 'Get Users' },
   ];
 
   handleChange = (e, { value }) => {
-    this.setState({ activeComponent: value });
+    this.setState({ activeComponent: value, selection: value });
+    switch (value) {
+      case 'Create User':
+        this.setState({ method: 'POST' });
+        break;
+      case 'Get User':
+        this.setState({ method: 'GET' });
+        break;
+      case 'Get Users':
+        this.setState({ method: 'GET' });
+        break;
+      case 'Update User':
+        this.setState({method:'PUT'})
+      default:
+        break;
+    }
   };
 
   switchComponents = () => {
@@ -56,6 +76,18 @@ export default class User extends Component {
             <CreateUser />
             <div className="btn-bottom">
               <Button content="CREATE USER" />
+            </div>
+          </div>
+        );
+        case 'Update User':
+        return (
+          <div>
+            <SubHeader
+              info="Allows a caller to update an existing Console User resource."
+            />
+            <UpdateUser />
+            <div className="btn-bottom">
+              <Button content="UPDATE" />
             </div>
           </div>
         );
@@ -91,7 +123,7 @@ export default class User extends Component {
   render() {
     return (
       <div className="user-container">
-        <BreadcrumbComponent page="User API" selection="Get Users" />
+        <BreadcrumbComponent page="User API" selection={this.state.selection} />
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
@@ -109,8 +141,8 @@ export default class User extends Component {
             </div>
           </div>
           <div className="call-btn">
-            <Button content="GET" />
-            <span>/users/v2</span>
+            <Button content={this.state.method} />
+            <span>{this.state.endpoint}</span>
           </div>
         </div>
         {this.switchComponents()}

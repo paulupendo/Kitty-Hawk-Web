@@ -5,6 +5,12 @@ import { Input, Dropdown } from 'semantic-ui-react';
 import './CreateUser.css';
 
 const CreateUser = () => {
+  const zoneOptions = [
+    { key: 'User', value: 'User', text: 'User' },
+    { key: 'Administrator', value: 'Administrator', text: 'Administrator' },
+    { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' },
+  ];
+
   return (
     <div className="create-user-container">
       <div className="btns">
@@ -12,25 +18,29 @@ const CreateUser = () => {
           <div>
             <span>First Name</span>
             <br />
-            <Input />
+            <Input placeholder="(required):{string}" />
           </div>
           <div>
             <span>Last Name</span>
             <br />
-            <Input />
+            <Input placeholder="(required):{string}" />
           </div>
         </div>
         <div className="btns-row">
           <div>
             <span>User Role</span>
             <br />
-            <Input />
+            <Input placeholder="(required):{string}" />
           </div>
           <div>
             <span>Email</span>
             <br />
-            <Input />
+            <Input placeholder="(required):{string}" />
           </div>
+        </div>
+        <div>
+          <span>Zone</span> <br />
+          <Dropdown selection placeholder="Select Zone" options={zoneOptions} />
         </div>
       </div>
     </div>
