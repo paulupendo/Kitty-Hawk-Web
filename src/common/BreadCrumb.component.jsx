@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Breadcrumb } from 'semantic-ui-react';
 
 //styles

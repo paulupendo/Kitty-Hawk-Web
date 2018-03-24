@@ -1,5 +1,28 @@
 .admin-container {
-    padding: 10rem 5rem;
-    width: 100%;
-   
+  padding: 10rem 5rem;
+  width: 100%;
+  .info-tabs {
+    margin-top: 2.3125rem;
+    width: 54vw;
+    .ui.secondary.pointing.menu .active.item {
+      border-color: #38b557;
+    }
+    .ui.tab.active {
+      margin-top: 2.5rem;
+      border: none;
+      box-shadow: none;
+      background: #f3f5f7;
+      height: 20rem;
+      padding: 3rem;
+    }
+    .ui.button {
+      background: #38b557;
+      color: #fff;
+      font-weight: 400;
+      border-radius: 0.9rem;
+      margin-top: 7rem;
+      margin-right: -3rem;
+      float: right;
+    }
+  }
 }
