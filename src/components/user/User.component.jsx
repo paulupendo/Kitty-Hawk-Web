@@ -36,27 +36,25 @@ export default class User extends Component {
   };
 
   render() {
-    return (
-      <div className="user-container">
+    return <div className="user-container">
         <BreadcrumbComponent page="User API" selection="Get Users" />
         <div className="header-nav">
-          <div classNaame="dropdwn-nav">
-            <Dropdown placeholder="Select Company" search selection />
-            <Dropdown
-              placeholder="Create User"
-              fluid
-              selection
-              options={this.data}
-              onChange={this.handleChange}
-            />
+          <div className="dropdwn-nav">
+            <div>
+              <Dropdown placeholder="Select Company" search selection />
+            </div>
+
+            <div>
+              <Dropdown placeholder="Create User" fluid selection options={this.data} onChange={this.handleChange} />
+            </div>
           </div>
           <div className="call-btn">
             <Button content="GET" />
+            <span>/users/v2</span>
           </div>
         </div>
         {this.switchComponents()}
         <div />
-      </div>
-    );
+      </div>;
   }
 }
