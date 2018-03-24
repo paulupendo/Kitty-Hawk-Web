@@ -10,7 +10,11 @@ from flask_restful import Resource, reqparse
 import jwt
 import json
 
+<<<<<<< HEAD
 from models import CompanyInfo
+=======
+from .models import CompanyInfo, db
+>>>>>>> 95089ce91b23b5b43f086836a82489eeb8f75ba6
 
 # 30 minutes from now
 timeout = 1800
@@ -22,7 +26,7 @@ jti_val = str(uuid.uuid4())
 
 AUTH_URL = "https://protectapi.cylance.com/auth/v2/token"
 
-class CompanyInfo(Resource):
+class CompanyInfoResource(Resource):
     """
     To handle company info endpoints.
     """
@@ -37,12 +41,11 @@ class CompanyInfo(Resource):
         company = payload["company"]
         email = payload["email"]
         phone_number = payload["phone_number"]
-        tenant_id = payload["tenant_id"]
         app_id = payload["app_id"]
+        tenant_id = payload["tenant_id"]
         app_secret = payload["app_secret"]
         comment = payload["comment"]
         app_secret = payload["app_secret"]
-        print(payload)
         if not payload['name'] or not payload['company'] or not payload['email'] or not payload['phone_number'] \
             or not payload['tenant_id'] or not payload['app_id'] or not payload['app_secret'] or not payload['comment']:
             response = jsonify({
@@ -59,8 +62,6 @@ class CompanyInfo(Resource):
             epoch_timeout = int((timeout_datetime - datetime(1970, 1, 1)).total_seconds())
             jti_val = str(uuid.uuid4())
             tid_val = payload['tenant_id'] # The tenant's unique identifier.
-            app_id = payload['app_id'] # The application's unique identifier.
-            app_secret = payload['app_secret'] # The application's secret to sign the auth token with.
             AUTH_URL = "https://protectapi.cylance.com/auth/v2/token"
 
             claims = {
@@ -84,9 +85,10 @@ class CompanyInfo(Resource):
             company_info = CompanyInfo(
                 name=name, company=company,
                 email=email, phone_number=phone_number,
-                tenant_id=tenant_id,app_id=app_id,
-                app_secret=app_secret, access_token=access_token
-            )
+                tenant_id=tenant_id,app_id=app_id, comment=comment,
+                app_secret=app_secret, access_token=access_token)
+            db.session.add(company_info)
+            db.session.commit()
             company_response = jsonify({
                 "data": {
                     "name": name,
@@ -100,3 +102,5 @@ class CompanyInfo(Resource):
                     "access_token": access_token
                 }
             })
+            company_info.status_code = 201
+            return company_response

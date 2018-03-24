@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint
+from flask_cors import CORS
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
@@ -6,7 +7,7 @@ from flask_restful import Api
 
 # local imports
 from config import app_config
-from app.views import CompanyInfo
+from app.views import CompanyInfoResource
 from app.models import db
 
 
@@ -23,6 +24,7 @@ def create_app(config_mode):
     :return: app
     """
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
     app.config.from_object(app_config[config_mode])
 
     from app import models
@@ -30,7 +32,7 @@ def create_app(config_mode):
     app.register_blueprint(api_blueprint)
 
     # define endpoints
-    api.add_resource(CompanyInfo, "/api/company-info",
+    api.add_resource(CompanyInfoResource, "/api/company-info",
                      endpoint="company_info"
                      )
 
