@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Dropdown, Button, Segment } from 'semantic-ui-react';
+import React, { Component } from "react";
+import { Dropdown, Button, Segment } from "semantic-ui-react";
 
 // styles
-import './User.css';
+import "./User.css";
 
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
