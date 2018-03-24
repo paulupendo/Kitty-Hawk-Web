@@ -7,20 +7,20 @@ import './User.css';
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import { CallOptions } from '../../common/DropdownOptions.component';
-import GetUsers from "./subComponents/GetUsers/GetUsers.component";
-import GetUser from './subComponents/GetUser/GetUser.component'
+import GetUsers from './subComponents/GetUsers/GetUsers.component';
+import GetUser from './subComponents/GetUser/GetUser.component';
 import SubHeader from './SubHeader.component';
 import CreateUser from './subComponents/CreateUser/CreateUser.component';
 
 export default class User extends Component {
   state = {
-    activeComponent: 'Get User',
+    activeComponent: 'Create User',
   };
 
   data = [
+    { key: 'POST-user', value: 'Create User', text: 'Create User' },
     { key: 'POST', value: 'Get User', text: 'Get User' },
     { key: 'GET', value: 'Get Users', text: 'Get Users' },
-    { key: 'POST-user', value: 'Create User', text: 'Create User' },
   ];
 
   handleChange = (e, { value }) => {
@@ -29,25 +29,32 @@ export default class User extends Component {
 
   switchComponents = () => {
     switch (this.state.activeComponent) {
-      case 'Get User':
-        return <div>
-            <SubHeader info="Create a new User. This requires a unique email address for the
-              User being created" />
-            <GetUser />
-          </div>;
-      case 'Get Users':
-        return <div>
-            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
-            <GetUsers />
-          </div>;
       case 'Create User':
         return (
           <div>
             <SubHeader
               info="Create a new User. This requires a unique email address for the
-              User being created"
+            User being created"
             />
             <CreateUser />
+            <div className="btn-bottom">
+              <Button content="CREATE USER" />
+            </div>
+          </div>
+        );
+
+      case 'Get Users':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
+            <GetUsers />
+          </div>
+        );
+      case 'Get User':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request User information by ID" />
+            <GetUser />
           </div>
         );
       default:
@@ -57,7 +64,8 @@ export default class User extends Component {
               info="Create a new User. This requires a unique email address for the
               User being created"
             />
-            <GetUser />
+            <CreateUser />
+            <Button content="CREATE USER" />
           </div>
         );
     }
@@ -75,7 +83,7 @@ export default class User extends Component {
 
             <div>
               <Dropdown
-                placeholder="Select Endpoint"
+                placeholder="Create User"
                 fluid
                 selection
                 options={this.data}

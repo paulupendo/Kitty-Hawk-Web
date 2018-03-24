@@ -20,7 +20,7 @@
         .call-btn {
             margin-left: auto;
             .ui.button {
-                width: 7.5rem;
+                width: 5.5rem;
                 margin-right: 1rem;
                 background: #49cc90;
                 ;
@@ -32,6 +32,17 @@
                 font-size: 16px;
                 font-weight: 600;
             }
+        }
+    }
+    .btn-bottom {
+        .ui.button {
+            background: #38b557;
+            color: #fff;
+            font-weight: 400;
+            border-radius: 0.9rem;
+            margin-top: 1rem;
+            margin-right: -.1rem;
+            float: right;
         }
     }
 }

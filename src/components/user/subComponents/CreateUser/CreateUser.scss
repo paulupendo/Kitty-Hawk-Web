@@ -1,0 +1,26 @@
+.create-user-container {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    box-shadow: none;
+    background: #f3f5f7;
+    height: 20rem;
+    padding: 3rem;
+    border-radius: 5px;
+    .btns {
+        display: flex;
+        flex-direction: column;
+        .btns-row {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 1.5rem;
+            div {
+                margin-right: 3rem;
+            }
+            .ui.input {
+                width: 18rem;
+                margin-top: .5rem;
+            }
+        }
+    }
+}
