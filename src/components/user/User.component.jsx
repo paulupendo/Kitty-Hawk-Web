@@ -14,7 +14,7 @@ import CreateUser from './subComponents/CreateUser/CreateUser.component';
 
 export default class User extends Component {
   state = {
-    activeComponent: 'Get User',
+    activeComponent: 'Get Users',
   };
 
   data = [

@@ -1,3 +1,8 @@
 .get-users-container {
     display: flex;
+    height: 100%;
+
+    .user-table {
+        height: 100%;
+    }
 }
