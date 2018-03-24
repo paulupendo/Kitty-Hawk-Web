@@ -37,7 +37,7 @@ export default class User extends Component {
           </div>;
       case 'Get Users':
         return <div>
-            <SubHeader info="Allows a caller to request a page with a list of Console User resources belonging to a Tenant" />
+            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
             <GetUsers />
           </div>;
       case 'Create User':
