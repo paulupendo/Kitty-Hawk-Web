@@ -1,12 +1,7 @@
 import React from 'react';
 
+const GetUser = () => {
+  return <div>get user info goes here</div>;
+};
 
-const GetUsers = () => {
-    return (
-        <div>
-            get users
-        </div>
-    )
-}
-
-export default GetUsers;
+export default GetUser;
