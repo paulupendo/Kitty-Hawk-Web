@@ -2,9 +2,9 @@
 To handle API CRUD operations.
 """
 import uuid
-import requests
 from datetime import datetime, timedelta
 
+import requests
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 import jwt

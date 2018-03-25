@@ -26,5 +26,9 @@ yarn-error.log*
 
 **/__pycache__/*
 api/migrations/
+<<<<<<< HEAD
 **/api/**/*.pyc
 **/api/*.pyc
+=======
+api/**/*.pyc
+>>>>>>> chore(models): define unique fields
