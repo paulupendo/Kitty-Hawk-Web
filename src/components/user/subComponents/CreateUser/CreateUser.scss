@@ -15,7 +15,7 @@
             flex-direction: row;
             margin-bottom: 1.5rem;
             div {
-                margin-right: 3rem;
+                margin-right: 1.5rem;
             }
             .ui.input {
                 width: 18rem;
@@ -23,6 +23,7 @@
             }
             .ui.input>input {
                 border-radius: 8px;
+                max-width: 13rem;
                 &:focus {
                     border: solid 1px #38b557;
                 }
@@ -36,6 +37,8 @@
         .ui.selection.dropdown {
             margin-top: 0.5rem;
             border-radius: 8px;
+            min-width: 13rem;
+            margin-right: 6.5rem;
         }
     }
 }

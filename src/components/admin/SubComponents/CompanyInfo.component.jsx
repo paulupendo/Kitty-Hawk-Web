@@ -12,24 +12,41 @@ const CompanyInfo = () => {
           <div>
             <span>Name</span>
             <br />
-            <Input />
+            <Input placeholder="(optional):{string}" />
           </div>
           <div>
             <span>Company</span>
             <br />
-            <Input />
+            <Input placeholder="(optional):{string}" />
+          </div>
+          <div>
+            <span>Email</span>
+            <br />
+            <Input placeholder="(optional):{string}" />
           </div>
         </div>
         <div className="btns-row">
           <div>
-            <span>Email</span>
-            <br />
-            <Input />
-          </div>
-          <div>
             <span>Phone</span>
             <br />
-            <Input />
+            <Input placeholder="(optional):{string}" />
+          </div>
+          <div>
+            <span>Tenant ID</span>
+            <br />
+            <Input placeholder="(required):{string}" />
+          </div>
+          <div>
+            <span>Application ID</span>
+            <br />
+            <Input placeholder="(required):{string}" />
+          </div>
+        </div>
+        <div className="btns-row">
+          <div>
+            <span>Application Secret</span>
+            <br />
+            <Input type="password" placeholder="(required):{string}" />
           </div>
         </div>
       </div>

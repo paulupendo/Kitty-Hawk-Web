@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {Tab, Button } from 'semantic-ui-react';
+import { Tab, Button } from 'semantic-ui-react';
 
 //styles
 import './Admin.css';
 
-// component
+// components
 import CompanyInfo from './SubComponents/CompanyInfo.component';
-import Credentials from './SubComponents/Credentials.component';
 
 // common components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
@@ -17,15 +16,6 @@ const panes = [
     render: () => (
       <Tab.Pane attached={false}>
         <CompanyInfo />
-        <Button content="NEXT" />
-      </Tab.Pane>
-    ),
-  },
-  {
-    menuItem: 'Credentials',
-    render: () => (
-      <Tab.Pane attached={false}>
-        <Credentials />
         <Button content="AUTHORIZE" />
       </Tab.Pane>
     ),

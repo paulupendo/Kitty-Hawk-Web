@@ -25,22 +25,30 @@ const CreateUser = () => {
             <br />
             <Input placeholder="(required):{string}" />
           </div>
-        </div>
-        <div className="btns-row">
-          <div>
-            <span>User Role</span>
-            <br />
-            <Input placeholder="(required):{string}" />
-          </div>
           <div>
             <span>Email</span>
             <br />
             <Input placeholder="(required):{string}" />
           </div>
         </div>
-        <div>
-          <span>Zone</span> <br />
-          <Dropdown selection placeholder="Select Zone" options={zoneOptions} />
+        <div className="btns-row">
+          <div>
+            <span>User Role</span>
+            <br />
+            <Dropdown
+              selection
+              placeholder="Select Role"
+              options={zoneOptions}
+            />
+          </div>
+          <div>
+            <span>Zone</span> <br />
+            <Dropdown
+              selection
+              placeholder="Select Zone"
+              options={zoneOptions}
+            />
+          </div>
         </div>
       </div>
     </div>
