@@ -10,11 +10,8 @@ from flask_restful import Resource, reqparse
 import jwt
 import json
 
-<<<<<<< HEAD
-from models import CompanyInfo
-=======
 from .models import CompanyInfo, db
->>>>>>> 95089ce91b23b5b43f086836a82489eeb8f75ba6
+
 
 # 30 minutes from now
 timeout = 1800
