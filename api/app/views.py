@@ -2,25 +2,15 @@
 To handle API CRUD operations.
 """
 import uuid
-import requests
 from datetime import datetime, timedelta
 
+import requests
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 import jwt
 import json
 
 from .models import CompanyInfo, db
-
-# 30 minutes from now
-timeout = 1800
-now = datetime.utcnow()
-timeout_datetime = now + timedelta(seconds=timeout)
-epoch_time = int((now - datetime(1970, 1, 1)).total_seconds())
-epoch_timeout = int((timeout_datetime - datetime(1970, 1, 1)).total_seconds())
-jti_val = str(uuid.uuid4())
-
-AUTH_URL = "https://protectapi.cylance.com/auth/v2/token"
 
 class CompanyInfoResource(Resource):
     """
@@ -74,10 +64,7 @@ class CompanyInfoResource(Resource):
             payload = {"auth_token": access_token}
             headers = {"Content-Type": "application/json; charset=utf-8"}
             resp = requests.post(AUTH_URL, headers=headers, data=json.dumps(payload))
-            # print("http_status_code: ", str(resp.status_code))
-
-            # save to db
-
+            #  save to db
             company_info = CompanyInfo(
                 name=name, company=company,
                 email=email, phone_number=phone_number,
