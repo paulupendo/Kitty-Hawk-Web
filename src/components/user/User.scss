@@ -1,47 +1,47 @@
 @import '../../common/theme.css';
 .user-container {
-  padding: 10rem 5rem;
-  width: 54vw;
-  .header-nav {
-    display: flex;
-    flex-direction: row;
-    padding-top: 35px;
-    .dropdwn-nav {
-      display: flex;
-      flex-direction: row;
-      .ui.selection.dropdown {
-        margin-right: 3rem;
-        border-radius: 8px;
-      }
-      .ui.fluid.dropdown {
-        width: 11rem;
-      }
+    padding: 10rem 5rem;
+    width: 60vw;
+    .header-nav {
+        display: flex;
+        flex-direction: row;
+        padding-top: 35px;
+        .dropdwn-nav {
+            display: flex;
+            flex-direction: row;
+            .ui.selection.dropdown {
+                margin-right: 3rem;
+                border-radius: 8px;
+            }
+            .ui.fluid.dropdown {
+                width: 11rem;
+            }
+        }
+        .call-btn {
+            margin-left: auto;
+            .ui.button {
+                width: 5.5rem;
+                margin-right: 1rem;
+                background: #49cc90;
+                color: #fff;
+                font-weight: 400;
+                border-radius: 1.5rem;
+            }
+            span {
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
     }
-    .call-btn {
-      margin-left: auto;
-      .ui.button {
-        width: 5.5rem;
-        margin-right: 1rem;
-        background: #49cc90;
-        color: #fff;
-        font-weight: 400;
-        border-radius: 1.5rem;
-      }
-      span {
-        font-size: 16px;
-        font-weight: 600;
-      }
+    .btn-bottom {
+        .ui.button {
+            background: #38b557;
+            color: #fff;
+            font-weight: 400;
+            border-radius: 0.9rem;
+            margin-top: 1rem;
+            margin-right: -0.1rem;
+            float: right;
+        }
     }
-  }
-  .btn-bottom {
-    .ui.button {
-      background: #38b557;
-      color: #fff;
-      font-weight: 400;
-      border-radius: 0.9rem;
-      margin-top: 1rem;
-      margin-right: -0.1rem;
-      float: right;
-    }
-  }
 }
