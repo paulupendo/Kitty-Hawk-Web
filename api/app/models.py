@@ -22,5 +22,5 @@ class CompanyInfo(db.Model):
     tenant_id = db.Column(db.String, index=True, nullable=False)
     app_secret = db.Column(db.String, index=True, nullable=False)
     app_id = db.Column(db.String, index=True, nullable=False)
-    comment = db.Column(db.String, index=True, nullable=False)
+    comment = db.Column(db.String, index=True, nullable=True)
     access_token = db.Column(db.String, index=True, nullable=False)

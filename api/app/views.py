@@ -42,13 +42,13 @@ class CompanyInfoResource(Resource):
         app_id = payload["app_id"]
         tenant_id = payload["tenant_id"]
         app_secret = payload["app_secret"]
-        comment = payload["comment"]
+        # comment = payload["comment"]
         app_secret = payload["app_secret"]
         if not payload['name'] or not payload['company'] or not payload['email'] or not payload['phone_number'] \
-                or not payload['tenant_id'] or not payload['app_id'] or not payload['app_secret'] or not payload['comment']:
+                or not payload['tenant_id'] or not payload['app_id'] or not payload['app_secret']:
             response = jsonify({
                 "status": "error",
-                "message": "All fiends are required."
+                "message": "All fields are required."
             })
             return response
         else:
@@ -85,7 +85,7 @@ class CompanyInfoResource(Resource):
             company_info = CompanyInfo(
                 name=name, company=company,
                 email=email, phone_number=phone_number,
-                tenant_id=tenant_id, app_id=app_id, comment=comment,
+                tenant_id=tenant_id, app_id=app_id,
                 app_secret=app_secret, access_token=access_token)
             db.session.add(company_info)
             db.session.commit()
@@ -98,7 +98,7 @@ class CompanyInfoResource(Resource):
                     "tenant_id": tenant_id,
                     "app_id": app_id,
                     "app_secret": app_secret,
-                    "comment": comment,
+                    # "comment": comment,
                     "access_token": access_token
                 }
             })
