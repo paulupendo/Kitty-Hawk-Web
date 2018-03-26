@@ -32,6 +32,7 @@ class CompanyInfoResource(Resource):
     def post(self):
         """
         Save company info
+        /company-info
         """
         payload = request.get_json()
         # Name, Company, Email, Phone, TenantId, AppId, AppSecret
@@ -106,6 +107,7 @@ class CompanyInfoResource(Resource):
     def get(self):
         """
         takes access token from URL params
+        /company-info?company_name=<name>
         """
         url_params = request.args
         # fetch all companies
@@ -156,6 +158,9 @@ class AllUsersResource(Resource):
     Get all company users
     """
     def get(self):
+        """
+        /all-users?company_name=<name>
+        """
         url_params = request.args
         print("test args here ====", url_params['company_name'])
         company_name = url_params['company_name']
