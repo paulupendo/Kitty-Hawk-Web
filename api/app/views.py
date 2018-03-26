@@ -181,3 +181,65 @@ class AllUsersResource(Resource):
                 "message": "Users fetched successfully"
             }
         })
+
+class AllDevicesResource(Resource):
+    def get(self):
+        """
+        /all-devices?company_name=<name>&page=<page>&limit=<limit>
+        """
+        url_params = request.args
+        if url_params['page'] and url_params['limit']:
+            page = url_params['page']
+            limit = url_params['limit']
+            URL = "https://protectapi-au.cylance.com/devices/v2?page?page="+page+"&page_size="+limit
+            company_name = url_params['company_name']
+            search_company = CompanyInfo.query.filter_by(name=url_params['company_name']).first()
+            print("search_company ", URL)
+            # handle edge cases here!!!
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            devices = json.loads(response.text)
+            return jsonify({
+                "data": {
+                    "device": json.loads(response.text),
+                    "message": "Device fetched successfully." if devices['page_items'] else "No devices found"
+                }
+            })
+        else:
+            return jsonify({
+                "message": "Company doesn't exist"
+            })
+
+class SingleDeviceResource(Resource):
+    def get(self):
+        """
+        /single-device?company_name=<name>&device_id=<device_id>
+        """
+        url_params = request.args
+        device_id = url_params['device_id']
+        URL = "https://protectapi-au.cylance.com/devices/v2/"+str(device_id)
+        search_company = CompanyInfo.query.filter_by(name=url_params['company_name']).first()
+        if search_company:
+            # handle edge cases here!!!
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            device = json.loads(response.text)
+            if device:
+                return jsonify({
+                    "data": {
+                        "device": device,
+                        "message": "Device fetched successfully."
+                    }
+                })
+            else:
+                return jsonify({
+                    "message": "No device found"
+                })
