@@ -2,9 +2,9 @@
 To handle API CRUD operations.
 """
 import uuid
-import requests
 from datetime import datetime, timedelta
 
+import requests
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 import jwt
@@ -77,11 +77,8 @@ class CompanyInfoResource(Resource):
 
             payload = {"auth_token": access_token}
             headers = {"Content-Type": "application/json; charset=utf-8"}
-            resp = requests.post(AUTH_URL, headers=headers,
-                                 data=json.dumps(payload))
-
-            # save to db
-
+            resp = requests.post(AUTH_URL, headers=headers, data=json.dumps(payload))
+            #  save to db
             company_info = CompanyInfo(
                 name=name, company=company,
                 email=email, phone_number=phone_number,
