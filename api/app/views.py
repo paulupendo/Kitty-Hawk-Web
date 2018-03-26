@@ -104,3 +104,25 @@ class CompanyInfoResource(Resource):
             company_info.status_code = 201
 
             return company_response
+    def get(self):
+        """
+        takes access token from URL params
+        """
+        url_params = request.args
+        search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
+        if search_company:
+            URL = "https://protectapi-au.cylance.com/users/v2"
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            response = {
+                "status": "success",
+                "data": json.loads(response.text),
+                "message": "company info fetched successfully."
+            }
+            return response
+        else:
+            return {"status": "error", "message": "company not found"}
