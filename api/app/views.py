@@ -109,20 +109,33 @@ class CompanyInfoResource(Resource):
         takes access token from URL params
         """
         url_params = request.args
-        search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
-        if search_company:
-            URL = "https://protectapi-au.cylance.com/users/v2"
-            token = search_company.access_token
-            headers = {
-                "Content-Type": "application/json; charset=utf-8",
-                "Authorization": "Bearer " + str(token)
-            }
-            response = requests.get(URL, headers=headers)
-            response = {
-                "status": "success",
-                "data": json.loads(response.text),
-                "message": "company info fetched successfully."
-            }
-            return response
+        if url_params:
+            # search for single company
+            search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
+            if search_company:
+                URL = "https://protectapi-au.cylance.com/users/v2"
+                token = search_company.access_token
+                headers = {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Authorization": "Bearer " + str(token)
+                }
+                response = requests.get(URL, headers=headers)
+                response = {
+                    "status": "success",
+                    "data": json.loads(response.text),
+                    "message": "company info fetched successfully."
+                }
+                return response
+            else:
+                return {"status": "error", "message": "company not found"}
         else:
-            return {"status": "error", "message": "company not found"}
+            # fetch all companies
+            companies = CompanyInfo.query.all()
+            companies = [company.name for company in companies]
+            return jsonify({
+                "data": {
+                    "companies": companies,
+                    "message": "All companies fetched successfully" if companies else "No companies found"
+                },
+                "status": "success"
+            })
