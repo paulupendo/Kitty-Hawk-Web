@@ -243,3 +243,31 @@ class SingleDeviceResource(Resource):
                 return jsonify({
                     "message": "No device found"
                 })
+
+class DeviceThreats(Resource):
+    def get(self):
+        url_params = request.args
+        page = url_params['page']
+        limit = url_params['limit']
+        device_id = url_params['device_id']
+        URL = "https://protectapi-au.cylance.com/devices/v2/"+device_id+"/threats?page="+page+"&page_size="+limit
+        search_company = CompanyInfo.query.filter_by(name=url_params['company_name']).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        device_threat = json.loads(response.text)
+        print(device_threat)
+        if device_threat:
+            return jsonify({
+                "data": {
+                    "device": device_threat,
+                    "message": "Device threats fetched successfully."
+                }
+            })
+        else:
+            return jsonify({
+                "message": "No device threats found"
+            })

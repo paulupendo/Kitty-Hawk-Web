@@ -9,7 +9,8 @@ from flask_restful import Api
 from config import app_config
 from app.views import (
     CompanyInfoResource, SingleUser, AllUsersResource,
-    AllDevicesResource, SingleDeviceResource
+    AllDevicesResource, SingleDeviceResource,
+    DeviceThreats
 )
 from app.models import db
 
@@ -40,6 +41,7 @@ def create_app(config_mode):
     api.add_resource(AllUsersResource, '/api/all-users', endpoint="all-users")
     api.add_resource(AllDevicesResource, '/api/all-devices', endpoint="all-devices")
     api.add_resource(SingleDeviceResource, '/api/single-device', endpoint="single-devices")
+    api.add_resource(DeviceThreats, '/api/device-threats', endpoint="device-threat")
 
     migrate = Migrate(app, db)
     manager = Manager(app)
