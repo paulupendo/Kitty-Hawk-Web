@@ -2,9 +2,9 @@
 To handle API CRUD operations.
 """
 import uuid
+import requests
 from datetime import datetime, timedelta
 
-import requests
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 import jwt
@@ -98,12 +98,13 @@ class CompanyInfoResource(Resource):
                     "app_secret": app_secret,
                     "comment": comment,
                     "access_token": access_token,
-                   "message": "company created successfully."
+                    "message": "company created successfully."
                 },
             })
             company_info.status_code = 201
 
             return company_response
+
     def get(self):
         """
         takes access token from URL params
@@ -120,10 +121,15 @@ class CompanyInfoResource(Resource):
             }
         })
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> merge
 class SingleUser(Resource):
     """
     User endpoints.
     """
+
     def get(self):
         """
         GET operations for users
@@ -135,9 +141,16 @@ class SingleUser(Resource):
             """
             print("test args here", url_params['company_name'])
             user_id = url_params['user_id']
+<<<<<<< HEAD
             URL = "https://protectapi-au.cylance.com/users/v2/"+user_id
             # search company
             search_company = CompanyInfo.query.filter_by(name=url_params['company_name']).first()
+=======
+            URL = "https://protectapi-au.cylance.com/users/v2/" + user_id
+            # search company
+            search_company = CompanyInfo.query.filter_by(
+                name=url_params['company_name']).first()
+>>>>>>> merge
             # handle edge cases here!!!
             token = search_company.access_token
             print('token == ', token)
@@ -189,6 +202,7 @@ class AllUsersResource(Resource):
                     "message": "Users fetched successfully"
                 }
             })
+<<<<<<< HEAD
         else:
             return jsonify({
                 "message": "No users found"
@@ -637,3 +651,37 @@ class ThreatDownloadURL(Resource):
         })
         resp.status_code = 200
         return resp
+=======
+
+
+class AllUsersResource(Resource):
+    """
+    Get all company users
+    """
+
+    def get(self):
+        """
+        /all-users?company_name=<name>
+        """
+        url_params = request.args
+        print("test args here ====", url_params['company_name'])
+        company_name = url_params['company_name']
+        URL = "https://protectapi-au.cylance.com/users/v2"
+        # search company
+        search_company = CompanyInfo.query.filter_by(
+            name=url_params['company_name']).first()
+        print("search_company ", URL)
+        # handle edge cases here!!!
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        return jsonify({
+            "data": {
+                "users": json.loads(response.text),
+                "message": "Users fetched successfully"
+            }
+        })
+>>>>>>> merge

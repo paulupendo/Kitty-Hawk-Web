@@ -10,11 +10,11 @@ class GetUsers extends Component {
         <Table striped>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>ID</Table.HeaderCell>
-              <Table.HeaderCell>Tenant ID</Table.HeaderCell>
               <Table.HeaderCell>First Name</Table.HeaderCell>
               <Table.HeaderCell>Last Name</Table.HeaderCell>
               <Table.HeaderCell>Email</Table.HeaderCell>
+              <Table.HeaderCell>Role Name</Table.HeaderCell>
+              <Table.HeaderCell>Zone</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
