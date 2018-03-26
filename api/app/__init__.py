@@ -7,7 +7,7 @@ from flask_restful import Api
 
 # local imports
 from config import app_config
-from app.views import CompanyInfoResource
+from app.views import CompanyInfoResource, UsersResource
 from app.models import db
 
 
@@ -34,7 +34,8 @@ def create_app(config_mode):
     # define endpoints
     api.add_resource(CompanyInfoResource, "/api/company-info",
                      endpoint="company_info"
-                     )
+                    )
+    api.add_resource(UsersResource, '/api/users', endpoint="users")
 
     migrate = Migrate(app, db)
     manager = Manager(app)

@@ -47,7 +47,6 @@ class CompanyInfoResource(Resource):
         if not payload['name'] or not payload['company'] or not payload['email'] or not payload['phone_number'] \
                 or not payload['tenant_id'] or not payload['app_id'] or not payload['app_secret']:
             response = jsonify({
-                "status": "error",
                 "message": "All fields are required."
             })
             return response
@@ -97,9 +96,9 @@ class CompanyInfoResource(Resource):
                     "app_id": app_id,
                     "app_secret": app_secret,
                     "comment": comment,
-                    "access_token": access_token
+                    "access_token": access_token,
+                   "message": "company created successfully."
                 },
-                "message": "company created successfully."
             })
             company_info.status_code = 201
 
@@ -109,33 +108,63 @@ class CompanyInfoResource(Resource):
         takes access token from URL params
         """
         url_params = request.args
-        if url_params:
-            # search for single company
+        # fetch all companies
+        companies = CompanyInfo.query.all()
+        companies = [company.name for company in companies]
+        return jsonify({
+            "data": {
+                "companies": companies,
+                "message": "All companies fetched successfully" if companies else "No companies found"
+            }
+        })
+
+class UsersResource(Resource):
+    """
+    User endpoints.
+    """
+    def get(self):
+        """
+        GET operations for users
+        """
+        url_params = request.args
+        if url_params['user_id']:
+            user_id = url_params['user_id']
+            # # "https://protectapi-au.cylance.com/users/v2/{user_id | user_email_address}"
+            URL = "https://protectapi-au.cylance.com/users/v2/"+user_id
+            # search company
             search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
-            if search_company:
-                URL = "https://protectapi-au.cylance.com/users/v2"
-                token = search_company.access_token
-                headers = {
-                    "Content-Type": "application/json; charset=utf-8",
-                    "Authorization": "Bearer " + str(token)
-                }
-                response = requests.get(URL, headers=headers)
-                response = {
-                    "status": "success",
-                    "data": json.loads(response.text),
-                    "message": "company info fetched successfully."
-                }
-                return response
-            else:
-                return {"status": "error", "message": "company not found"}
-        else:
-            # fetch all companies
-            companies = CompanyInfo.query.all()
-            companies = [company.name for company in companies]
+            # handle edge cases here!!!
+            token = search_company.access_token
+            print('token == ', token)
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
             return jsonify({
                 "data": {
-                    "companies": companies,
-                    "message": "All companies fetched successfully" if companies else "No companies found"
+                    "user": json.loads(response.text),
                 },
-                "status": "success"
+                "message": "User fetched successfully."
+            })
+        else:
+            page = url_params['page']
+            limit = url_params['limit']
+            company_name = url_params['company_name']
+            # all_users_url = "https://protectapi-au.cylance.com/users/v2?page="+page+"&page_size="+limit
+            URL = "https://protectapi-au.cylance.com/users/v2"
+            # search company
+            search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
+            # handle edge cases here!!!
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            return jsonify({
+                "data": {
+                    "users": json.loads(response.text),
+                    "message": "Users fetched successfully"
+                }
             })
