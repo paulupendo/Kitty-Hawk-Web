@@ -1,8 +1,13 @@
-import React, { Component } from "react";
-import { Dropdown, Button, Segment } from "semantic-ui-react";
+import React, { Component } from 'react';
+
+// third-party libraries
+import { Dropdown, Button, Segment } from 'semantic-ui-react';
+
+// axios
+// import http from '../../helpers/http.service';
 
 // styles
-import "./User.css";
+import './User.css';
 
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
@@ -13,22 +18,38 @@ import CreateUser from './subComponents/CreateUser/CreateUser.component';
 import UpdateUser from './subComponents/UpdateUser/UpdateUser.component';
 
 export default class User extends Component {
-  state = {
-    activeComponent: 'Create User',
-    endpoint: '/users/v2',
-    method: 'POST',
-    selection: 'Create User',
-  };
+  constructor() {
+    super();
+    this.state = {
+      activeComponent: 'Create User',
+      endpoint: '/users/v2',
+      method: 'POST',
+      selection: 'Create User',
+      users: []
+    };
+  }
 
   data = [
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
-    { key: 'PUT', value: 'Update User', text: 'Update User'},
-    { key: 'POST', value: 'Get User', text: 'Get User' },
+    { key: 'PUT', value: 'Update User', text: 'Update User' },
     { key: 'GET', value: 'Get Users', text: 'Get Users' },
+    { key: 'POST', value: 'Get User', text: 'Get User' }
   ];
 
+  /**
+   * This method handles the get call for users
+   */
+  // componentDidMount() {
+  //   http.get('https://protectapi-au.cylance.com/users/v2').then(res => {
+  //     console.log('reeeeeeeeeees===>>>>>', res);
+  //   });
+  // }
+
   handleChange = (e, { value }) => {
-    this.setState({ activeComponent: value, selection: value });
+    this.setState({
+      activeComponent: value,
+      selection: value
+    });
     switch (value) {
       case 'Create User':
         this.setState({ method: 'POST' });
@@ -40,7 +61,7 @@ export default class User extends Component {
         this.setState({ method: 'GET' });
         break;
       case 'Update User':
-        this.setState({method:'PUT'})
+        this.setState({ method: 'PUT' });
       default:
         break;
     }
@@ -61,12 +82,10 @@ export default class User extends Component {
             </div>
           </div>
         );
-        case 'Update User':
+      case 'Update User':
         return (
           <div>
-            <SubHeader
-              info="Allows a caller to update an existing Console User resource."
-            />
+            <SubHeader info="Allows a caller to update an existing Console User resource." />
             <UpdateUser />
             <div className="btn-bottom">
               <Button content="UPDATE" />
@@ -126,6 +145,7 @@ export default class User extends Component {
             <Button content={this.state.method} />
             <span>{this.state.endpoint}</span>
           </div>
+          <div />
         </div>
         {this.switchComponents()}
         <div />
