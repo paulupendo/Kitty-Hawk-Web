@@ -2,9 +2,9 @@
 To handle API CRUD operations.
 """
 import uuid
+import requests
 from datetime import datetime, timedelta
 
-import requests
 from flask import request, jsonify
 from flask_restful import Resource, reqparse
 import jwt
@@ -32,6 +32,7 @@ class CompanyInfoResource(Resource):
     def post(self):
         """
         Save company info
+        /company-info
         """
         payload = request.get_json()
         # Name, Company, Email, Phone, TenantId, AppId, AppSecret
@@ -97,15 +98,17 @@ class CompanyInfoResource(Resource):
                     "app_secret": app_secret,
                     "comment": comment,
                     "access_token": access_token,
-                   "message": "company created successfully."
+                    "message": "company created successfully."
                 },
             })
             company_info.status_code = 201
 
             return company_response
+
     def get(self):
         """
         takes access token from URL params
+        /company-info?company_name=<name>
         """
         url_params = request.args
         # fetch all companies
@@ -118,21 +121,27 @@ class CompanyInfoResource(Resource):
             }
         })
 
-class UsersResource(Resource):
+
+class SingleUser(Resource):
     """
     User endpoints.
     """
+
     def get(self):
         """
         GET operations for users
         """
         url_params = request.args
         if url_params['user_id']:
+            """
+            /users?user_id=<user_id>&company_name=<name>
+            """
+            print("test args here", url_params['company_name'])
             user_id = url_params['user_id']
-            # # "https://protectapi-au.cylance.com/users/v2/{user_id | user_email_address}"
-            URL = "https://protectapi-au.cylance.com/users/v2/"+user_id
+            URL = "https://protectapi-au.cylance.com/users/v2/" + user_id
             # search company
-            search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
+            search_company = CompanyInfo.query.filter_by(
+                name=url_params['company_name']).first()
             # handle edge cases here!!!
             token = search_company.access_token
             print('token == ', token)
@@ -147,24 +156,35 @@ class UsersResource(Resource):
                 },
                 "message": "User fetched successfully."
             })
-        else:
-            page = url_params['page']
-            limit = url_params['limit']
-            company_name = url_params['company_name']
-            # all_users_url = "https://protectapi-au.cylance.com/users/v2?page="+page+"&page_size="+limit
-            URL = "https://protectapi-au.cylance.com/users/v2"
-            # search company
-            search_company = CompanyInfo.query.filter_by(company=url_params['company_name']).first()
-            # handle edge cases here!!!
-            token = search_company.access_token
-            headers = {
-                "Content-Type": "application/json; charset=utf-8",
-                "Authorization": "Bearer " + str(token)
+
+
+class AllUsersResource(Resource):
+    """
+    Get all company users
+    """
+
+    def get(self):
+        """
+        /all-users?company_name=<name>
+        """
+        url_params = request.args
+        print("test args here ====", url_params['company_name'])
+        company_name = url_params['company_name']
+        URL = "https://protectapi-au.cylance.com/users/v2"
+        # search company
+        search_company = CompanyInfo.query.filter_by(
+            name=url_params['company_name']).first()
+        print("search_company ", URL)
+        # handle edge cases here!!!
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        return jsonify({
+            "data": {
+                "users": json.loads(response.text),
+                "message": "Users fetched successfully"
             }
-            response = requests.get(URL, headers=headers)
-            return jsonify({
-                "data": {
-                    "users": json.loads(response.text),
-                    "message": "Users fetched successfully"
-                }
-            })
+        })
