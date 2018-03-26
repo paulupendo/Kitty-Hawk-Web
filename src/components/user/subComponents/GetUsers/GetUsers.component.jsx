@@ -5,6 +5,7 @@ import './GetUsers.css';
 
 class GetUsers extends Component {
   render() {
+    const { users } = this.props;
     return (
       <div className="user-table">
         <Table striped>
@@ -19,20 +20,18 @@ class GetUsers extends Component {
           </Table.Header>
 
           <Table.Body>
-            <Table.Row>
-              <Table.Cell>John Lilki</Table.Cell>
-              <Table.Cell>September 14, 2013</Table.Cell>
-              <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-              <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Jamie Harington</Table.Cell>
-              <Table.Cell>January 11, 2014</Table.Cell>
-              <Table.Cell>jamieharingonton@yahoo.com</Table.Cell>
-              <Table.Cell>Yes</Table.Cell>
-              <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
-            </Table.Row>
+            {users.map(user => {
+              console.log(user);
+              return (
+                <Table.Row>
+                  <Table.Cell>{user.first_name || 'No Name'}</Table.Cell>
+                  <Table.Cell>{user.last_name || 'No Name'}</Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>{user.role_name}</Table.Cell>
+                  <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table>
       </div>

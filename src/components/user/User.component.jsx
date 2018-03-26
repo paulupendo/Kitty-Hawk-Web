@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 // third-party libraries
-import { Dropdown, Button, Segment } from 'semantic-ui-react';
+import { Dropdown, Button } from 'semantic-ui-react';
 
 // axios
-// import http from '../../helpers/http.service';
+import axios from 'axios';
 
 // styles
 import './User.css';
@@ -25,10 +25,15 @@ export default class User extends Component {
       endpoint: '/users/v2',
       method: 'POST',
       selection: 'Create User',
-      users: []
+      users: [],
+      companies: [],
+      value: ''
     };
   }
-
+  populateCompanyDropdown = companies =>
+    companies.map(company => {
+      console.log('company = ', company);
+    });
   data = [
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
     { key: 'PUT', value: 'Update User', text: 'Update User' },
@@ -36,15 +41,32 @@ export default class User extends Component {
     { key: 'POST', value: 'Get User', text: 'Get User' }
   ];
 
-  /**
-   * This method handles the get call for users
-   */
-  // componentDidMount() {
-  //   http.get('https://protectapi-au.cylance.com/users/v2').then(res => {
-  //     console.log('reeeeeeeeeees===>>>>>', res);
-  //   });
-  // }
+  componentDidMount() {
+    axios
+      .get('http://127.0.0.1:5000/api/company-info')
+      .then(res => {
+        this.setState({
+          companies: res.data.data.companies.map(company => {
+            return { value: company, text: company };
+          })
+        });
+        console.log(this.state.companies);
+      })
+      .catch(err => console.log('ERR', err));
 
+    this.populateCompanyDropdown(this.state.companies);
+  }
+  fetchUsers = () => {
+    axios
+      .get(
+        `http://127.0.0.1:5000/api/all-users?company_name=${this.state.value}`
+      )
+      .then(res => {
+        this.setState({
+          users: res.data.data.users.page_items
+        });
+      });
+  };
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
@@ -59,9 +81,11 @@ export default class User extends Component {
         break;
       case 'Get Users':
         this.setState({ method: 'GET' });
+        this.fetchUsers();
         break;
       case 'Update User':
         this.setState({ method: 'PUT' });
+        break;
       default:
         break;
     }
@@ -128,7 +152,15 @@ export default class User extends Component {
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
-              <Dropdown placeholder="Select Company" search selection />
+              <Dropdown
+                placeholder="Select Company"
+                search
+                selection
+                onChange={(_, { value }) => {
+                  this.setState({ value });
+                }}
+                options={this.state.companies}
+              />
             </div>
 
             <div>
