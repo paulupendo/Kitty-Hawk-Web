@@ -6,7 +6,6 @@ import "./User.css";
 
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
-import { CallOptions } from '../../common/DropdownOptions.component';
 import GetUsers from './subComponents/GetUsers/GetUsers.component';
 import GetUser from './subComponents/GetUser/GetUser.component';
 import SubHeader from './SubHeader.component';
