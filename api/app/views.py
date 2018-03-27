@@ -382,3 +382,96 @@ class SinglePolicy(Resource):
         policy = json.loads(response.text)
         # return jsonify(policy if policy['tenantPolicyId'] else {"data": {"policy": policy, "message": "Policy fetched successfully"}})
         return jsonify(policy)
+
+class Zones(Resource):
+    def get(self, zone_id=None):
+        """
+        GET /api/zones?company_name=<name> - All zones - unpaginated.
+        GET /api/zones/<zone_id>?company_name=<name> - one zone
+        """
+        url_params = request.args
+        if zone_id:
+            URL = "https://protectapi-au.cylance.com/zones/v2/"+zone_id
+            search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            zone = json.loads(response.text)
+            # return jsonify(policy if policy['tenantPolicyId'] else {"data": {"policy": policy, "message": "Policy fetched successfully"}})
+            return jsonify(zone)
+        else:
+            URL = "https://protectapi-au.cylance.com/zones/v2/"
+            search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            zone = json.loads(response.text)
+            # return jsonify(policy if policy['tenantPolicyId'] else {"data": {"policy": policy, "message": "Policy fetched successfully"}})
+            return jsonify(zone)
+
+class PaginatedZones(Resource):
+    def get(self):
+        """
+        GET /api/zones?company_name=<name>&page=<page>&limit=<limit> - All zones - paginated.
+        """
+        url_params = request.args
+        page = url_params['page']
+        limit = url_params['limit']
+        URL = "https://protectapi-au.cylance.com/zones/v2?page="+page+"&page_size="+limit
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        zones = json.loads(response.text)
+        return jsonify(zones)
+
+class DeviceZones(Resource):
+    def get(self):
+        """
+        GET /api/device-zones?company_name=<name>&zone_id=<zone_id>
+        """
+        url_params = request.args
+        URL = "https://protectapi-au.cylance.com/zones/v2/"+str(url_params['zone_id'])+"/zones"
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        device_zones = json.loads(response.text)
+        return jsonify({
+            "data": device_zones,
+            "message": "Device zones fetched successfully." if device_zones['page_items'] else "No device zones found."
+        })
+
+class PaginatedDeviceZones(Resource):
+    def get(self):
+        """
+        GET /api/paginated-device-zones?company_name=<name>&zone_id=<zone_id>&page=<page>&limit=<limit>
+        """
+        url_params = request.args
+        page = url_params['page']
+        limit = url_params['limit']
+        URL = "https://protectapi-au.cylance.com/zones/v2/"+str(url_params['zone_id'])+"/zones?page="+page+"&page_size="+limit
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        device_zones = json.loads(response.text)
+        return jsonify({
+            "data": device_zones,
+            "message": "Device zones fetched successfully." if device_zones['page_items'] else "No device zones found."
+        })

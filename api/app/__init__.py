@@ -12,7 +12,8 @@ from app.views import (
     AllDevicesResource, SingleDeviceResource,
     DeviceThreats, DeviceByMACAddress, GlobalList,
     MultiplePaginatedPolicies, MultiplePolicies,
-    SinglePolicy
+    SinglePolicy, Zones, PaginatedZones, DeviceZones,
+    PaginatedDeviceZones
 )
 from app.models import db
 
@@ -49,6 +50,10 @@ def create_app(config_mode):
     api.add_resource(MultiplePaginatedPolicies, '/api/all-policies', endpoint="all-policies-paginated")
     api.add_resource(MultiplePolicies, '/api/policies', endpoint="all-policies")
     api.add_resource(SinglePolicy, '/api/policies/<string:policy_id>', endpoint="single-policies")
+    api.add_resource(Zones, '/api/zones/<string:zone_id>', '/api/zones/', '/api/zones', endpoint="zones")
+    api.add_resource(PaginatedZones, '/api/paginated-zones/', '/api/paginated-zones', endpoint="paginated-zones")
+    api.add_resource(DeviceZones, '/api/device-zones/', '/api/device-zones', endpoint="device-zones")
+    api.add_resource(PaginatedDeviceZones, '/api/paginated-device-zones/', '/api/paginated-device-zones', endpoint="paginated-device-zones")
 
     migrate = Migrate(app, db)
     manager = Manager(app)
