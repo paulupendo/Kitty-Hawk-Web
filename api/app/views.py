@@ -146,12 +146,18 @@ class SingleUser(Resource):
                 "Authorization": "Bearer " + str(token)
             }
             response = requests.get(URL, headers=headers)
-            return jsonify({
-                "data": {
-                    "user": json.loads(response.text),
-                },
-                "message": "User fetched successfully."
-            })
+            users = json.loads(response.text)
+            if users.keys():
+                return jsonify({
+                    "data": {
+                        "user": json.loads(response.text),
+                    },
+                    "message": "User fetched successfully."
+                })
+            else:
+                return jsonify({
+                    "message": "User not found"
+                })
 
 class AllUsersResource(Resource):
     """
@@ -175,12 +181,18 @@ class AllUsersResource(Resource):
             "Authorization": "Bearer " + str(token)
         }
         response = requests.get(URL, headers=headers)
-        return jsonify({
-            "data": {
-                "users": json.loads(response.text),
-                "message": "Users fetched successfully"
-            }
-        })
+        users = json.loads(response.text)
+        if users['page_items']:
+            return jsonify({
+                "data": {
+                    "users": json.loads(response.text),
+                    "message": "Users fetched successfully"
+                }
+            })
+        else:
+            return jsonify({
+                "message": "No users found"
+            })
 
 class AllDevicesResource(Resource):
     def get(self):
@@ -203,12 +215,17 @@ class AllDevicesResource(Resource):
             }
             response = requests.get(URL, headers=headers)
             devices = json.loads(response.text)
-            return jsonify({
-                "data": {
-                    "device": json.loads(response.text),
-                    "message": "Device fetched successfully." if devices['page_items'] else "No devices found"
-                }
-            })
+            if devices['page_items']:
+                return jsonify({
+                    "data": {
+                        "device": json.loads(response.text),
+                        "message": "Device fetched successfully." if devices['page_items'] else "No devices found"
+                    }
+                })
+            else:
+                return jsonify({
+                    "message": "No devices found"
+                })
         else:
             return jsonify({
                 "message": "Company doesn't exist"
@@ -232,7 +249,7 @@ class SingleDeviceResource(Resource):
             }
             response = requests.get(URL, headers=headers)
             device = json.loads(response.text)
-            if device:
+            if device.keys():
                 return jsonify({
                     "data": {
                         "device": device,
@@ -246,6 +263,9 @@ class SingleDeviceResource(Resource):
 
 class DeviceThreats(Resource):
     def get(self):
+        """
+        GET: /device-threats?company_name=<name>&device_id=<device_id>&page=<page>&limit=<limit>
+        """
         url_params = request.args
         page = url_params['page']
         limit = url_params['limit']
@@ -260,7 +280,7 @@ class DeviceThreats(Resource):
         response = requests.get(URL, headers=headers)
         device_threat = json.loads(response.text)
         print(device_threat)
-        if device_threat:
+        if device_threat['page_items']:
             return jsonify({
                 "data": {
                     "device": device_threat,
