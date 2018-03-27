@@ -575,3 +575,31 @@ class PaginatedThreatDevices(Resource):
             "data": device_threats,
             "message": "Threat devices fetched successfully" if device_threats['page_items'] else "No threat devices matching given hash."
         })
+
+class ThreatDownloadURL(Resource):
+    def get(self, threat_hash):
+        """
+        GET /api/v1/threat-download-url/<threat_hash>
+        """
+        url_params = request.args
+        URL = "https://protectapi-au.cylance.com/threats/v2/"+str(threat_hash)
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        threat_download_url = json.loads(response.text)
+        if 'message' in threat_download_url:
+            resp = jsonify({"message": "Invalid threat hash identifier"})
+            resp.status_code = 404
+            return resp
+        resp = jsonify({
+            "data": {
+                "threat_download_url": threat_download_url,
+                "message": "Threat download URL fethced successfully."
+            }
+        })
+        resp.status_code = 200
+        return resp
