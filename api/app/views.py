@@ -308,7 +308,7 @@ class DeviceByMACAddress(Resource):
         }
         response = requests.get(URL, headers=headers)
         device = json.loads(response.text)
-        return jsonify(device if device["message"] else {"data": {"device": device, "message": "Device fetched successfully."}})
+        return jsonify(device if "message" in device else {"data": {"device": device, "message": "Device fetched successfully."}})
 
 class GlobalList(Resource):
     def get(self):
@@ -331,7 +331,7 @@ class GlobalList(Resource):
 class MultiplePaginatedPolicies(Resource):
     def get(self):
         """
-        GET /api/policies?company_name&page=<page>&limit=<limit>
+        GET /api/all-=policies?company_name&page=<page>&limit=<limit>
         """
         url_params = request.args
         if url_params['page'] and url_params['limit']:
@@ -479,11 +479,10 @@ class PaginatedDeviceZones(Resource):
 class ThreatsResource(Resource):
     def get(self, zone_hash=None):
         """
-        GET /api/threats?company_name=<name>
+        GET /api/threats/<zone_hash>?company_name=<name>
         """
         url_params = request.args
         if zone_hash:
-            print("Zone_HASH ==> ", zone_hash)
             URL = "https://protectapi-au.cylance.com/threats/v2/"+str(zone_hash)
             search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
             token = search_company.access_token
@@ -494,7 +493,20 @@ class ThreatsResource(Resource):
             response = requests.get(URL, headers=headers)
             threat = json.loads(response.text)
             # return jsonify({"message": "Invalid threat id"} if threat['message'] else {"data": threat, "message": "Threat fetched successfully."})
-            return jsonify(threat)
+            if 'message' in threat:
+                resp = jsonify({
+                    "message": "No threat matches given threat hash."
+                })
+                resp.status_code = 404
+                return resp
+            resp = jsonify({
+                "data": {
+                    "threat": threat,
+                    "message": "Threat fetched successfully." 
+                }
+            })
+            resp.status_code = 200
+            return resp
         else:
             URL = "https://protectapi-au.cylance.com/threats/v2"
             search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
@@ -505,12 +517,14 @@ class ThreatsResource(Resource):
             }
             response = requests.get(URL, headers=headers)
             threats = json.loads(response.text)
-            return jsonify({
+            resp = jsonify({
                 "data": {
                     "policy": threats,
                     "message": "Threats fetched successfully" if threats["page_items"] else "No threats found."
                 }
             })
+            resp.status_code = 200 if threats['page_items'] else 404
+            return resp
 
 class PaginatedThreats(Resource):
     def get(self):
@@ -529,12 +543,14 @@ class PaginatedThreats(Resource):
         }
         response = requests.get(URL, headers=headers)
         threats = json.loads(response.text)
-        return jsonify({
+        resp = jsonify({
             "data": {
                 "policy": threats,
                 "message": "Threats fetched successfully" if threats["page_items"] else "No threats found."
             }
         })
+        resp.status_code = 200 if threats['page_items'] else 404
+        return resp
 
 class ThreatDevices(Resource):
     def get(self, threat_hash):
@@ -551,7 +567,18 @@ class ThreatDevices(Resource):
         }
         response = requests.get(URL, headers=headers)
         device_threats = json.loads(response.text)
-        return jsonify(device_threats)
+        if 'message' in device_threats:
+            resp = jsonify({"message": "Invalid threat hash identifier"})
+            resp.status_code = 404
+            return resp
+        resp = jsonify({
+            "data": {
+                "device_threats": device_threats,
+                "message": "Device threats fetched successfully." if device_threats['page_items'] else "No device threats matching given threat hash."
+            }
+        })
+        resp.status_code = 200 if device_threats['page_items'] else 404
+        return resp
 
 class PaginatedThreatDevices(Resource):
     def get(self, threat_hash):
@@ -569,12 +596,19 @@ class PaginatedThreatDevices(Resource):
             "Authorization": "Bearer " + str(token)
         }
         response = requests.get(URL, headers=headers)
-        device_threats = json.loads(response.text)
-        # if device_threats['page_items']:
-        return jsonify({"message": "Invalid threat hash identifier."} if 'message' in device_threats else {
-            "data": device_threats,
-            "message": "Threat devices fetched successfully" if device_threats['page_items'] else "No threat devices matching given hash."
+        threat_devices = json.loads(response.text)
+        if 'message' in threat_devices:
+            resp = jsonify({"message": "Invalid threat hash identifier"})
+            resp.status_code = 404
+            return resp
+        resp = jsonify({
+            "data": {
+                "threat_devices": threat_devices,
+                "message": "Threat devices fetched successfully." if threat_devices['page_items'] else "No threat devices matching given threat hash."
+            }
         })
+        resp.status_code = 200 if threat_devices['page_items'] else 404
+        return resp
 
 class ThreatDownloadURL(Resource):
     def get(self, threat_hash):
