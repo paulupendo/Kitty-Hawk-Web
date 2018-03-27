@@ -13,7 +13,8 @@ from app.views import (
     DeviceThreats, DeviceByMACAddress, GlobalList,
     MultiplePaginatedPolicies, MultiplePolicies,
     SinglePolicy, Zones, PaginatedZones, DeviceZones,
-    PaginatedDeviceZones, ThreatsResource, PaginatedThreats
+    PaginatedDeviceZones, ThreatsResource, PaginatedThreats,
+    ThreatDevices, PaginatedThreatDevices
 )
 from app.models import db
 
@@ -56,6 +57,8 @@ def create_app(config_mode):
     api.add_resource(PaginatedDeviceZones, '/api/paginated-device-zones/', '/api/paginated-device-zones', endpoint="paginated-device-zones")
     api.add_resource(ThreatsResource, '/api/threats/', '/api/threats', '/api/threats/<string:zone_hash>', '/api/threats/<string:zone_hash>/', endpoint="threats")
     api.add_resource(PaginatedThreats, '/api/paginated-threats/', '/api/paginated-threats', endpoint="paginated-threats")
+    api.add_resource(ThreatDevices, '/api/threat-devices/<string:threat_hash>/', '/api/threat-devices/<string:threat_hash>', endpoint="threat-devices")
+    api.add_resource(PaginatedThreatDevices, '/api/paginated-threat-devices/<string:threat_hash>/', '/api/paginated-threat-devices/<string:threat_hash>', endpoint="paginated-threat-devices")
 
     migrate = Migrate(app, db)
     manager = Manager(app)

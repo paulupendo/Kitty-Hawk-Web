@@ -535,3 +535,43 @@ class PaginatedThreats(Resource):
                 "message": "Threats fetched successfully" if threats["page_items"] else "No threats found."
             }
         })
+
+class ThreatDevices(Resource):
+    def get(self, threat_hash):
+        """
+        GET /api/threat-devices/<threat_hash>/devices
+        """
+        url_params = request.args
+        URL = "https://protectapi-au.cylance.com/threats/v2/"+threat_hash+"/devices"
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        device_threats = json.loads(response.text)
+        return jsonify(device_threats)
+
+class PaginatedThreatDevices(Resource):
+    def get(self, threat_hash):
+        """
+        GET /api/paginated-threat-devices/<threat_hash>/devices?page=<page>&limit=<limit>
+        """
+        url_params = request.args
+        page = url_params['page']
+        limit = url_params['limit']
+        URL = "https://protectapi-au.cylance.com/threats/v2/"+str(threat_hash)+"/devices?page="+page+"&page_size="+limit
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        device_threats = json.loads(response.text)
+        # if device_threats['page_items']:
+        return jsonify({"message": "Invalid threat hash identifier."} if 'message' in device_threats else {
+            "data": device_threats,
+            "message": "Threat devices fetched successfully" if device_threats['page_items'] else "No threat devices matching given hash."
+        })
