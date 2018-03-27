@@ -10,7 +10,7 @@ from config import app_config
 from app.views import (
     CompanyInfoResource, SingleUser, AllUsersResource,
     AllDevicesResource, SingleDeviceResource,
-    DeviceThreats
+    DeviceThreats, DeviceByMACAddress
 )
 from app.models import db
 
@@ -42,6 +42,7 @@ def create_app(config_mode):
     api.add_resource(AllDevicesResource, '/api/all-devices', endpoint="all-devices")
     api.add_resource(SingleDeviceResource, '/api/single-device', endpoint="single-devices")
     api.add_resource(DeviceThreats, '/api/device-threats', endpoint="device-threat")
+    api.add_resource(DeviceByMACAddress, '/api/devices/mac-address', endpoint="device-mac-address")
 
     migrate = Migrate(app, db)
     manager = Manager(app)

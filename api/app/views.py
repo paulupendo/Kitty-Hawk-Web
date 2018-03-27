@@ -291,3 +291,21 @@ class DeviceThreats(Resource):
             return jsonify({
                 "message": "No device threats found"
             })
+
+class DeviceByMACAddress(Resource):
+    def get(self):
+        """
+        GET: /api/devices/mac-address?company_name=<company_name>&mac_address=<mac_address>
+        """
+        url_params = request.args
+        mac_address = url_params['mac_address']
+        URL = "https://protectapi-au.cylance.com/devices/v2/macaddress/"+str(mac_address)
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        device = json.loads(response.text)
+        return jsonify(device if device["message"] else {"data": {"device": device, "message": "Device fetched successfully."}})
