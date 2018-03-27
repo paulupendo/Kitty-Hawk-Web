@@ -10,7 +10,8 @@ from config import app_config
 from app.views import (
     CompanyInfoResource, SingleUser, AllUsersResource,
     AllDevicesResource, SingleDeviceResource,
-    DeviceThreats, DeviceByMACAddress
+    DeviceThreats, DeviceByMACAddress, GlobalList,
+    MultiplePaginatedPolicies, MultiplePolicies
 )
 from app.models import db
 
@@ -43,6 +44,9 @@ def create_app(config_mode):
     api.add_resource(SingleDeviceResource, '/api/single-device', endpoint="single-devices")
     api.add_resource(DeviceThreats, '/api/device-threats', endpoint="device-threat")
     api.add_resource(DeviceByMACAddress, '/api/devices/mac-address', endpoint="device-mac-address")
+    api.add_resource(GlobalList, '/api/global-lists', endpoint="global-lists")
+    api.add_resource(MultiplePaginatedPolicies, '/api/all-policies', endpoint="all-policies-paginated")
+    api.add_resource(MultiplePolicies, '/api/policies', endpoint="all-policies")
 
     migrate = Migrate(app, db)
     manager = Manager(app)

@@ -309,3 +309,58 @@ class DeviceByMACAddress(Resource):
         response = requests.get(URL, headers=headers)
         device = json.loads(response.text)
         return jsonify(device if device["message"] else {"data": {"device": device, "message": "Device fetched successfully."}})
+
+class GlobalList(Resource):
+    def get(self):
+        """
+        GET: /api/global-lists?company_name=<company_name>&list_typed_id=<id>
+        """
+        url_params = request.args
+        list_typed_id = url_params['list_typed_id']
+        URL = "https://protectapi-au.cylance.com/globallists/v2?listTypeId="+list_typed_id+"&page=m&page_size=n"
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        global_list = json.loads(response.text)
+        return jsonify(global_list)
+
+class MultiplePaginatedPolicies(Resource):
+    def get(self):
+        """
+        GET /api/policies?company_name&page=<page>&limit=<limit>
+        """
+        url_params = request.args
+        if url_params['page'] and url_params['limit']:
+            # if paginated
+            page = url_params['page']
+            limit = url_params['limit']
+            URL = "https://protectapi-au.cylance.com/policies/v2?page="+page+"&page_size="+limit
+            search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            return jsonify(json.loads(response.text))
+
+class MultiplePolicies(Resource):
+    def get(self):
+        """
+        GET /api/policies?company_name
+        """
+        # no pagination
+        url_params = request.args
+        URL = "https://protectapi-au.cylance.com/policies/v2"
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        return jsonify(json.loads(response.text))
