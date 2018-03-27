@@ -11,7 +11,8 @@ from app.views import (
     CompanyInfoResource, SingleUser, AllUsersResource,
     AllDevicesResource, SingleDeviceResource,
     DeviceThreats, DeviceByMACAddress, GlobalList,
-    MultiplePaginatedPolicies, MultiplePolicies
+    MultiplePaginatedPolicies, MultiplePolicies,
+    SinglePolicy
 )
 from app.models import db
 
@@ -47,6 +48,7 @@ def create_app(config_mode):
     api.add_resource(GlobalList, '/api/global-lists', endpoint="global-lists")
     api.add_resource(MultiplePaginatedPolicies, '/api/all-policies', endpoint="all-policies-paginated")
     api.add_resource(MultiplePolicies, '/api/policies', endpoint="all-policies")
+    api.add_resource(SinglePolicy, '/api/policies/<string:policy_id>', endpoint="single-policies")
 
     migrate = Migrate(app, db)
     manager = Manager(app)

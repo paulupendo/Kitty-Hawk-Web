@@ -364,3 +364,21 @@ class MultiplePolicies(Resource):
         }
         response = requests.get(URL, headers=headers)
         return jsonify(json.loads(response.text))
+
+class SinglePolicy(Resource):
+    def get(self, policy_id=None):
+        """
+        GET /api/policies/<policy_id>?company_name=<name>
+        """
+        url_params = request.args
+        URL = "https://protectapi-au.cylance.com/policies/v2/"+policy_id
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        policy = json.loads(response.text)
+        # return jsonify(policy if policy['tenantPolicyId'] else {"data": {"policy": policy, "message": "Policy fetched successfully"}})
+        return jsonify(policy)
