@@ -8,7 +8,7 @@ class GetUsers extends Component {
     const { users } = this.props;
     return (
       <div className="user-table">
-        <Table striped>
+        <Table color='green' striped>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>First Name</Table.HeaderCell>
@@ -21,14 +21,13 @@ class GetUsers extends Component {
 
           <Table.Body>
             {users.map(user => {
-              console.log(user);
               return (
                 <Table.Row>
                   <Table.Cell>{user.first_name || 'No Name'}</Table.Cell>
                   <Table.Cell>{user.last_name || 'No Name'}</Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>{user.role_name}</Table.Cell>
-                  <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
+                  <Table.Cell>{user.zones || 'No Zone'}</Table.Cell>
                 </Table.Row>
               );
             })}
