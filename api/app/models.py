@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class CompanyInfo(db.Model):
     """
     Define user fields.
@@ -23,4 +24,5 @@ class CompanyInfo(db.Model):
     app_secret = db.Column(db.String, index=True, nullable=False, unique=True)
     app_id = db.Column(db.String, index=True, nullable=False, unique=True)
     comment = db.Column(db.String, index=True, nullable=True)
-    access_token = db.Column(db.String, index=True, nullable=False, unique=True)
+    access_token = db.Column(db.String, index=True,
+                             nullable=False, unique=True)
