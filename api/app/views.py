@@ -475,3 +475,63 @@ class PaginatedDeviceZones(Resource):
             "data": device_zones,
             "message": "Device zones fetched successfully." if device_zones['page_items'] else "No device zones found."
         })
+
+class ThreatsResource(Resource):
+    def get(self, zone_hash=None):
+        """
+        GET /api/threats?company_name=<name>
+        """
+        url_params = request.args
+        if zone_hash:
+            print("Zone_HASH ==> ", zone_hash)
+            URL = "https://protectapi-au.cylance.com/threats/v2/"+str(zone_hash)
+            search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            threat = json.loads(response.text)
+            # return jsonify({"message": "Invalid threat id"} if threat['message'] else {"data": threat, "message": "Threat fetched successfully."})
+            return jsonify(threat)
+        else:
+            URL = "https://protectapi-au.cylance.com/threats/v2"
+            search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+            token = search_company.access_token
+            headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + str(token)
+            }
+            response = requests.get(URL, headers=headers)
+            threats = json.loads(response.text)
+            return jsonify({
+                "data": {
+                    "policy": threats,
+                    "message": "Threats fetched successfully" if threats["page_items"] else "No threats found."
+                }
+            })
+
+class PaginatedThreats(Resource):
+    def get(self):
+        """
+        GET /api/paginated-threats?company_name=<name>&page=<page>&limit=<limit>
+        """
+        url_params = request.args
+        page = url_params['page']
+        limit = url_params['limit']
+        URL = "https://protectapi-au.cylance.com/threats/v2?page="+page+"&page_size="+limit
+        search_company = CompanyInfo.query.filter_by(name=str(url_params['company_name'])).first()
+        token = search_company.access_token
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + str(token)
+        }
+        response = requests.get(URL, headers=headers)
+        threats = json.loads(response.text)
+        return jsonify({
+            "data": {
+                "policy": threats,
+                "message": "Threats fetched successfully" if threats["page_items"] else "No threats found."
+            }
+        })
