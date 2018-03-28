@@ -14,20 +14,19 @@ export default class Policy extends Component {
   constructor() {
     super();
     this.state = {
-      activeComponent: 'Get Global List',
-      selection: 'Get Global List',
+      activeComponent: 'Create Zone',
+      selection: 'Create Zone',
       endpoint: '/users/v2',
       method: 'GET'
     };
   }
   data = [
-    { key: 'POST', value: 'Add To Global List ', text: 'Add To Global List' },
-    { key: 'GET', value: 'Get Global List', text: 'Get Global List' },
-    {
-      key: 'PUT',
-      value: 'Delete Device Global List',
-      text: 'Delete Device Global List'
-    }
+    { key: 'POST', value: 'Create Zone ', text: 'Create Zone' },
+    { key: 'GET', value: 'Get Zones', text: 'Get Zones' },
+    { key: 'PUT', value: 'Get Device Zones', text: 'Get Device Zones' },
+    { key: 'GET', value: 'Get Zone', text: 'Get Zone' },
+    { key: 'PUT', value: 'Update Zone', text: 'Update Zone' },
+    { key: 'DELETE', value: 'Delete Zone', text: 'Delete Zone' },
   ];
 
   /**
@@ -41,13 +40,13 @@ export default class Policy extends Component {
       selection: value
     });
     switch (value) {
-      case 'Get Global List':
+      case 'Get Zones':
         this.setState({ method: 'GET' });
         break;
-      case 'Add To Global List':
+      case 'Create Zone':
         this.setState({ method: 'GET' });
         break;
-      case 'Delete Device Global List':
+      case 'Get Device Zones':
         this.setState({ method: 'PUT' });
         break;
       default:
@@ -62,19 +61,19 @@ export default class Policy extends Component {
    */
   switchGlobalComponents = () => {
     switch (this.state.activeComponent) {
-      case 'Add To Global List':
+      case 'Create Zone':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
           </div>
         );
-      case 'Get Global List':
+      case 'Get Zones':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
           </div>
         );
-      case 'Delete Device Global List':
+      case 'Get Device Zones':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
@@ -90,10 +89,7 @@ export default class Policy extends Component {
   render() {
     return (
       <div className="zone-container">
-        <BreadcrumbComponent
-          page="Zone APi"
-          selection={this.state.selection}
-        />
+        <BreadcrumbComponent page="Zone APi" selection={this.state.selection} />
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
@@ -101,7 +97,7 @@ export default class Policy extends Component {
             </div>
             <div>
               <Dropdown
-                placeholder="Add To Global List"
+                placeholder="Create Zone"
                 fluid
                 selection
                 options={this.data}

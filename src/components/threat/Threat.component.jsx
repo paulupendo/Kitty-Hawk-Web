@@ -14,19 +14,20 @@ export default class Policy extends Component {
   constructor() {
     super();
     this.state = {
-      activeComponent: 'Get Global List',
-      selection: 'Get Global List',
+      activeComponent: 'Get Threats',
+      selection: 'Get Threats',
       endpoint: '/users/v2',
       method: 'GET'
     };
   }
   data = [
-    { key: 'POST', value: 'Add To Global List ', text: 'Add To Global List' },
-    { key: 'GET', value: 'Get Global List', text: 'Get Global List' },
+    { key: 'POST', value: 'Get Threat ', text: 'Get Threat' },
+    { key: 'GET', value: 'Get Threats', text: 'Get Threats' },
+    { key: 'PUT', value: 'Get Threat Devices', text: 'Get Threat Devices' },
     {
-      key: 'PUT',
-      value: 'Delete Device Global List',
-      text: 'Delete Device Global List'
+      key: 'GET',
+      value: 'Get Threat Download URL',
+      text: 'Get Threat Download URL'
     }
   ];
 
@@ -41,13 +42,13 @@ export default class Policy extends Component {
       selection: value
     });
     switch (value) {
-      case 'Get Global List':
+      case 'Get Threats':
         this.setState({ method: 'GET' });
         break;
-      case 'Add To Global List':
+      case 'Get Threat':
         this.setState({ method: 'GET' });
         break;
-      case 'Delete Device Global List':
+      case 'Get Threat Devices':
         this.setState({ method: 'PUT' });
         break;
       default:
@@ -60,21 +61,21 @@ export default class Policy extends Component {
    * @member of UserComponets
    * @returns {objects} list of User components
    */
-  switchGlobalComponents = () => {
+  switchThreatComponents = () => {
     switch (this.state.activeComponent) {
-      case 'Add To Global List':
+      case 'Get Threat':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
           </div>
         );
-      case 'Get Global List':
+      case 'Get Threats':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
           </div>
         );
-      case 'Delete Device Global List':
+      case 'Get Threatg Devices':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
@@ -101,7 +102,7 @@ export default class Policy extends Component {
             </div>
             <div>
               <Dropdown
-                placeholder="Add To Global List"
+                placeholder="Get Threat"
                 fluid
                 selection
                 options={this.data}
@@ -114,7 +115,7 @@ export default class Policy extends Component {
             <span>{this.state.endpoint}</span>
           </div>
         </div>
-        {this.switchGlobalComponents()}
+        {this.switchThreatComponents()}
       </div>
     );
   }

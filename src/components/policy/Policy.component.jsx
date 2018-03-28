@@ -21,13 +21,12 @@ export default class Global extends Component {
     };
   }
   data = [
-    { key: 'POST', value: 'CREATE', text: 'Add To Global List' },
-    { key: 'GET', value: 'Get Global List', text: 'Get Global List' },
-    {
-      key: 'PUT',
-      value: 'Delete Device Global List',
-      text: 'Delete Device Global List'
-    }
+    { key: 'POST', value: 'Create Policy', text: 'Create Policy' },
+    { key: 'GET', value: 'Get Policy', text: 'Get Policy' },
+    { key: 'GET', value: 'Get Policies', text: 'Get Policies' },
+    { key: 'GET', value: 'Update Policy', text: 'Update Policy' },
+    { key: 'GET', value: 'Delete Policy', text: 'Delete Policy' },
+    { key: 'GET', value: 'Delete Policies', text: 'Delete Policies' }
   ];
 
   /**
@@ -47,7 +46,7 @@ export default class Global extends Component {
       case 'Add To Global List':
         this.setState({ method: 'GET' });
         break;
-      case 'Delete Device Global List':
+      case 'Get Policies':
         this.setState({ method: 'PUT' });
         break;
       default:
@@ -74,7 +73,7 @@ export default class Global extends Component {
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
           </div>
         );
-      case 'Delete Device Global List':
+      case 'Get Policies':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />

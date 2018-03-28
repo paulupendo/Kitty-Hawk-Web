@@ -9,13 +9,14 @@ import './Global.css';
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
+import AddGlobalList from './subComponents/AddGlobalList/AddToGloabalList.component';
 
 export default class Global extends Component {
   constructor() {
     super();
     this.state = {
-      activeComponent: 'Get Global List',
-      selection: 'Get Global List',
+      activeComponent: 'Add To Global List',
+      selection: 'Add To Global List',
       endpoint: '/users/v2',
       method: 'GET'
     };
@@ -41,10 +42,10 @@ export default class Global extends Component {
       selection: value
     });
     switch (value) {
-      case 'Get Global List':
-        this.setState({ method: 'GET' });
-        break;
       case 'Add To Global List':
+        this.setState({ method: 'POST' });
+        break;
+      case 'Get Global List':
         this.setState({ method: 'GET' });
         break;
       case 'Delete Device Global List':
@@ -66,21 +67,19 @@ export default class Global extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-
+            <AddGlobalList />
           </div>
         );
       case 'Get Global List':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-
           </div>
         );
       case 'Delete Device Global List':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-
           </div>
         );
     }
@@ -91,15 +90,25 @@ export default class Global extends Component {
    * @member of DeviceComponent
    */
   render() {
-    return <div className="global-container">
-        <BreadcrumbComponent page="Global List API" selection={this.state.selection} />
+    return (
+      <div className="global-container">
+        <BreadcrumbComponent
+          page="Global List API"
+          selection={this.state.selection}
+        />
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
               <Dropdown placeholder="Select Company" search selection />
             </div>
             <div>
-              <Dropdown placeholder="Add To Global List" fluid selection options={this.data} onChange={this.handleChange} />
+              <Dropdown
+                placeholder="Add To Global List"
+                fluid
+                selection
+                options={this.data}
+                onChange={this.handleChange}
+              />
             </div>
           </div>
           <div className="call-btn">
@@ -108,6 +117,7 @@ export default class Global extends Component {
           </div>
         </div>
         {this.switchGlobalComponents()}
-      </div>;
+      </div>
+    );
   }
 }
