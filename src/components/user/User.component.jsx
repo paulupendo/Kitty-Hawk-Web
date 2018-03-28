@@ -130,6 +130,30 @@ export default class User extends Component {
    */
   switchComponents = () => {
     switch (this.state.activeComponent) {
+      case 'Get User':
+        return (
+          <div>
+            <SubHeader
+              info="Create a new User. This requires a unique email address for the
+              User being created"
+            />
+            <GetUser value={this.state.value} />
+          </div>
+        );
+      case 'Get Users':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
+            {this.state.users.length === 0 ? (
+              <LoaderGraphic />
+            ) : (
+              <Fragment>
+                <GetUsers users={this.state.users} />
+                {this.state.showToaster && this.showToaster()}
+              </Fragment>
+            )}
+          </div>
+        );
       case 'Create User':
         return (
           <div>

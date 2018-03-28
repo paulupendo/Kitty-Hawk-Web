@@ -7,6 +7,7 @@ from flask_restful import Api
 
 # local imports
 from config import app_config
+<<<<<<< HEAD
 from app.views import (
     CompanyInfoResource, SingleUser, AllUsersResource,
     AllDevicesResource, SingleDeviceResource,
@@ -16,6 +17,9 @@ from app.views import (
     PaginatedDeviceZones, ThreatsResource, PaginatedThreats,
     ThreatDevices, PaginatedThreatDevices, ThreatDownloadURL
 )
+=======
+from app.views import CompanyInfoResource, SingleUser, AllUsersResource
+>>>>>>> 825774dbf9491b6b28eeb02536a921143056f4ab
 from app.models import db
 
 
