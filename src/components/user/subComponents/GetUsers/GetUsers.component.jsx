@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Pagination } from 'semantic-ui-react';
 
 import './GetUsers.css';
 
@@ -8,7 +8,7 @@ class GetUsers extends Component {
     const { users } = this.props;
     return (
       <div className="user-table">
-        <Table color='green' striped>
+        <Table color="green" striped>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>First Name</Table.HeaderCell>
@@ -33,6 +33,14 @@ class GetUsers extends Component {
             })}
           </Table.Body>
         </Table>
+        <Pagination
+          defaultActivePage={1}
+          firstItem={null}
+          lastItem={null}
+          pointing
+          secondary
+          totalPages={3}
+        />
       </div>
     );
   }

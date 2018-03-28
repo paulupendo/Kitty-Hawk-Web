@@ -1,33 +1,31 @@
-.user {
+.mac-devices {
 .ui.segment {
   border: none;
   background: #f3f5f7;
   padding: 3em 1em;
   box-shadow: none;
-  width: 75rem;
   span {
     margin-left: 2rem;
   }
   .ui.input > input {
     margin-left: 2rem;
-    width: 30rem;
+    width: 35rem;
     &:focus {
       border-color: #38b557;
     }
   }
   .ui.button {
     background:#38b557;
-    color: #fff;
     width: 20%;
+    color: #fff;
     font-weight: 400;
     border-radius: 0.4rem;
     margin-top: 1rem;
     margin-right: -0.1rem;
-    margin-left: 20rem;
+    margin-left: 10rem;
   }
 }
 .user-table {
   margin-top: 4rem;
 }
 }
-

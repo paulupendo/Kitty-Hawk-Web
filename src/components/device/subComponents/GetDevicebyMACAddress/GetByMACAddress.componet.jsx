@@ -6,9 +6,9 @@ import { config } from '../../../../config';
 import axios from 'axios';
 
 // styles
-import './GetDevice.css';
+import './getbyMacAddress.css';
 
-class GetDevice extends Component {
+class GetByMACAddress extends Component {
   constructor() {
     super();
     this.state = {
@@ -39,26 +39,26 @@ class GetDevice extends Component {
   };
 
   render() {
-    return <div className="get-device">
+    return (
+      <div className="mac-devices">
         <Segment>
-          <span> Device ID </span>
+          <span> Unique Zone ID </span>
           <br />
-          <Input placeholder="Enter User ID to Search..." onChange={this.handleInput} />
+          <Input
+            placeholder="Enter User ID to Search..."
+            onChange={this.handleInput}
+          />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="user-table">
           <Table color="green" striped>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>First Name</Table.HeaderCell>
-                <Table.HeaderCell>Last Name</Table.HeaderCell>
-                <Table.HeaderCell>Email</Table.HeaderCell>
-                <Table.HeaderCell>Role Name</Table.HeaderCell>
-                <Table.HeaderCell>Default Zone Role Name</Table.HeaderCell>
+                <Table.HeaderCell>ID</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Policy ID</Table.HeaderCell>
               </Table.Row>
               <Table.Row>
-                <Table.Cell>johne </Table.Cell>
-                <Table.Cell>johne </Table.Cell>
                 <Table.Cell>johne </Table.Cell>
                 <Table.Cell>johne </Table.Cell>
                 <Table.Cell>johne </Table.Cell>
@@ -66,8 +66,9 @@ class GetDevice extends Component {
             </Table.Header>
           </Table>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 
-export default GetDevice;
+export default GetByMACAddress;

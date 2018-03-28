@@ -137,7 +137,7 @@ export default class User extends Component {
               info="Create a new User. This requires a unique email address for the
               User being created"
             />
-            <GetUser />
+            <GetUser value={this.state.value} />
           </div>
         );
       case 'Get Users':

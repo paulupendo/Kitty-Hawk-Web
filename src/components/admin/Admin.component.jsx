@@ -58,6 +58,12 @@ export default class Admin extends Component {
       })
       .catch(err => console.log('ERR', err));
   };
+  showToaster = () => {
+    let { status, message } = this.state;
+    toast[status](message, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
 
   panes = [
     {
@@ -67,17 +73,11 @@ export default class Admin extends Component {
           <CompanyInfo handleChange={this.handleChange} />
           {this.state.showToaster && this.showToaster()}
           <Button content="AUTHORIZE" onClick={this.handleClick} />
+          <ToastContainer />
         </Tab.Pane>
       )
     }
   ];
-
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
-    });
-  };
 
   render() {
     return (

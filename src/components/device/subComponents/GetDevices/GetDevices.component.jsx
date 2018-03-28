@@ -6,7 +6,7 @@ import './GetDevices.css';
 class GetDevices extends Component {
   render() {
     return <div className="devices table">
-        <Table striped>
+        <Table  color ="green"striped>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>id</Table.HeaderCell>
@@ -14,6 +14,7 @@ class GetDevices extends Component {
               <Table.HeaderCell>State</Table.HeaderCell>
               <Table.HeaderCell>Agent_version</Table.HeaderCell>
               <Table.HeaderCell>Date First Registred</Table.HeaderCell>
+              <Table.HeaderCell>Ip Address</Table.HeaderCell>
               <Table.HeaderCell>Ip Address</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -26,6 +27,7 @@ class GetDevices extends Component {
               <Table.Cell>No</Table.Cell>
               <Table.Cell>No</Table.Cell>
               <Table.Cell>No</Table.Cell>
+              <Table.Cell>none</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Jamie Harington</Table.Cell>
@@ -34,6 +36,7 @@ class GetDevices extends Component {
               <Table.Cell>Yes</Table.Cell>
               <Table.Cell>No</Table.Cell>
               <Table.Cell>No</Table.Cell>
+              <Table.Cell>none</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Jill Lewis</Table.Cell>
@@ -42,6 +45,7 @@ class GetDevices extends Component {
               <Table.Cell>Yes</Table.Cell>
               <Table.Cell>No</Table.Cell>
               <Table.Cell>No</Table.Cell>
+              <Table.Cell>none</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
