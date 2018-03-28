@@ -46,7 +46,6 @@ export default class Admin extends Component {
       comment: this.state.comment
     };
     let url_ = 'http://127.0.0.1:5000/api/company-info';
-
     axios
       .post(url_, data_)
       .then(res => {
