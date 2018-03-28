@@ -5,7 +5,7 @@ const formatStatus = (status, props) => {
     200: 'success',
     201: 'success',
     401: 'error',
-    500: 'error'
+    500: 'error',message:'sfsf'
   };
 
   return statusCodes[status];

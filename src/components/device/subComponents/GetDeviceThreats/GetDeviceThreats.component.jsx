@@ -6,9 +6,9 @@ import { config } from '../../../../config';
 import axios from 'axios';
 
 // styles
-import './GetDevice.css';
+import './DeviceThreats.css';
 
-class GetDevice extends Component {
+class GetDeviceThreats extends Component {
   constructor() {
     super();
     this.state = {
@@ -39,24 +39,34 @@ class GetDevice extends Component {
   };
 
   render() {
-    return <div className="get-device">
+    return (
+      <div className="get-device-threats">
         <Segment>
-          <span> Device ID </span>
+          <span> Unique Device ID </span>
           <br />
-          <Input placeholder="Enter User ID to Search..." onChange={this.handleInput} />
+          <Input
+            placeholder="Enter User ID to Search..."
+            onChange={this.handleInput}
+          />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="user-table">
           <Table color="green" striped>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>First Name</Table.HeaderCell>
-                <Table.HeaderCell>Last Name</Table.HeaderCell>
-                <Table.HeaderCell>Email</Table.HeaderCell>
-                <Table.HeaderCell>Role Name</Table.HeaderCell>
-                <Table.HeaderCell>Default Zone Role Name</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Sha256</Table.HeaderCell>
+                <Table.HeaderCell>File Status</Table.HeaderCell>
+                <Table.HeaderCell>File Path</Table.HeaderCell>
+                <Table.HeaderCell>Clyance Score</Table.HeaderCell>
+                <Table.HeaderCell>Classification</Table.HeaderCell>
+                <Table.HeaderCell>Sub Classification</Table.HeaderCell>
+                <Table.HeaderCell>Date Found</Table.HeaderCell>
               </Table.Row>
               <Table.Row>
+                <Table.Cell>johne </Table.Cell>
+                <Table.Cell>johne </Table.Cell>
+                <Table.Cell>johne </Table.Cell>
                 <Table.Cell>johne </Table.Cell>
                 <Table.Cell>johne </Table.Cell>
                 <Table.Cell>johne </Table.Cell>
@@ -66,8 +76,9 @@ class GetDevice extends Component {
             </Table.Header>
           </Table>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 
-export default GetDevice;
+export default GetDeviceThreats;

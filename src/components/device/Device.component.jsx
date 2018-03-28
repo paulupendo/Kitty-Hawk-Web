@@ -10,6 +10,10 @@ import './Device.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import GetDevices from './subComponents/GetDevices/GetDevices.component';
+import GetDevice from '../device/subComponents/GetDevice/GetDevice.components';
+import GetDeviceThreats from '../device/subComponents/GetDeviceThreats/GetDeviceThreats.component';
+import GetZoneDevices from '../device/subComponents/GetZoneDevices/GetZoneDevices.component';
+import GetByMACAddress from '../device/subComponents/GetDevicebyMACAddress/GetByMACAddress.componet';
 
 export default class Device extends Component {
   constructor() {
@@ -37,7 +41,8 @@ export default class Device extends Component {
       value: 'Get Agent Installer Link',
       text: 'Get Agent Installer Link'
     },
-    { key: 'GET', value: 'Delete Devices', text: 'Delete Devices' }
+    { key: 'GET', value: 'Delete Devices', text: 'Delete Devices' },
+    { key: 'GET', value: 'Get By MAC Address', text: 'Get By MAC Address' }
   ];
 
   /**
@@ -58,7 +63,7 @@ export default class Device extends Component {
         this.setState({ method: 'GET' });
         break;
       case 'Update Device':
-        this.setState({ method: 'GET' });
+        this.setState({ method: 'PUT' });
         break;
       case 'Get Device Threats':
         this.setState({ method: 'GET' });
@@ -73,6 +78,9 @@ export default class Device extends Component {
         this.setState({ method: 'GET' });
         break;
       case 'Delete Device':
+        this.setState({ method: 'GET' });
+        break;
+      case 'Get By MAC Address':
         this.setState({ method: 'GET' });
         break;
 
@@ -95,6 +103,33 @@ export default class Device extends Component {
             <GetDevices />
           </div>
         );
+      case 'Get Device':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetDevice />
+          </div>
+        );
+
+      case 'Get Device Threats':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetDeviceThreats />
+          </div>
+        );
+      case 'Get Zone Devices':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetZoneDevices />
+          </div>
+        );
+      case 'Get By MAC Address':
+        return <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetByMACAddress />
+          </div>;
     }
   };
 
