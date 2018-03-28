@@ -121,10 +121,6 @@ class CompanyInfoResource(Resource):
             }
         })
 
-<<<<<<< HEAD
-=======
-
->>>>>>> merge
 class SingleUser(Resource):
     """
     User endpoints.
@@ -141,16 +137,9 @@ class SingleUser(Resource):
             """
             print("test args here", url_params['company_name'])
             user_id = url_params['user_id']
-<<<<<<< HEAD
             URL = "https://protectapi-au.cylance.com/users/v2/"+user_id
             # search company
             search_company = CompanyInfo.query.filter_by(name=url_params['company_name']).first()
-=======
-            URL = "https://protectapi-au.cylance.com/users/v2/" + user_id
-            # search company
-            search_company = CompanyInfo.query.filter_by(
-                name=url_params['company_name']).first()
->>>>>>> merge
             # handle edge cases here!!!
             token = search_company.access_token
             print('token == ', token)
@@ -202,7 +191,6 @@ class AllUsersResource(Resource):
                     "message": "Users fetched successfully"
                 }
             })
-<<<<<<< HEAD
         else:
             return jsonify({
                 "message": "No users found"
@@ -651,37 +639,3 @@ class ThreatDownloadURL(Resource):
         })
         resp.status_code = 200
         return resp
-=======
-
-
-class AllUsersResource(Resource):
-    """
-    Get all company users
-    """
-
-    def get(self):
-        """
-        /all-users?company_name=<name>
-        """
-        url_params = request.args
-        print("test args here ====", url_params['company_name'])
-        company_name = url_params['company_name']
-        URL = "https://protectapi-au.cylance.com/users/v2"
-        # search company
-        search_company = CompanyInfo.query.filter_by(
-            name=url_params['company_name']).first()
-        print("search_company ", URL)
-        # handle edge cases here!!!
-        token = search_company.access_token
-        headers = {
-            "Content-Type": "application/json; charset=utf-8",
-            "Authorization": "Bearer " + str(token)
-        }
-        response = requests.get(URL, headers=headers)
-        return jsonify({
-            "data": {
-                "users": json.loads(response.text),
-                "message": "Users fetched successfully"
-            }
-        })
->>>>>>> merge

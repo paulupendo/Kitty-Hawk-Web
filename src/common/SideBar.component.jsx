@@ -9,7 +9,7 @@ const SideBar = props => {
 
   return (
     <div className="sidebar-container">
-      <span>OVERVIEW</span>
+      <span>API REFERENCE</span>
       <Menu fluid vertical tabular>
         <Menu.Item
           name="admin"
