@@ -10,6 +10,7 @@ import './Global.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import AddGlobalList from './subComponents/AddGlobalList/AddToGloabalList.component';
+import GetGlobalList from './subComponents/GetGlobalList/GetGlobalList.component'
 
 export default class Global extends Component {
   constructor() {
@@ -22,7 +23,7 @@ export default class Global extends Component {
     };
   }
   data = [
-    { key: 'POST', value: 'Add To Global List ', text: 'Add To Global List' },
+    { key: 'POST', value: 'Add To Global List', text: 'Add To Global List' },
     { key: 'GET', value: 'Get Global List', text: 'Get Global List' },
     {
       key: 'PUT',
@@ -67,21 +68,22 @@ export default class Global extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <AddGlobalList value={this.state.value}/>
+            <AddGlobalList />
           </div>
         );
-      // case 'Get Global List':
-      //   return (
-      //     <div>
-      //       <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-      //     </div>
-      //   );
-      // case 'Delete Device Global List':
-      //   return (
-      //     <div>
-      //       <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-      //     </div>
-      //   );
+      case 'Get Global List':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetGlobalList />
+          </div>
+        );
+      case 'Delete Device Global List':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+          </div>
+        );
     }
   };
 

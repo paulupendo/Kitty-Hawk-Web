@@ -14,8 +14,8 @@ export default class Global extends Component {
   constructor() {
     super();
     this.state = {
-      activeComponent: 'Get Global List',
-      selection: 'Get Global List',
+      activeComponent: 'Create Policy',
+      selection: 'Create Policy',
       endpoint: '/users/v2',
       method: 'GET'
     };
@@ -40,7 +40,7 @@ export default class Global extends Component {
       selection: value
     });
     switch (value) {
-      case 'Get Global List':
+      case 'Create Policy':
         this.setState({ method: 'GET' });
         break;
       case 'Add To Global List':
@@ -67,7 +67,7 @@ export default class Global extends Component {
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
           </div>
         );
-      case 'Get Global List':
+      case 'Create Policy':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
