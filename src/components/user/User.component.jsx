@@ -34,7 +34,9 @@ export default class User extends Component {
       value: '',
       showToaster: false,
       status: '',
-      message: ''
+      message: '',
+      loading: true,
+      disabled: true
     };
   }
 
@@ -55,6 +57,7 @@ export default class User extends Component {
       .get(`${config.API_BASE_URL}company-info`)
       .then(res => {
         this.setState({
+          loading: false,
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
@@ -62,9 +65,8 @@ export default class User extends Component {
             };
           })
         });
-        console.log(this.state.companies);
       })
-      .catch(err => console.log('ERR', err));
+      .catch(err => err);
   }
 
   /**
@@ -222,9 +224,10 @@ export default class User extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value });
+                  this.setState({ value, disabled: false});
                 }}
                 options={this.state.companies}
+                loading={this.state.loading}
               />
             </div>
 
@@ -235,6 +238,7 @@ export default class User extends Component {
                 selection
                 options={this.data}
                 onChange={this.handleChange}
+                disabled={this.state.disabled}
               />
             </div>
           </div>

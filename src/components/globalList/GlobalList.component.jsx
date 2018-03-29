@@ -18,7 +18,7 @@ export default class Global extends Component {
       activeComponent: 'Add To Global List',
       selection: 'Add To Global List',
       endpoint: '/users/v2',
-      method: 'GET'
+      method: 'POST'
     };
   }
   data = [
@@ -67,21 +67,21 @@ export default class Global extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <AddGlobalList />
+            <AddGlobalList value={this.state.value}/>
           </div>
         );
-      case 'Get Global List':
-        return (
-          <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-          </div>
-        );
-      case 'Delete Device Global List':
-        return (
-          <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-          </div>
-        );
+      // case 'Get Global List':
+      //   return (
+      //     <div>
+      //       <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+      //     </div>
+      //   );
+      // case 'Delete Device Global List':
+      //   return (
+      //     <div>
+      //       <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+      //     </div>
+      //   );
     }
   };
 

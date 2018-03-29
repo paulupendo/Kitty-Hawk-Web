@@ -16,6 +16,9 @@
       .ui.fluid.dropdown {
         width: 11rem;
       }
+      .ui.loading.dropdown > i.icon:after {
+        border-color: #009688 transparent transparent;
+      }
     }
     .call-btn {
       margin-left: auto;
