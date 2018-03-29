@@ -10,7 +10,10 @@
         border-radius: 8px;
       }
       .ui.fluid.dropdown {
-        width: 13rem;
+        width: 11rem;
+      }
+      .ui.loading.dropdown > i.icon:after {
+        border-color: #009688 transparent transparent;
       }
     }
     .call-btn {

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Input, Button } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 
 // styles
 import './GlobalList.css';
 
 const AddGlobalList = () => {
-  return <div className="add-global-list-container">
+  return (
+    <div className="add-global-list-container">
       <div className="btns">
         <div className="btns-row">
           <div>
@@ -18,11 +19,6 @@ const AddGlobalList = () => {
             <br />
             <Input placeholder="(required):{string}" />
           </div>
-          <div>
-            <span>Category</span>
-            <br />
-            <Input placeholder="(required):{string}" />
-          </div>
         </div>
         <div className="btns-row">
           <div>
@@ -30,9 +26,15 @@ const AddGlobalList = () => {
             <br />
             <Input placeholder="(required):{string}" />
           </div>
+          <div>
+            <span>Category</span>
+            <br />
+            <Input placeholder="(required):{string}" />
+          </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default AddGlobalList;

@@ -18,29 +18,23 @@ class GetUsers extends Component {
               <Table.HeaderCell>Zone</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-
           <Table.Body>
             {users.map(user => {
-              return (
-                <Table.Row>
-                  <Table.Cell>{user.first_name || 'No Name'}</Table.Cell>
-                  <Table.Cell>{user.last_name || 'No Name'}</Table.Cell>
+              return (<Table.Row key={user.id}>
+                  <Table.Cell>
+                    {user.first_name || 'No Name'}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {user.last_name || 'No Name'}
+                  </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>{user.role_name}</Table.Cell>
-                  <Table.Cell>{user.zones || 'No Zone'}</Table.Cell>
-                </Table.Row>
-              );
+                  <Table.Cell>{user.role_type}</Table.Cell>
+                </Table.Row>)
             })}
           </Table.Body>
         </Table>
-        <Pagination
-          defaultActivePage={1}
-          firstItem={null}
-          lastItem={null}
-          pointing
-          secondary
-          totalPages={3}
-        />
+
       </div>
     );
   }

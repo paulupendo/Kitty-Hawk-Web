@@ -1,7 +1,15 @@
-@import '../../common/theme.css';
 .user-container {
   padding: 10rem 5rem;
-  width: 60vw;
+  width: 55vw;
+  @media (max-width: 1680px) {
+    width:60vw;
+  }
+  @media (max-width: 1280px) {
+    width: 75vw;
+  }
+  @media (max-width: 960px) {
+    width: 79vw;
+  }
   .header-nav {
     display: flex;
     flex-direction: row;

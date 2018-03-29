@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 import { Tab, Button } from 'semantic-ui-react';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -59,7 +59,7 @@ export default class Admin extends Component {
               message: res.data.data.message
             });
           })
-          .catch(err => console.log('ERR', err));
+          .catch(err => err);
       };
   };
   showToaster = () => {

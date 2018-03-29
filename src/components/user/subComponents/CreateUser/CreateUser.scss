@@ -4,10 +4,11 @@
     border: none;
     box-shadow: none;
     background: #f3f5f7;
-    height: 20rem;
+    height: 18rem;
+    width: 100%;
     padding: 1.3rem 1.5rem;
     border-radius: 5px;
-    .btns {
+    .create-input{
         display: flex;
         flex-direction: column;
         .btns-row {
@@ -15,15 +16,15 @@
             flex-direction: row;
             margin-bottom: 1.5rem;
             div {
-                margin-right: 1.5rem;
+                margin-right: 2rem;
             }
             .ui.input {
-                width: 18rem;
+                width: 17rem;
                 margin-top: 0.5rem;
             }
             .ui.input>input {
-                border-radius: 8px;
-                max-width: 13rem;
+                border-radius: 5px;
+                // max-width: 13rem;
                 &:focus {
                     border: solid 1px #38b557;
                 }
@@ -36,9 +37,9 @@
         }
         .ui.selection.dropdown {
             margin-top: 0.5rem;
-            border-radius: 8px;
-            min-width: 13rem;
-            margin-right: 6.5rem;
+            border-radius: 5px;
+            // min-width: 13rem;
+            margin-right: 2rem;
         }
     }
 }

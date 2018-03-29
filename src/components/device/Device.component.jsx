@@ -39,23 +39,27 @@ export default class Device extends Component {
     };
   }
   data = [
-    { key: 'POST', value: 'Get Devices', text: 'Get Devices' },
-    { key: 'GET', value: 'Get Device', text: 'Get Device' },
-    { key: 'PUT', value: 'Update Device', text: 'Update Device' },
-    { key: 'GET', value: 'Get Device Threats', text: 'Get Device Threats' },
+    { key: 'POST-device', value: 'Get Devices', text: 'Get Devices' },
+    { key: 'GET-device', value: 'Get Device', text: 'Get Device' },
+    { key: 'PUT-device', value: 'Update Device', text: 'Update Device' },
     {
-      key: 'GET',
+      key: 'GET-device',
+      value: 'Get Device Threats',
+      text: 'Get Device Threats'
+    },
+    {
+      key: 'GET-device',
       value: 'Update Device Threat ',
       text: 'Update Device Threat'
     },
-    { key: 'GET', value: 'Get Zone Devices', text: 'Get Zone Devices' },
+    { key: 'GET-device', value: 'Get Zone Devices', text: 'Get Zone Devices' },
     {
-      key: 'GET',
+      key: 'GET-device',
       value: 'Get Agent Installer Link',
       text: 'Get Agent Installer Link'
     },
-    { key: 'GET', value: 'Delete Devices', text: 'Delete Devices' },
-    { key: 'GET', value: 'Get By MAC Address', text: 'Get By MAC Address' }
+    { key: 'GET-device', value: 'Delete Devices', text: 'Delete Devices' },
+    { key: 'GET-device', value: 'Get By MAC Address', text: 'Get By MAC Address' }
   ];
 
   /**
@@ -93,7 +97,7 @@ export default class Device extends Component {
           this.state.value
         }&page=1&limit=1`
       )
-      .then((res, status) => {
+      .then((res) => {
         this.setState({
           devices: res.data.data.device.page_items,
           showToaster: true,
@@ -101,7 +105,7 @@ export default class Device extends Component {
           message: res.data.data.message
         });
       })
-      .catch(err => console.log('ERR', JSON.stringify(err)));
+      .catch(err => err);
   };
 
   showToaster = () => {
@@ -214,7 +218,6 @@ export default class Device extends Component {
    * @member of DeviceComponent
    */
   render() {
-    console.log(this.state);
     return (
       <div className="device-container">
         <BreadcrumbComponent page="Devices API" selection="Devices" />

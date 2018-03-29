@@ -21,7 +21,7 @@ class GetDevices extends Component {
           </Table.Header>
           {devices.map(device => {
             return (
-              <Table.Row>
+              <Table.Row key={device.id}>
                 <Table.Cell>{device.name}</Table.Cell>
                 <Table.Cell>{device.state}</Table.Cell>
                 <Table.Cell>{device.agent_version}</Table.Cell>

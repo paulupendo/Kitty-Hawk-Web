@@ -71,7 +71,7 @@ class GetUser extends Component {
               {Object.keys(this.state.user).length >= 1 &&
                 [this.state.user].map(user => {
                   return (
-                    <Table.Row>
+                    <Table.Row key={user.id}>
                       <Table.Cell>{user.first_name || 'None'}</Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>

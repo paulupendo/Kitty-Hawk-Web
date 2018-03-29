@@ -1,17 +1,14 @@
 .admin-container {
-  padding: 10rem 5rem;
-  width: 60vw;
+  padding: 10rem 4rem;
+  width: 55vw;
   @media (max-width: 1680px) {
-    width: 70vw;
+    width:60vw;
   }
   @media (max-width: 1280px) {
-    width: 50vw;
+    width: 75vw;
   }
   @media (max-width: 960px) {
-    width: 94%;
-  }
-  @media (max-width: 1280px) {
-    width: 50vw;
+    width: 79vw;
   }
   .info-tabs {
     margin-top: 2.3125rem;
@@ -27,19 +24,19 @@
       padding: 1.3rem 1.5rem;
     }
     .ui.segment.active.tab {
-      width: 75rem;
+      height: 23rem;
     }
     .ui.button {
       background: #38b557;
       color: #fff;
       font-weight: 400;
       border-radius: 0.9rem;
-      margin-top: 2rem;
+      margin-top: 5rem;
       margin-right: -1.5rem;
       float: right;
     }
     .ui.input > input {
-      border-radius: 8px;
+      border-radius: 5px;
       max-width: 20rem;
       &:focus {
         border: solid 1px #38b557;

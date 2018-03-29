@@ -42,9 +42,9 @@ export default class User extends Component {
 
   data = [
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
-    { key: 'PUT', value: 'Update User', text: 'Update User' },
-    { key: 'GET', value: 'Get Users', text: 'Get Users' },
-    { key: 'POST', value: 'Get User', text: 'Get User' }
+    { key: 'PUT-user', value: 'Update User', text: 'Update User' },
+    { key: 'GET-users', value: 'Get Users', text: 'Get Users' },
+    { key: 'GET-user', value: 'Get User', text: 'Get User' }
   ];
 
   /**
@@ -78,7 +78,7 @@ export default class User extends Component {
   fetchUsers = () => {
     axios
       .get(`${config.API_BASE_URL}all-users?company_name=${this.state.value}`)
-      .then((res, status) => {
+      .then(res => {
         this.setState({
           users: res.data.data.users.page_items,
           showToaster: true,
@@ -86,7 +86,7 @@ export default class User extends Component {
           message: res.data.data.message
         });
       })
-      .catch(err => console.log('ERR', JSON.stringify(err)));
+      .catch(err => err);
   };
 
   showToaster = () => {
@@ -150,8 +150,10 @@ export default class User extends Component {
               <LoaderGraphic />
             ) : (
               <Fragment>
-                <GetUsers users={this.state.users} />
-                {this.state.showToaster && this.showToaster()}
+                <div>
+                  <GetUsers users={this.state.users} />
+                  {this.state.showToaster && this.showToaster()}
+                </div>
               </Fragment>
             )}
           </div>
@@ -224,7 +226,7 @@ export default class User extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value, disabled: false});
+                  this.setState({ value, disabled: false });
                 }}
                 options={this.state.companies}
                 loading={this.state.loading}
