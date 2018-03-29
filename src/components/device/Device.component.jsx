@@ -43,23 +43,23 @@ export default class Device extends Component {
     { key: 'GET-device', value: 'Get Device', text: 'Get Device' },
     { key: 'PUT-device', value: 'Update Device', text: 'Update Device' },
     {
-      key: 'GET-device',
+      key: 'GET-device-threats',
       value: 'Get Device Threats',
       text: 'Get Device Threats'
     },
     {
-      key: 'GET-device',
+      key: 'PUT-device-threat',
       value: 'Update Device Threat ',
       text: 'Update Device Threat'
     },
-    { key: 'GET-device', value: 'Get Zone Devices', text: 'Get Zone Devices' },
+    { key: 'GET-device-zone', value: 'Get Zone Devices', text: 'Get Zone Devices' },
     {
-      key: 'GET-device',
+      key: 'GET-device-agent',
       value: 'Get Agent Installer Link',
       text: 'Get Agent Installer Link'
     },
-    { key: 'GET-device', value: 'Delete Devices', text: 'Delete Devices' },
-    { key: 'GET-device', value: 'Get By MAC Address', text: 'Get By MAC Address' }
+    { key: 'DELETE-device', value: 'Delete Devices', text: 'Delete Devices' },
+    { key: 'GET-device-MAC', value: 'Get By MAC Address', text: 'Get By MAC Address' }
   ];
 
   /**
