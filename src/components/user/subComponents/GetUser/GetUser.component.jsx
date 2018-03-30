@@ -44,8 +44,6 @@ class GetUser extends Component {
   };
 
   render() {
-    console.log('state======>', this.state.user);
-    // const { user } = this.state.user;
     return (
       <div className="user">
         <Segment>
