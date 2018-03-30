@@ -1,14 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { config } from '../../config';
 
 // third-part Libraries
 import { Dropdown, Button } from 'semantic-ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+
+// axios
+import axios from 'axios';
 
 //styles
 import './Device.css';
 
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
+
 import SubHeader from '../../common/Subheader/SubHeader.component';
+import formatStatus from '../../common/Status/status.component';
+import LoaderGraphic from '../../common/Loader/loader.component';
 import GetDevices from './subComponents/GetDevices/GetDevices.component';
 import GetDevice from '../device/subComponents/GetDevice/GetDevice.components';
 import GetDeviceThreats from '../device/subComponents/GetDeviceThreats/GetDeviceThreats.component';
@@ -19,31 +27,93 @@ export default class Device extends Component {
   constructor() {
     super();
     this.state = {
-      activeComponent: 'Get Devices',
-      selection: 'Get Devices',
+      activeComponent: 'Update Device',
+      selection: 'Update Device',
       endpoint: '/users/v2',
-      method: 'GET'
+      method: 'GET',
+      showToaster: true,
+      companies: [],
+      value: '',
+      loading: true,
+      devices: []
     };
   }
   data = [
-    { key: 'POST', value: 'Get Devices', text: 'Get Devices' },
-    { key: 'GET', value: 'Get Device', text: 'Get Device' },
-    { key: 'PUT', value: 'Update Device', text: 'Update Device' },
-    { key: 'GET', value: 'Get Device Threats', text: 'Get Device Threats' },
+    { key: 'POST-device', value: 'Get Devices', text: 'Get Devices' },
+    { key: 'GET-device', value: 'Get Device', text: 'Get Device' },
+    { key: 'PUT-device', value: 'Update Device', text: 'Update Device' },
     {
-      key: 'GET',
+      key: 'GET-device-threats',
+      value: 'Get Device Threats',
+      text: 'Get Device Threats'
+    },
+    {
+      key: 'PUT-device-threat',
       value: 'Update Device Threat ',
       text: 'Update Device Threat'
     },
-    { key: 'GET', value: 'Get Zone Devices', text: 'Get Zone Devices' },
+    { key: 'GET-device-zone', value: 'Get Zone Devices', text: 'Get Zone Devices' },
     {
-      key: 'GET',
+      key: 'GET-device-agent',
       value: 'Get Agent Installer Link',
       text: 'Get Agent Installer Link'
     },
-    { key: 'GET', value: 'Delete Devices', text: 'Delete Devices' },
-    { key: 'GET', value: 'Get By MAC Address', text: 'Get By MAC Address' }
+    { key: 'DELETE-device', value: 'Delete Devices', text: 'Delete Devices' },
+    { key: 'GET-device-MAC', value: 'Get By MAC Address', text: 'Get By MAC Address' }
   ];
+
+  /**
+   * method to get all companies
+   * @param {object} data  companies data
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  componentDidMount() {
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies: res.data.data.companies.map(company => {
+            return {
+              value: company,
+              text: company
+            };
+          })
+        });
+      })
+      .catch(err => err);
+  }
+
+  /**
+   * method to get all users in a specific company
+   * @returns {object} data Users
+   * @member of GetUser Component
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  fetchDevices = () => {
+    axios
+      .get(
+        `${config.API_BASE_URL}all-devices?company_name=${
+          this.state.value
+        }&page=1&limit=1`
+      )
+      .then((res) => {
+        this.setState({
+          devices: res.data.data.device.page_items,
+          showToaster: true,
+          status: formatStatus(res.status),
+          message: res.data.data.message
+        });
+      })
+      .catch(err => err);
+  };
+
+  showToaster = () => {
+    let { status, message } = this.state;
+    toast[status](message, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
 
   /**
    * Handles change of active dropdowns
@@ -58,6 +128,7 @@ export default class Device extends Component {
     switch (value) {
       case 'Get Devices':
         this.setState({ method: 'GET' });
+        this.fetchDevices();
         break;
       case 'Get Device':
         this.setState({ method: 'GET' });
@@ -99,8 +170,15 @@ export default class Device extends Component {
       case 'Get Devices':
         return (
           <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetDevices />
+            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
+            {this.state.devices.length === 0 ? (
+              <LoaderGraphic />
+            ) : (
+              <Fragment>
+                <GetDevices devices={this.state.devices} />
+                {this.state.showToaster && this.showToaster()}
+              </Fragment>
+            )}
           </div>
         );
       case 'Get Device':
@@ -126,10 +204,12 @@ export default class Device extends Component {
           </div>
         );
       case 'Get By MAC Address':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
             <GetByMACAddress />
-          </div>;
+          </div>
+        );
     }
   };
 
@@ -144,11 +224,23 @@ export default class Device extends Component {
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
-              <Dropdown placeholder="Select Company" search selection />
+              <Dropdown
+                placeholder="Select Company"
+                search
+                selection
+                onChange={(_, { value }) => {
+                  this.setState({
+                    value,
+                    disabled: false
+                  });
+                }}
+                options={this.state.companies}
+                loading={this.state.loading}
+              />
             </div>
             <div>
               <Dropdown
-                placeholder="Get Devices"
+                placeholder="Update Device"
                 fluid
                 selection
                 options={this.data}
@@ -162,6 +254,7 @@ export default class Device extends Component {
           </div>
         </div>
         {this.switchDeviceComponents()}
+        <ToastContainer />
       </div>
     );
   }

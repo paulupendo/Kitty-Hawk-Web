@@ -1,11 +1,10 @@
-import React from 'react';
-
-const formatStatus = (status, props) => {
+const formatStatus = (status) => {
   const statusCodes = {
     200: 'success',
     201: 'success',
     401: 'error',
-    500: 'error',message:'sfsf'
+    500: 'error',
+
   };
 
   return statusCodes[status];

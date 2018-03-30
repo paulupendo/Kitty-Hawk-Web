@@ -1,6 +1,6 @@
 const Config = {
   development: {
-    API_BASE_URL: 'http://127.0.0.1:5000/api/'
+    API_BASE_URL: 'https://kitty-python-api.herokuapp.com/api/'
   },
   production: {
     API_BASE_URL: 'https://kitty-python-api.herokuapp.com/api/'

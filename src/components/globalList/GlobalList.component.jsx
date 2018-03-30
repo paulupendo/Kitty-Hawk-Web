@@ -10,6 +10,7 @@ import './Global.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import AddGlobalList from './subComponents/AddGlobalList/AddToGloabalList.component';
+import GetGlobalList from './subComponents/GetGlobalList/GetGlobalList.component'
 
 export default class Global extends Component {
   constructor() {
@@ -18,11 +19,11 @@ export default class Global extends Component {
       activeComponent: 'Add To Global List',
       selection: 'Add To Global List',
       endpoint: '/users/v2',
-      method: 'GET'
+      method: 'POST'
     };
   }
   data = [
-    { key: 'POST', value: 'Add To Global List ', text: 'Add To Global List' },
+    { key: 'POST', value: 'Add To Global List', text: 'Add To Global List' },
     { key: 'GET', value: 'Get Global List', text: 'Get Global List' },
     {
       key: 'PUT',
@@ -74,6 +75,7 @@ export default class Global extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetGlobalList />
           </div>
         );
       case 'Delete Device Global List':

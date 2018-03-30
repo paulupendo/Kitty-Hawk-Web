@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 import { Tab, Button } from 'semantic-ui-react';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -27,7 +27,8 @@ export default class Admin extends Component {
     comment: null,
     status: '',
     message: ' ',
-    showToaster: false
+    showToaster: false,
+    loading: false
   };
 
   handleChange = (e, key) => {
@@ -46,16 +47,20 @@ export default class Admin extends Component {
       comment: this.state.comment
     };
     let url_ = 'http://127.0.0.1:5000/api/company-info';
-    axios
-      .post(url_, data_)
-      .then(res => {
-        this.setState({
-          showToaster: true,
-          status: formatStatus(res.status),
-          message: res.data.data.message
-        });
-      })
-      .catch(err => console.log('ERR', err));
+    this.setState({ loading: true }),
+      () => {
+        axios
+          .post(url_, data_)
+          .then(res => {
+            this.setState({
+              showToaster: true,
+              loading: false,
+              status: formatStatus(res.status),
+              message: res.data.data.message
+            });
+          })
+          .catch(err => err);
+      };
   };
   showToaster = () => {
     let { status, message } = this.state;
@@ -71,7 +76,11 @@ export default class Admin extends Component {
         <Tab.Pane attached={false}>
           <CompanyInfo handleChange={this.handleChange} />
           {this.state.showToaster && this.showToaster()}
-          <Button content="AUTHORIZE" onClick={this.handleClick} />
+          <Button
+            content="AUTHORIZE"
+            onClick={this.handleClick}
+            loading={this.state.loading}
+          />
           <ToastContainer />
         </Tab.Pane>
       )

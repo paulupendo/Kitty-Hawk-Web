@@ -12,11 +12,15 @@ class GetUser extends Component {
     super();
     this.state = {
       searchTerm: '',
-      user: {}
+      user: {},
+      error:false
     };
   }
 
   handleClick = () => {
+    this.state.searchTerm.length === 0 ? this.setState({
+      error:true
+    }) :
     axios
       .get(
         `${config.API_BASE_URL}users?user_id=${
@@ -24,7 +28,7 @@ class GetUser extends Component {
         }&company_name=${this.props.value}`
       )
       .then(res => {
-        this.setState({ user: res.data.data.user });
+        this.setState({ user: res.data.data.user , error:false});
       });
   };
   /**
@@ -35,7 +39,7 @@ class GetUser extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value, error:false
     });
   };
 
@@ -50,6 +54,7 @@ class GetUser extends Component {
           <Input
             placeholder="Enter User ID to Search..."
             onChange={this.handleInput}
+            error={this.state.error}
           />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
@@ -66,7 +71,7 @@ class GetUser extends Component {
               {Object.keys(this.state.user).length >= 1 &&
                 [this.state.user].map(user => {
                   return (
-                    <Table.Row>
+                    <Table.Row key={user.id}>
                       <Table.Cell>{user.first_name || 'None'}</Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>

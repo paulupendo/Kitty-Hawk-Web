@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Input, Dropdown } from 'semantic-ui-react';
 
 // styles
-import './CreateUser.css';
+import './UpdateDevice.css';
 
-const CreateUser = () => {
+const UpdateUser = () => {
   const zoneOptions = [
     { key: 'User', value: 'User', text: 'User' },
     { key: 'Administrator', value: 'Administrator', text: 'Administrator' },
     { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' }
   ];
-
-  return <div className="create-user-container">
+  return (
+    <div className="update-device-container">
       <div className="create-input">
         <div className="btns-row">
+          <div className="id">
+            <span>ID</span>
+            <br />
+            <Input placeholder="(required):{string}" />
+          </div>
           <div>
             <span>First Name</span>
             <br />
@@ -27,22 +32,27 @@ const CreateUser = () => {
         </div>
         <div className="btns-row">
           <div>
+            <span>User Role</span>
+            <br />
+            <Input placeholder="(required):{string}" />
+          </div>
+          <div>
             <span>Email</span>
             <br />
             <Input placeholder="(required):{string}" />
           </div>
           <div>
-            <span>User Role</span>
-            <br />
-            <Dropdown selection placeholder="Select Role" options={zoneOptions} />
-          </div>
-          <div>
             <span>Zone</span> <br />
-            <Dropdown selection placeholder="Select Zone" options={zoneOptions} />
+            <Dropdown
+              selection
+              placeholder="Select Zone"
+              options={zoneOptions}
+            />
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
-export default CreateUser;
+export default UpdateUser;
