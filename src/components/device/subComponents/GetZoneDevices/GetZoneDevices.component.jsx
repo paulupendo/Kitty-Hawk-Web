@@ -12,18 +12,19 @@ class GetZoneDevices extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
-      mac_address: []
+      searchTerm: ''
     };
   }
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}devices/mac-address?company_name=${
-          this.props.value
-        }&mac_address=${this.state.searchTerm}`
+        `${config.API_BASE_URL}users?user_id=${
+          this.state.searchTerm
+        }&company_name=${this.props.value}`
       )
-      .then(res => console.log(res));
+      .then(res => {
+        this.setState({ user: res.data.data.user });
+      });
   };
   /**
    * This method handles adding input for name, description, level and paths properties

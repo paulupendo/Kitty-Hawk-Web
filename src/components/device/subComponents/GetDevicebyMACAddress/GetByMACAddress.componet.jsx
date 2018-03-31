@@ -12,19 +12,22 @@ class GetByMACAddress extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      deviceMac: []
     };
   }
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}users?user_id=${
-          this.state.searchTerm
-        }&company_name=${this.props.value}`
+        `${config.API_BASE_URL}devices/mac-address?company_name=${
+          this.props.value
+        }&mac_address=${this.state.searchTerm}`
       )
-      .then(res => {
-        this.setState({ user: res.data.data.user });
-      });
+      .then(res =>
+        this.setState({
+          deviceMac: res.data.data.device
+        })
+      );
   };
   /**
    * This method handles adding input for name, description, level and paths properties
@@ -39,6 +42,7 @@ class GetByMACAddress extends Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <div className="mac-devices">
         <Segment>
@@ -54,15 +58,24 @@ class GetByMACAddress extends Component {
           <Table color="green" striped>
             <Table.Header>
               <Table.Row>
-                <Table.HeaderCell>ID</Table.HeaderCell>
+                <Table.HeaderCell>Agent Version</Table.HeaderCell>
+                <Table.HeaderCell>Host</Table.HeaderCell>
+                <Table.HeaderCell>last_logged_in_user</Table.HeaderCell>
                 <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Policy ID</Table.HeaderCell>
+                <Table.HeaderCell>State</Table.HeaderCell>
               </Table.Row>
-              <Table.Row>
-                <Table.Cell>johne </Table.Cell>
-                <Table.Cell>johne </Table.Cell>
-                <Table.Cell>johne </Table.Cell>
-              </Table.Row>
+              {this.state.deviceMac.map(mac => {
+                return (
+                  <Table.Row key={mac.id}>
+                    <Table.Cell>{mac.name}</Table.Cell>
+                    <Table.Cell>{mac.agent_version}</Table.Cell>
+                    <Table.Cell>{mac.host_name}</Table.Cell>
+                    <Table.Cell>{mac.last_logged_in_user}</Table.Cell>
+                    <Table.Cell>{mac.state}</Table.Cell>
+                    <Table.Cell>{mac.update_available}</Table.Cell>
+                  </Table.Row>
+                );
+              })}
             </Table.Header>
           </Table>
         </div>
