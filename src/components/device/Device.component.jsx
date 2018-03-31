@@ -52,14 +52,22 @@ export default class Device extends Component {
       value: 'Update Device Threat ',
       text: 'Update Device Threat'
     },
-    { key: 'GET-device-zone', value: 'Get Zone Devices', text: 'Get Zone Devices' },
+    {
+      key: 'GET-device-zone',
+      value: 'Get Zone Devices',
+      text: 'Get Zone Devices'
+    },
     {
       key: 'GET-device-agent',
       value: 'Get Agent Installer Link',
       text: 'Get Agent Installer Link'
     },
     { key: 'DELETE-device', value: 'Delete Devices', text: 'Delete Devices' },
-    { key: 'GET-device-MAC', value: 'Get By MAC Address', text: 'Get By MAC Address' }
+    {
+      key: 'GET-device-MAC',
+      value: 'Get By MAC Address',
+      text: 'Get By MAC Address'
+    }
   ];
 
   /**
@@ -97,7 +105,7 @@ export default class Device extends Component {
           this.state.value
         }&page=1&limit=1`
       )
-      .then((res) => {
+      .then(res => {
         this.setState({
           devices: res.data.data.device.page_items,
           showToaster: true,
@@ -185,7 +193,7 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetDevice />
+            <GetDevice value={this.state.value} />
           </div>
         );
 
@@ -193,7 +201,7 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetDeviceThreats />
+            <GetDeviceThreats value={this.state.value} />
           </div>
         );
       case 'Get Zone Devices':
@@ -207,7 +215,7 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetByMACAddress />
+            <GetByMACAddress value={this.state.value} />
           </div>
         );
     }
