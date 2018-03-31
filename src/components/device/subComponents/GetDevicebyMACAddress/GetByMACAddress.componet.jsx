@@ -27,7 +27,7 @@ class GetByMACAddress extends Component {
         this.setState({
           deviceMac: res.data.data.device
         })
-      );
+      ).catch(err => err)
   };
   /**
    * This method handles adding input for name, description, level and paths properties

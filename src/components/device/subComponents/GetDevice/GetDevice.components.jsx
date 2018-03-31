@@ -59,7 +59,6 @@ class GetDevice extends Component {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>OS Version</Table.HeaderCell>
                 <Table.HeaderCell>Agent Version</Table.HeaderCell>
                 <Table.HeaderCell>Date Fist Registered</Table.HeaderCell>
                 <Table.HeaderCell>Date Modified</Table.HeaderCell>
@@ -74,7 +73,6 @@ class GetDevice extends Component {
                   return (
                     <Table.Row key={device.id}>
                       <Table.Cell>{device.name || 'None'}</Table.Cell>
-                      <Table.Cell>{device.os_version || 'None'}</Table.Cell>
                       <Table.Cell>{device.agent_version}</Table.Cell>
                       <Table.Cell>{device.date_first_registered}</Table.Cell>
                       <Table.Cell>{device.date_last_modified}</Table.Cell>
