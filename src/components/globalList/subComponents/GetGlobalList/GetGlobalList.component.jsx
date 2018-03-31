@@ -9,13 +9,17 @@ const GetGlobalList = () => {
       <Table color="green" striped>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>id</Table.HeaderCell>
             <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>State</Table.HeaderCell>
-            <Table.HeaderCell>Agent_version</Table.HeaderCell>
-            <Table.HeaderCell>Date First Registred</Table.HeaderCell>
-            <Table.HeaderCell>Ip Address</Table.HeaderCell>
-            <Table.HeaderCell>Ip Address</Table.HeaderCell>
+            <Table.HeaderCell>Sha256</Table.HeaderCell>
+            <Table.HeaderCell>Md5</Table.HeaderCell>
+            <Table.HeaderCell>Cylance Score</Table.HeaderCell>
+            <Table.HeaderCell>Av Industry</Table.HeaderCell>
+            <Table.HeaderCell>Clasficaton</Table.HeaderCell>
+            <Table.HeaderCell>List Type</Table.HeaderCell>
+            <Table.HeaderCell>Category</Table.HeaderCell>
+            <Table.HeaderCell>Added</Table.HeaderCell>
+            <Table.HeaderCell>Added By</Table.HeaderCell>
+            <Table.HeaderCell>Reason</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -28,23 +32,9 @@ const GetGlobalList = () => {
             <Table.Cell>No</Table.Cell>
             <Table.Cell>No</Table.Cell>
             <Table.Cell>none</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Jamie Harington</Table.Cell>
-            <Table.Cell>January 11, 2014</Table.Cell>
-            <Table.Cell>jamieharingonton@yahoo.com</Table.Cell>
-            <Table.Cell>Yes</Table.Cell>
-            <Table.Cell>No</Table.Cell>
-            <Table.Cell>No</Table.Cell>
             <Table.Cell>none</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Jill Lewis</Table.Cell>
-            <Table.Cell>May 11, 2014</Table.Cell>
-            <Table.Cell>jilsewris22@yahoo.com</Table.Cell>
-            <Table.Cell>Yes</Table.Cell>
-            <Table.Cell>No</Table.Cell>
-            <Table.Cell>No</Table.Cell>
+            <Table.Cell>none</Table.Cell>
+            <Table.Cell>none</Table.Cell>
             <Table.Cell>none</Table.Cell>
           </Table.Row>
         </Table.Body>
