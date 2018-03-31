@@ -8,12 +8,11 @@ const CreateUser = () => {
   const zoneOptions = [
     { key: 'User', value: 'User', text: 'User' },
     { key: 'Administrator', value: 'Administrator', text: 'Administrator' },
-    { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' },
+    { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' }
   ];
 
-  return (
-    <div className="create-user-container">
-      <div className="btns">
+  return <div className="create-user-container">
+      <div className="create-input">
         <div className="btns-row">
           <div>
             <span>First Name</span>
@@ -25,34 +24,25 @@ const CreateUser = () => {
             <br />
             <Input placeholder="(required):{string}" />
           </div>
+        </div>
+        <div className="btns-row">
           <div>
             <span>Email</span>
             <br />
             <Input placeholder="(required):{string}" />
           </div>
-        </div>
-        <div className="btns-row">
           <div>
             <span>User Role</span>
             <br />
-            <Dropdown
-              selection
-              placeholder="Select Role"
-              options={zoneOptions}
-            />
+            <Dropdown selection placeholder="Select Role" options={zoneOptions} />
           </div>
           <div>
             <span>Zone</span> <br />
-            <Dropdown
-              selection
-              placeholder="Select Zone"
-              options={zoneOptions}
-            />
+            <Dropdown selection placeholder="Select Zone" options={zoneOptions} />
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default CreateUser;

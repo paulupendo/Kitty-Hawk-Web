@@ -71,6 +71,14 @@ const CompanyInfo = props => {
               onChange={e => handleChange(e, 'app_secret')}
             />
           </div>
+          <div>
+            <span>Comment</span>
+            <br />
+            <Input
+              placeholder="(required):{string}"
+              onChange={e => handleChange(e, 'comment')}
+            />
+          </div>
         </div>
       </div>
     </div>

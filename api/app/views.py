@@ -98,12 +98,13 @@ class CompanyInfoResource(Resource):
                     "app_secret": app_secret,
                     "comment": comment,
                     "access_token": access_token,
-                   "message": "company created successfully."
+                    "message": "company created successfully."
                 },
             })
             company_info.status_code = 201
 
             return company_response
+
     def get(self):
         """
         takes access token from URL params
@@ -124,6 +125,7 @@ class SingleUser(Resource):
     """
     User endpoints.
     """
+
     def get(self):
         """
         GET operations for users

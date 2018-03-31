@@ -26,5 +26,7 @@ yarn-error.log*
 
 **/__pycache__/*
 api/migrations/
+api/env/
 **/api/**/*.pyc
 **/api/*.pyc
+api/**/*.pyc

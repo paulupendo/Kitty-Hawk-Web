@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { Tab, Button } from 'semantic-ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+
+// Axios
 import axios from 'axios';
 
 //styles
@@ -10,6 +13,7 @@ import CompanyInfo from './SubComponents/CompanyInfo.component';
 
 // common components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
+import formatStatus from '../../common/Status/status.component';
 
 export default class Admin extends Component {
   state = {
@@ -20,6 +24,11 @@ export default class Admin extends Component {
     tenant_id: null,
     app_id: null,
     app_secret: null,
+    comment: null,
+    status: '',
+    message: ' ',
+    showToaster: false,
+    loading: false
   };
 
   handleChange = (e, key) => {
@@ -35,16 +44,29 @@ export default class Admin extends Component {
       tenant_id: this.state.tenant_id,
       app_id: this.state.app_id,
       app_secret: this.state.app_secret,
+      comment: this.state.comment
     };
     let url_ = 'http://127.0.0.1:5000/api/company-info';
-
-    axios
-      .post(url_, data_)
-      .then(res => {
-        console.log('RES', res);
-        localStorage.setItem('access_token', res.data.access_token);
-      })
-      .catch(err => console.log('ERR', err));
+    this.setState({ loading: true }),
+      () => {
+        axios
+          .post(url_, data_)
+          .then(res => {
+            this.setState({
+              showToaster: true,
+              loading: false,
+              status: formatStatus(res.status),
+              message: res.data.data.message
+            });
+          })
+          .catch(err => err);
+      };
+  };
+  showToaster = () => {
+    let { status, message } = this.state;
+    toast[status](message, {
+      position: toast.POSITION.TOP_RIGHT
+    });
   };
 
   panes = [
@@ -53,10 +75,16 @@ export default class Admin extends Component {
       render: () => (
         <Tab.Pane attached={false}>
           <CompanyInfo handleChange={this.handleChange} />
-          <Button content="AUTHORIZE" onClick={this.handleClick} />
+          {this.state.showToaster && this.showToaster()}
+          <Button
+            content="AUTHORIZE"
+            onClick={this.handleClick}
+            loading={this.state.loading}
+          />
+          <ToastContainer />
         </Tab.Pane>
-      ),
-    },
+      )
+    }
   ];
 
   render() {
