@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
-// third-part Libraries
+import { config } from '../../config';
+
+// third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+
+// axios
+import axios from 'axios';
 
 //styles
 import './Zone.css';
@@ -9,6 +15,8 @@ import './Zone.css';
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
+import LoaderGraphic from '../../common/Loader/loader.component';
+import formatStatus from '../../common/Status/status.component';
 
 export default class Policy extends Component {
   constructor() {
@@ -17,17 +25,73 @@ export default class Policy extends Component {
       activeComponent: 'Create Zone',
       selection: 'Create Zone',
       endpoint: '/users/v2',
-      method: 'GET'
+      method: 'GET',
+      zones: [],
+      companies: [],
+      value: '',
+      showToaster: false,
+      status: '',
+      message: '',
+      loading: true,
+      disabled: true,
     };
   }
   data = [
-    { key: 'POST', value: 'Create Zone ', text: 'Create Zone' },
-    { key: 'GET', value: 'Get Zones', text: 'Get Zones' },
-    { key: 'PUT', value: 'Get Device Zones', text: 'Get Device Zones' },
-    { key: 'GET', value: 'Get Zone', text: 'Get Zone' },
-    { key: 'PUT', value: 'Update Zone', text: 'Update Zone' },
-    { key: 'DELETE', value: 'Delete Zone', text: 'Delete Zone' },
+    { key: 'POST-zone', value: 'Create Zone ', text: 'Create Zone' },
+    { key: 'GET-zone', value: 'Get Zones', text: 'Get Zones' },
+    { key: 'PUT-zones', value: 'Get Device Zones', text: 'Get Device Zones' },
+    { key: 'GET-zone', value: 'Get Zone', text: 'Get Zone' },
+    { key: 'PUT-zone', value: 'Update Zone', text: 'Update Zone' },
+    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' }
   ];
+  /**
+   * method to get all companies
+   * @param {object} data  companies data
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  componentDidMount() {
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies: res.data.data.companies.map(company => {
+            return {
+              value: company,
+              text: company
+            };
+          })
+        });
+      })
+      .catch(err => err);
+  }
+
+  /**
+   * method to get all users in a specific company
+   * @returns {object} data Users
+   * @member of GetUser Component
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  fetchUsers = () => {
+    axios
+      .get(`${config.API_BASE_URL}all-users?company_name=${this.state.value}`)
+      .then(res => {
+        this.setState({
+          users: res.data.data.users.page_items,
+          showToaster: true,
+          status: formatStatus(res.status),
+          message: res.data.data.message
+        });
+      })
+      .catch(err => err);
+  };
+
+  showToaster = () => {
+    let { status, message } = this.state;
+    toast[status](message, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
 
   /**
    * Handles change of active dropdowns
@@ -93,15 +157,26 @@ export default class Policy extends Component {
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
-              <Dropdown placeholder="Select Company" search selection />
+              <Dropdown
+                placeholder="Select Company"
+                search
+                selection
+                onChange={(_, { value }) => {
+                  this.setState({ value, disabled: false });
+                }}
+                options={this.state.companies}
+                loading={this.state.loading}
+              />
             </div>
+
             <div>
               <Dropdown
-                placeholder="Create Zone"
+                placeholder="Create Zones"
                 fluid
                 selection
                 options={this.data}
                 onChange={this.handleChange}
+                disabled={this.state.disabled}
               />
             </div>
           </div>

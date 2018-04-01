@@ -37,12 +37,12 @@ export default class Global extends Component {
     };
   }
   data = [
-    { key: 'POST', value: 'Create Policy', text: 'Create Policy' },
-    { key: 'GET', value: 'Get Policy', text: 'Get Policy' },
-    { key: 'GET', value: 'Get Policies', text: 'Get Policies' },
-    { key: 'GET', value: 'Update Policy', text: 'Update Policy' },
-    { key: 'GET', value: 'Delete Policy', text: 'Delete Policy' },
-    { key: 'GET', value: 'Delete Policies', text: 'Delete Policies' }
+    { key: 'POST-policy', value: 'Create Policy', text: 'Create Policy' },
+    { key: 'GET-policy', value: 'Get Policy', text: 'Get Policy' },
+    { key: 'GET-policies', value: 'Get Policies', text: 'Get Policies' },
+    { key: 'PUT-policy', value: 'Update Policy', text: 'Update Policy' },
+    { key: 'DELETE-policy', value: 'Delete Policy', text: 'Delete Policy' },
+    { key: 'DELETE-policies', value: 'Delete Policies', text: 'Delete Policies' }
   ];
 
   /**

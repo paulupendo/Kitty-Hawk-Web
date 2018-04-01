@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
-// third-part Libraries
+import { config } from '../../config';
+
+// third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+
+// axios
+import axios from 'axios';
 
 //styles
 import './Threat.css';
@@ -9,6 +15,8 @@ import './Threat.css';
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
+import LoaderGraphic from '../../common/Loader/loader.component';
+import formatStatus from '../../common/Status/status.component';
 
 export default class Policy extends Component {
   constructor() {
@@ -17,20 +25,77 @@ export default class Policy extends Component {
       activeComponent: 'Get Threats',
       selection: 'Get Threats',
       endpoint: '/users/v2',
-      method: 'GET'
+      method: 'GET',
+      threats: [],
+      companies: [],
+      value: '',
+      showToaster: false,
+      status: '',
+      message: '',
+      loading: true,
+      disabled: true
     };
   }
   data = [
-    { key: 'POST', value: 'Get Threat ', text: 'Get Threat' },
-    { key: 'GET', value: 'Get Threats', text: 'Get Threats' },
-    { key: 'PUT', value: 'Get Threat Devices', text: 'Get Threat Devices' },
+    { key: 'POST-threat', value: 'Get Threat ', text: 'Get Threat' },
+    { key: 'GET-threats', value: 'Get Threats', text: 'Get Threats' },
+    { key: 'PUT-threats', value: 'Get Threat Devices', text: 'Get Threat Devices' },
     {
-      key: 'GET',
+      key: 'GET-threat',
       value: 'Get Threat Download URL',
       text: 'Get Threat Download URL'
     }
   ];
 
+  /**
+   * method to get all companies
+   * @param {object} data  companies data
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  componentDidMount() {
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies: res.data.data.companies.map(company => {
+            return {
+              value: company,
+              text: company
+            };
+          })
+        });
+      })
+      .catch(err => err);
+  }
+
+  /**
+   * method to get all users in a specific company
+   * @returns {object} data Users
+   * @member of GetUser Component
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  fetchUsers = () => {
+    axios
+      .get(`${config.API_BASE_URL}all-users?company_name=${this.state.value}`)
+      .then(res => {
+        this.setState({
+          users: res.data.data.users.page_items,
+          showToaster: true,
+          status: formatStatus(res.status),
+          message: res.data.data.message
+        });
+      })
+      .catch(err => err);
+  };
+
+  showToaster = () => {
+    let { status, message } = this.state;
+    toast[status](message, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
+  
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -98,8 +163,18 @@ export default class Policy extends Component {
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
-              <Dropdown placeholder="Select Company" search selection />
+              <Dropdown
+                placeholder="Select Company"
+                search
+                selection
+                onChange={(_, { value }) => {
+                  this.setState({ value, disabled: false });
+                }}
+                options={this.state.companies}
+                loading={this.state.loading}
+              />
             </div>
+
             <div>
               <Dropdown
                 placeholder="Get Threat"
@@ -107,6 +182,7 @@ export default class Policy extends Component {
                 selection
                 options={this.data}
                 onChange={this.handleChange}
+                disabled={this.state.disabled}
               />
             </div>
           </div>
