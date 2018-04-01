@@ -140,7 +140,7 @@ export default class Global extends Component {
       case 'Get Global List':
         return (
           <div>
-            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
+            <SubHeader info="Allows a caller to request a page with a list of global list resources for a Tenant, sorted by the date when the hash was added to the Global List, in descending order" />
             {this.state.globalist.length === 0 ? (
               <LoaderGraphic />
             ) : (

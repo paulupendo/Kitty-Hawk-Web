@@ -1,33 +1,35 @@
 .sidebar-container {
-    background: #f8f8f9;
-    width: 20rem;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 9rem 3.4rem 0rem 3.4rem;
-    .ui.menu {
-        font-size: 1rem;
+  background: #f8f8f9;
+  width: 20rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 9rem 3.4rem 0rem 3.4rem;
+  overflow-x: hidden;
+//   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  .ui.menu {
+    font-size: 1rem;
+  }
+  .ui.vertical.tabular.menu {
+    border-right: 0;
+    .active.item {
+      border: 1px solid transparent;
+      border-radius: 9px !important;
+      margin-top: 0.8rem;
+      color: #38b557;
     }
-    .ui.vertical.tabular.menu {
-        border-right: 0;
-        .active.item {
-            border: 1px solid transparent;
-            border-radius: 9px !important;
-            margin-top: 0.8rem;
-            color: #38b557;
-        }
+  }
+  .ui.tabular.menu .item {
+    padding: 1.3rem 0rem 1.3rem 2.8rem;
+    color: #707070;
+    margin-top: 0.8rem;
+  }
+  span {
+    padding: 1.3rem 0rem 0.5rem 2.8rem;
+    cursor: pointer;
+    &:first-child {
+      font-size: 1.3rem;
+      color: #444444;
     }
-    .ui.tabular.menu .item {
-        padding: 1.3rem 0rem 1.3rem 2.8rem;
-        color: #707070;
-        margin-top: 0.8rem;
-    }
-    span {
-        padding: 1.3rem 0rem 0.5rem 2.8rem;
-        cursor: pointer;
-        &:first-child {
-            font-size: 1.3rem;
-            color: #444444;
-        }
-    }
+  }
 }
