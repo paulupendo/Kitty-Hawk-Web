@@ -1,7 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { config } from '../../config';
 
-// third-part Libraries
+// third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+
+// axios
+import axios from 'axios';
 
 //styles
 import './Policy.css';
@@ -9,6 +14,9 @@ import './Policy.css';
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
+import formatStatus from '../../common/Status/status.component';
+import LoaderGraphic from '../../common/Loader/loader.component';
+import GetPolicies from './subComponents/GetPolicies/GetPolicies.component'
 
 export default class Global extends Component {
   constructor() {
@@ -17,17 +25,73 @@ export default class Global extends Component {
       activeComponent: 'Create Policy',
       selection: 'Create Policy',
       endpoint: '/users/v2',
-      method: 'GET'
+      method: 'GET',
+      policies: [],
+      companies: [],
+      value: '',
+      showToaster: false,
+      status: '',
+      message: '',
+      loading: true,
+      disabled: true
     };
   }
   data = [
-    { key: 'POST', value: 'Create Policy', text: 'Create Policy' },
-    { key: 'GET', value: 'Get Policy', text: 'Get Policy' },
-    { key: 'GET', value: 'Get Policies', text: 'Get Policies' },
-    { key: 'GET', value: 'Update Policy', text: 'Update Policy' },
-    { key: 'GET', value: 'Delete Policy', text: 'Delete Policy' },
-    { key: 'GET', value: 'Delete Policies', text: 'Delete Policies' }
+    { key: 'POST-policy', value: 'Create Policy', text: 'Create Policy' },
+    { key: 'GET-policy', value: 'Get Policy', text: 'Get Policy' },
+    { key: 'GET-policies', value: 'Get Policies', text: 'Get Policies' },
+    { key: 'PUT-policy', value: 'Update Policy', text: 'Update Policy' },
+    { key: 'DELETE-policy', value: 'Delete Policy', text: 'Delete Policy' },
+    { key: 'DELETE-policies', value: 'Delete Policies', text: 'Delete Policies' }
   ];
+
+  /**
+   * method to get all companies
+   * @param {object} data  companies data
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  componentDidMount() {
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies: res.data.data.companies.map(company => {
+            return {
+              value: company,
+              text: company
+            };
+          })
+        });
+      })
+      .catch(err => err);
+  }
+
+  /**
+   * method to get all policies in a specific company
+   * @returns {object} data Users
+   * @member of GetUser Component
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  getpolicies = () => {
+    axios
+      .get(
+        `${config.API_BASE_URL}policies?company_name=${
+          this.state.value
+        }`
+      )
+      .then(res => {
+        this.setState({ policies: res.data.page_items });
+      })
+      .catch(err => err);
+  };
+
+  showToaster = () => {
+    let { status, message } = this.state;
+    toast[status](message, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
 
   /**
    * Handles change of active dropdowns
@@ -48,6 +112,7 @@ export default class Global extends Component {
         break;
       case 'Get Policies':
         this.setState({ method: 'PUT' });
+        this.getpolicies();
         break;
       default:
         break;
@@ -59,7 +124,7 @@ export default class Global extends Component {
    * @member of UserComponets
    * @returns {objects} list of User components
    */
-  switchGlobalComponents = () => {
+  switchPolicyComponents = () => {
     switch (this.state.activeComponent) {
       case 'Add To Global List':
         return (
@@ -74,11 +139,13 @@ export default class Global extends Component {
           </div>
         );
       case 'Get Policies':
-        return (
-          <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-          </div>
-        );
+        return <div>
+            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
+            {this.state.policies.length === 0 ? <LoaderGraphic /> : <Fragment>
+                <GetPolicies policies={this.state.policies} />
+                {this.state.showToaster && this.showToaster()}
+              </Fragment>}
+          </div>;
     }
   };
 
@@ -96,7 +163,16 @@ export default class Global extends Component {
         <div className="header-nav">
           <div className="dropdwn-nav">
             <div>
-              <Dropdown placeholder="Select Company" search selection />
+              <Dropdown
+                placeholder="Select Company"
+                search
+                selection
+                onChange={(_, { value }) => {
+                  this.setState({ value, disabled: false });
+                }}
+                options={this.state.companies}
+                loading={this.state.loading}
+              />
             </div>
             <div>
               <Dropdown
@@ -105,6 +181,7 @@ export default class Global extends Component {
                 selection
                 options={this.data}
                 onChange={this.handleChange}
+                disabled={this.state.disabled}
               />
             </div>
           </div>
@@ -113,7 +190,8 @@ export default class Global extends Component {
             <span>{this.state.endpoint}</span>
           </div>
         </div>
-        {this.switchGlobalComponents()}
+        {this.switchPolicyComponents()}
+        <ToastContainer />
       </div>
     );
   }
