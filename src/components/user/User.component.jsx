@@ -36,7 +36,8 @@ export default class User extends Component {
       status: '',
       message: '',
       loading: true,
-      disabled: true
+      disabled: true,
+      toastId : null,
     };
   }
 
@@ -91,10 +92,11 @@ export default class User extends Component {
 
   showToaster = () => {
     let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
-    });
-  };
+    if (!toast.isActive(this.toastId)){
+      this.toastId = toast[status](message, { position : toast.POSITION.TOP_RIGHT
+       });
+    }
+  }
 
   /**
    * Handles change of active dropdowns

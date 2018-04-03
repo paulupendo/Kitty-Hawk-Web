@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { Input, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
+import { ToastContainer, toast } from 'react-toastify';
+
 // axios
 import axios from 'axios';
 
+//styles
 import './GetUser.css';
+
+// components
+import formatStatus from '../../../../common/Status/status.component';
 
 class GetUser extends Component {
   constructor() {
@@ -13,24 +19,54 @@ class GetUser extends Component {
     this.state = {
       searchTerm: '',
       user: {},
-      error:false
+      error: false,
+      showToaster: false,
+      status: '',
+      message: '',
+      toastId: null
     };
   }
 
   handleClick = () => {
-    this.state.searchTerm.length === 0 ? this.setState({
-      error:true
-    }) :
-    axios
-      .get(
-        `${config.API_BASE_URL}users?user_id=${
-          this.state.searchTerm
-        }&company_name=${this.props.value}`
-      )
-      .then(res => {
-        this.setState({ user: res.data.data.user , error:false});
-      });
+    this.state.searchTerm.length === 0
+      ? this.setState({
+          error: true
+        })
+      : // /users/<user-id>?company_name=<name>
+        axios
+          .get(
+            `${config.API_BASE_URL}users/${
+              this.state.searchTerm
+            }?company_name=${this.props.value}`
+          )
+          .then(res => {
+            this.setState({
+              user: res.data.data.user,
+              error: false,
+              showToaster: true,
+              status: formatStatus(res.status),
+              message: res.data.data.message
+            });
+          })
+          .catch(err => {
+            this.setState({
+              error: false,
+              showToaster: true,
+              status: formatStatus('500'),
+              message: err.message
+            });
+          });
   };
+
+  showToaster = () => {
+    let { status, message } = this.state;
+    if (!toast.isActive(this.toastId)) {
+      this.toastId = toast[status](message, {
+        position: toast.POSITION.TOP_RIGHT
+      });
+    }
+  };
+
   /**
    * This method handles adding input for name, description, level and paths properties
    *
@@ -39,7 +75,8 @@ class GetUser extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value, error:false
+      searchTerm: event.target.value,
+      error: false
     });
   };
 
@@ -57,7 +94,7 @@ class GetUser extends Component {
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="user-table">
-          <Table  color="green" striped>
+          <Table color="green" striped>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>First Name</Table.HeaderCell>
@@ -80,6 +117,8 @@ class GetUser extends Component {
                 })}
             </Table.Header>
           </Table>
+          {this.state.showToaster && this.showToaster()}
+          <ToastContainer />
         </div>
       </div>
     );

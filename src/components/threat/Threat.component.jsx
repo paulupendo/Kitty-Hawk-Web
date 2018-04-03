@@ -52,7 +52,7 @@ export default class Policy extends Component {
    * @param {object} data  companies data
    * @returns {=>Promise<TResult2|TResult1>}
    */
-  componentDidMount() {
+  componentWillMount() {
     axios
       .get(`${config.API_BASE_URL}company-info`)
       .then(res => {
