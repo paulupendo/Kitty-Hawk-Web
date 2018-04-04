@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
 
@@ -19,18 +18,19 @@ class GetPolicies extends Component {
               <Table.HeaderCell>Date Modified</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          {policies.map(policy => {
-            return (
-              <Table.Row key={policy.id}>
-                <Table.Cell>{policy.name}</Table.Cell>
-                <Table.Cell>{policy.zone_count}</Table.Cell>
-                <Table.Cell>{policy.device_count}</Table.Cell>
-                <Table.Cell>{policy.date_added}</Table.Cell>
-                <Table.Cell>{policy.date_modified}</Table.Cell>
-              </Table.Row>
-            );
-          })}
-          <Table.Body />
+          <Table.Body>
+            {policies.map(policy => {
+              return (
+                <Table.Row key={policy.id}>
+                  <Table.Cell>{policy.name}</Table.Cell>
+                  <Table.Cell>{policy.zone_count}</Table.Cell>
+                  <Table.Cell>{policy.device_count}</Table.Cell>
+                  <Table.Cell>{policy.date_added}</Table.Cell>
+                  <Table.Cell>{policy.date_modified}</Table.Cell>
+                </Table.Row>
+              );
+            })}
+          </Table.Body>
         </Table>
       </div>
     );

@@ -15,7 +15,6 @@ class GetUsers extends Component {
               <Table.HeaderCell>Last Name</Table.HeaderCell>
               <Table.HeaderCell>Email</Table.HeaderCell>
               <Table.HeaderCell>Role Name</Table.HeaderCell>
-              <Table.HeaderCell>Zone</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -29,7 +28,6 @@ class GetUsers extends Component {
                   </Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>{user.role_name}</Table.Cell>
-                  <Table.Cell>{user.role_type}</Table.Cell>
                 </Table.Row>)
             })}
           </Table.Body>

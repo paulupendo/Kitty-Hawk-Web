@@ -16,9 +16,9 @@ import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import formatStatus from '../../common/Status/status.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
-import GetPolicies from './subComponents/GetPolicies/GetPolicies.component'
+import GetPolicies from './subComponents/GetPolicies/GetPolicies.component';
 
-export default class Global extends Component {
+export default class Policy extends Component {
   constructor() {
     super();
     this.state = {
@@ -42,7 +42,11 @@ export default class Global extends Component {
     { key: 'GET-policies', value: 'Get Policies', text: 'Get Policies' },
     { key: 'PUT-policy', value: 'Update Policy', text: 'Update Policy' },
     { key: 'DELETE-policy', value: 'Delete Policy', text: 'Delete Policy' },
-    { key: 'DELETE-policies', value: 'Delete Policies', text: 'Delete Policies' }
+    {
+      key: 'DELETE-policies',
+      value: 'Delete Policies',
+      text: 'Delete Policies'
+    }
   ];
 
   /**
@@ -75,13 +79,9 @@ export default class Global extends Component {
    */
   getpolicies = () => {
     axios
-      .get(
-        `${config.API_BASE_URL}policies?company_name=${
-          this.state.value
-        }`
-      )
+      .get(`${config.API_BASE_URL}policies?company_name=${this.state.value}`)
       .then(res => {
-        this.setState({ policies: res.data.page_items });
+        this.setState({ policies: res.data.data.page_items });
       })
       .catch(err => err);
   };
@@ -139,18 +139,24 @@ export default class Global extends Component {
           </div>
         );
       case 'Get Policies':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
-            {this.state.policies.length === 0 ? <LoaderGraphic /> : <Fragment>
+            {this.state.policies.length === 0 ? (
+              <LoaderGraphic />
+            ) : (
+              <Fragment>
                 <GetPolicies policies={this.state.policies} />
                 {this.state.showToaster && this.showToaster()}
-              </Fragment>}
-          </div>;
+              </Fragment>
+            )}
+          </div>
+        );
     }
   };
 
   /**
-   * @returns {object}
+   * @returns
    * @member of DeviceComponent
    */
   render() {

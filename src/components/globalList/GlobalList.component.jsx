@@ -84,7 +84,7 @@ export default class Global extends Component {
       )
       .then(res => {
         this.setState({
-          globalist: res.data.page_items
+          globalist: res.data.data.page_items
         });
       })
       .catch(err => err);

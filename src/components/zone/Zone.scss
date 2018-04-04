@@ -44,4 +44,15 @@
       }
     }
   }
+  .btn-bottom {
+    .ui.button {
+      background: #38b557;
+      color: #fff;
+      font-weight: 400;
+      border-radius: 0.9rem;
+      margin-top: 2rem;
+      margin-right: -0.1rem;
+      float: right;
+    }
+  }
 }

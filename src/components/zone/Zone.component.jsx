@@ -17,10 +17,13 @@ import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import formatStatus from '../../common/Status/status.component';
+import CreateZones from '../zone/subComponents/CreateZones/CreateZones.component';
+import GetZones from '../zone/subComponents/GetZones/GetZones.component';
 
-export default class Policy extends Component {
+export default class Zones extends Component {
   constructor() {
     super();
+
     this.state = {
       activeComponent: 'Create Zone',
       selection: 'Create Zone',
@@ -34,16 +37,21 @@ export default class Policy extends Component {
       message: '',
       loading: true,
       disabled: true,
+      name: null,
+      policyId: null,
+      criticality: null,
     };
   }
+
   data = [
-    { key: 'POST-zone', value: 'Create Zone ', text: 'Create Zone' },
-    { key: 'GET-zone', value: 'Get Zones', text: 'Get Zones' },
+    { key: 'POST-zone', value: 'Create Zone', text: 'Create Zone' },
+    { key: 'GET-zones', value: 'Get Zones', text: 'Get Zones' },
     { key: 'PUT-zones', value: 'Get Device Zones', text: 'Get Device Zones' },
     { key: 'GET-zone', value: 'Get Zone', text: 'Get Zone' },
     { key: 'PUT-zone', value: 'Update Zone', text: 'Update Zone' },
-    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' }
+    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' },
   ];
+
   /**
    * method to get all companies
    * @param {object} data  companies data
@@ -58,9 +66,9 @@ export default class Policy extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
@@ -72,24 +80,37 @@ export default class Policy extends Component {
    * @member of GetUser Component
    * @returns {=>Promise<TResult2|TResult1>}
    */
-  fetchUsers = () => {
+  getZones = () => {
     axios
-      .get(`${config.API_BASE_URL}all-users?company_name=${this.state.value}`)
+      .get(`${config.API_BASE_URL}zones?company_name=${this.state.value}`)
       .then(res => {
         this.setState({
-          users: res.data.data.users.page_items,
-          showToaster: true,
-          status: formatStatus(res.status),
-          message: res.data.data.message
+          zones: res.data.data.page_items,
         });
       })
       .catch(err => err);
   };
 
+  postZones = () => {
+    let data = {
+      name: this.state.name,
+      policy_id: this.state.policyId,
+      criticality: this.state.criticality,
+    };
+
+    axios
+      .post(
+        `${config.API_BASE_URL}zones?company_name=${this.state.value}`,
+        data,
+      )
+      .then(res => console.log(res))
+      .catch(err => console.log('E', err));
+  };
+
   showToaster = () => {
     let { status, message } = this.state;
     toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
+      position: toast.POSITION.TOP_RIGHT,
     });
   };
 
@@ -101,21 +122,31 @@ export default class Policy extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
+
     switch (value) {
       case 'Get Zones':
         this.setState({ method: 'GET' });
+        this.getZones();
         break;
       case 'Create Zone':
-        this.setState({ method: 'GET' });
+        this.setState({ method: 'POST' });
         break;
       case 'Get Device Zones':
-        this.setState({ method: 'PUT' });
+        this.setState({ method: 'GET' });
         break;
       default:
         break;
     }
+  };
+
+  handleZonesChange = (e, key) => {
+    this.setState({ [key]: e.target.value });
+  };
+
+  handleDropDownChange = (e, { value }) => {
+    this.setState({ criticality: value });
   };
 
   /**
@@ -129,12 +160,24 @@ export default class Policy extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <CreateZones
+              handleChange={this.handleZonesChange}
+              handleDropDownChange={this.handleDropDownChange}
+            />
+            <div className="btn-bottom">
+              <Button content="CREATE ZONE" onClick={this.postZones} />
+            </div>
           </div>
         );
       case 'Get Zones':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            {this.state.zones.length === 0 ? (
+              <LoaderGraphic />
+            ) : (
+              <GetZones zones={this.state.zones} />
+            )}
           </div>
         );
       case 'Get Device Zones':
