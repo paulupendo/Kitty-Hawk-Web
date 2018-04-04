@@ -26,7 +26,7 @@ const GetGlobalList = props => {
         <Table.Body>
           {globalist.map(global => {
             return (
-              <Table.Row key={global.id}>
+              <Table.Row key={global.md5}>
                 <Table.Cell>{global.name}</Table.Cell>
                 <Table.Cell>{global.cylance_score}</Table.Cell>
                 <Table.Cell>{global.av_industry || 'None'}</Table.Cell>
