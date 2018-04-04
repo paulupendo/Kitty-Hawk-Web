@@ -4,8 +4,12 @@ import { Input, Dropdown } from 'semantic-ui-react';
 // styles
 import './CreateZones.css';
 
-const CreateZones = () => {
-  const zoneOptions = [{ key: 'High', value: 'High', text: 'High' }];
+const CreateZones = ({ handleChange, handleDropDownChange }) => {
+  const zoneOptions = [
+    { key: 'High', value: 'High', text: 'High' },
+    { key: 'Normal', value: 'Normal', text: 'Normal' },
+    { key: 'Low', value: 'Low', text: 'Low' },
+  ];
 
   return (
     <div className="create-zones-container">
@@ -14,12 +18,18 @@ const CreateZones = () => {
           <div>
             <span>Name</span>
             <br />
-            <Input placeholder="(required):{string}" />
+            <Input
+              placeholder="(required):{string}"
+              onChange={e => handleChange(e, 'name')}
+            />
           </div>
           <div>
             <span>Policy Id</span>
             <br />
-            <Input placeholder="(required):{string}" />
+            <Input
+              placeholder="(required):{string}"
+              onChange={e => handleChange(e, 'policyId')}
+            />
           </div>
           <div>
             <span>Zone</span> <br />
@@ -27,6 +37,7 @@ const CreateZones = () => {
               selection
               placeholder="Criticality"
               options={zoneOptions}
+              onChange={handleDropDownChange}
             />
           </div>
         </div>
