@@ -17,6 +17,7 @@ import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import formatStatus from '../../common/Status/status.component';
+import CreateZones from '../zone/subComponents/CreateZones/CreateZones.component';
 
 export default class Policy extends Component {
   constructor() {
@@ -33,12 +34,12 @@ export default class Policy extends Component {
       status: '',
       message: '',
       loading: true,
-      disabled: true,
+      disabled: true
     };
   }
   data = [
-    { key: 'POST-zone', value: 'Create Zone ', text: 'Create Zone' },
-    { key: 'GET-zone', value: 'Get Zones', text: 'Get Zones' },
+    { key: 'POST-zone', value: 'Create Zone', text: 'Create Zone' },
+    { key: 'GET-zones', value: 'Get Zones', text: 'Get Zones' },
     { key: 'PUT-zones', value: 'Get Device Zones', text: 'Get Device Zones' },
     { key: 'GET-zone', value: 'Get Zone', text: 'Get Zone' },
     { key: 'PUT-zone', value: 'Update Zone', text: 'Update Zone' },
@@ -129,6 +130,10 @@ export default class Policy extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <CreateZones />
+            <div className="btn-bottom">
+              <Button content="CREATE ZONE" />
+            </div>
           </div>
         );
       case 'Get Zones':
