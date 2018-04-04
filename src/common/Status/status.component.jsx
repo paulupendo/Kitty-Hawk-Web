@@ -3,7 +3,8 @@ const formatStatus = (status) => {
     200: 'success',
     201: 'success',
     401: 'error',
-    500: 'error',
+    500: 'warning',
+    404: 'error'
 
   };
 
