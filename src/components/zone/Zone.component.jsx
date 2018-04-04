@@ -18,8 +18,9 @@ import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import formatStatus from '../../common/Status/status.component';
 import CreateZones from '../zone/subComponents/CreateZones/CreateZones.component';
+import GetZones from '../zone/subComponents/GetZones/GetZones.component';
 
-export default class Policy extends Component {
+export default class Zones extends Component {
   constructor() {
     super();
     this.state = {
@@ -73,16 +74,13 @@ export default class Policy extends Component {
    * @member of GetUser Component
    * @returns {=>Promise<TResult2|TResult1>}
    */
-  fetchUsers = () => {
+  getZones = () => {
     axios
-      .get(`${config.API_BASE_URL}all-users?company_name=${this.state.value}`)
+      .get(`${config.API_BASE_URL}zones?company_name=${this.state.value}`)
       .then(res => {
         this.setState({
-          users: res.data.data.users.page_items,
-          showToaster: true,
-          status: formatStatus(res.status),
-          message: res.data.data.message
-        });
+          zones: res.data.data.page_items
+        })
       })
       .catch(err => err);
   };
@@ -106,7 +104,8 @@ export default class Policy extends Component {
     });
     switch (value) {
       case 'Get Zones':
-        this.setState({ method: 'GET' });
+        this.setState({ method: 'GET' })
+        this.getZones();
         break;
       case 'Create Zone':
         this.setState({ method: 'GET' });
@@ -140,6 +139,11 @@ export default class Policy extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            {
+              this.state.zones.length === 0 ? <LoaderGraphic /> : 
+                   
+            <GetZones zones={this.state.zones} />
+            }
           </div>
         );
       case 'Get Device Zones':

@@ -6,14 +6,14 @@ import { config } from '../../../../config';
 import axios from 'axios';
 
 // styles
-import './GetPolicy.css';
+import './GetZone.css';
 
-class GetDevice extends Component {
+class GetZone extends Component {
   constructor() {
     super();
     this.state = {
       searchTerm: '',
-      policy: {}
+      zones: {}
     };
   }
   handleClick = () => {
@@ -90,4 +90,4 @@ class GetDevice extends Component {
   }
 }
 
-export default GetDevice;
+export default GetZone;
