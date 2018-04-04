@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import { Tab, Button } from 'semantic-ui-react';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -15,6 +15,7 @@ import CompanyInfo from './SubComponents/CompanyInfo.component';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import formatStatus from '../../common/Status/status.component';
 
+const BASE_URL = `https://cyapi-db.herokuapp.com`;
 export default class Admin extends Component {
   state = {
     name: null,
@@ -28,7 +29,7 @@ export default class Admin extends Component {
     status: '',
     message: ' ',
     showToaster: false,
-    loading: false
+    loading: false,
   };
 
   handleChange = (e, key) => {
@@ -44,28 +45,27 @@ export default class Admin extends Component {
       tenant_id: this.state.tenant_id,
       app_id: this.state.app_id,
       app_secret: this.state.app_secret,
-      comment: this.state.comment
+      comment: this.state.comment,
     };
-    let url_ = 'http://127.0.0.1:5000/api/company-info';
-    this.setState({ loading: true }),
-      () => {
-        axios
-          .post(url_, data_)
-          .then(res => {
-            this.setState({
-              showToaster: true,
-              loading: false,
-              status: formatStatus(res.status),
-              message: res.data.data.message
-            });
-          })
-          .catch(err => err);
-      };
+    let url_ = `${BASE_URL}/api/company-info`;
+    this.setState({ loading: true }, () => {
+      axios
+        .post(url_, data_)
+        .then(res => {
+          this.setState({
+            showToaster: true,
+            loading: false,
+            status: formatStatus(res.status),
+            message: res.data.data.message,
+          });
+        })
+        .catch(err => err);
+    });
   };
   showToaster = () => {
     let { status, message } = this.state;
     toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
+      position: toast.POSITION.TOP_RIGHT,
     });
   };
 
@@ -83,8 +83,8 @@ export default class Admin extends Component {
           />
           <ToastContainer />
         </Tab.Pane>
-      )
-    }
+      ),
+    },
   ];
 
   render() {
