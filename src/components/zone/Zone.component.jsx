@@ -85,10 +85,26 @@ export default class Zones extends Component {
       .get(`${config.API_BASE_URL}zones?company_name=${this.state.value}`)
       .then(res => {
         this.setState({
-          zones: res.data.data.page_items
-        })
+          zones: res.data.data.page_items,
+        });
       })
       .catch(err => err);
+  };
+
+  postZones = () => {
+    let data = {
+      name: this.state.name,
+      policy_id: this.state.policyId,
+      criticality: this.state.criticality,
+    };
+
+    axios
+      .post(
+        `${config.API_BASE_URL}zones?company_name=${this.state.value}`,
+        data,
+      )
+      .then(res => console.log(res))
+      .catch(err => console.log('E', err));
   };
 
   showToaster = () => {
@@ -111,7 +127,7 @@ export default class Zones extends Component {
 
     switch (value) {
       case 'Get Zones':
-        this.setState({ method: 'GET' })
+        this.setState({ method: 'GET' });
         this.getZones();
         break;
       case 'Create Zone':
@@ -149,7 +165,7 @@ export default class Zones extends Component {
               handleDropDownChange={this.handleDropDownChange}
             />
             <div className="btn-bottom">
-              <Button content="CREATE ZONE" />
+              <Button content="CREATE ZONE" onClick={this.postZones} />
             </div>
           </div>
         );
@@ -157,11 +173,11 @@ export default class Zones extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            {
-              this.state.zones.length === 0 ? <LoaderGraphic /> : 
-                   
-            <GetZones zones={this.state.zones} />
-            }
+            {this.state.zones.length === 0 ? (
+              <LoaderGraphic />
+            ) : (
+              <GetZones zones={this.state.zones} />
+            )}
           </div>
         );
       case 'Get Device Zones':
