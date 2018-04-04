@@ -6,8 +6,7 @@ import './GetDevices.css';
 class GetDevices extends Component {
   render() {
     const { devices } = this.props;
-    return (
-      <div className="devices table">
+    return <div className="devices table">
         <Table color="green" striped>
           <Table.Header>
             <Table.Row>
@@ -19,22 +18,20 @@ class GetDevices extends Component {
               <Table.HeaderCell>Mac Addresses</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
+          <Table.Body>
           {devices.map(device => {
-            return (
-              <Table.Row key={device.id}>
+            return <Table.Row key={device.id}>
                 <Table.Cell>{device.name}</Table.Cell>
                 <Table.Cell>{device.state}</Table.Cell>
                 <Table.Cell>{device.agent_version}</Table.Cell>
                 <Table.Cell>{device.date_first_registered}</Table.Cell>
                 <Table.Cell>{device.ip_addresses}</Table.Cell>
                 <Table.Cell>{device.mac_addresses}</Table.Cell>
-              </Table.Row>
-            );
+              </Table.Row>;
           })}
-          <Table.Body />
+          </Table.Body>
         </Table>
-      </div>
-    );
+      </div>;
   }
 }
 export default GetDevices;
