@@ -24,6 +24,7 @@ import formatStatus from '../../common/Status/status.component';
 export default class User extends Component {
   constructor() {
     super();
+
     this.state = {
       activeComponent: 'Create User',
       endpoint: '/users/v2',
@@ -37,7 +38,12 @@ export default class User extends Component {
       message: '',
       loading: true,
       disabled: true,
-      toastId: null
+      toastId: null,
+      first_name: null,
+      last_name: null,
+      user_role: null,
+      email: null,
+      zoneId: null,
     };
   }
 
@@ -45,7 +51,7 @@ export default class User extends Component {
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
     { key: 'PUT-user', value: 'Update User', text: 'Update User' },
     { key: 'GET-users', value: 'Get Users', text: 'Get Users' },
-    { key: 'GET-user', value: 'Get User', text: 'Get User' }
+    { key: 'GET-user', value: 'Get User', text: 'Get User' },
   ];
 
   /**
@@ -62,13 +68,21 @@ export default class User extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
   }
+
+  handleCreateUserChange = (e, key) => {
+    this.setState({ [key]: e.target.value });
+  };
+
+  handleCreateUserDropDown = (e, { value }) => {
+    this.setState({ user_role: value });
+  };
 
   /**
    * method to get all users in a specific company
@@ -84,17 +98,51 @@ export default class User extends Component {
           users: res.data.data.users.page_items,
           showToaster: true,
           status: formatStatus(res.status),
-          message: res.data.data.message
+          message: res.data.data.message,
         });
       })
       .catch(err => err);
+  };
+
+  createUser = () => {
+    let user_role;
+    let { first_name, last_name, email } = this.state;
+
+    this.state.user_role === 'User'
+      ? (user_role = '00000000-0000-0000-0000-000000000001')
+      : this.state.user_role === 'Administrator'
+        ? (user_role = '00000000-0000-0000-0000-000000000002')
+        : this.state.user_role === 'Zone Manager'
+          ? (user_role = '00000000-0000-0000-0000-000000000003')
+          : (user_role = '00000000-0000-0000-0000-000000000000');
+
+    let data = {
+      email,
+      user_role,
+      first_name,
+      last_name,
+      zones: [
+        {
+          id: this.state.zoneId,
+          role_type: user_role,
+        },
+      ],
+    };
+
+    axios
+      .post(
+        `${config.API_BASE_URL}users?company_name=${this.state.value}`,
+        data,
+      )
+      .then(res => console.log('RES', res))
+      .catch(err => console.log('ERR', err));
   };
 
   showToaster = () => {
     let { status, message } = this.state;
     if (!toast.isActive(this.toastId)) {
       this.toastId = toast[status](message, {
-        position: toast.POSITION.TOP_RIGHT
+        position: toast.POSITION.TOP_RIGHT,
       });
     }
   };
@@ -107,7 +155,7 @@ export default class User extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
     switch (value) {
       case 'Create User':
@@ -168,9 +216,12 @@ export default class User extends Component {
               info="Create a new User. This requires a unique email address for the
             User being created"
             />
-            <CreateUser />
+            <CreateUser
+              handleChange={this.handleCreateUserChange}
+              handleDropDownChange={this.handleCreateUserDropDown}
+            />
             <div className="btn-bottom">
-              <Button content="CREATE USER" />
+              <Button content="CREATE USER" onClick={this.createUser} />
             </div>
           </div>
         );
@@ -206,8 +257,11 @@ export default class User extends Component {
               info="Create a new User. This requires a unique email address for the
               User being created"
             />
-            <CreateUser />
-            <Button content="CREATE USER" />
+            <CreateUser
+              handleChange={this.handleCreateUserChange}
+              handleDropDownChange={this.handleCreateUserDropDown}
+            />
+            <Button content="CREATE USER" onClick={this.createUser} />
           </div>
         );
     }
@@ -232,7 +286,7 @@ export default class User extends Component {
                   this.setState({
                     value,
                     disabled: false,
-                    showToaster: false
+                    showToaster: false,
                   });
                 }}
                 options={this.state.companies}
