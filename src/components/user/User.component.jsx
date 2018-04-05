@@ -4,6 +4,7 @@ import { config } from '../../config';
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
 import { ToastContainer, toast } from 'react-toastify';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
@@ -96,12 +97,24 @@ export default class User extends Component {
       .then(res => {
         this.setState({
           users: res.data.data.users.page_items,
-          showToaster: true,
           status: formatStatus(res.status),
           message: res.data.data.message,
         });
+        iziToast.show({
+          title: 'SUCCESS',
+          message: res.data.data.message,
+          position: 'topRight',
+          color: 'green',
+          progressBarColor: 'rgb(0, 255, 184)',
+        });
       })
-      .catch(err => err);
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight',
+        }),
+      );
   };
 
   createUser = () => {
@@ -134,8 +147,22 @@ export default class User extends Component {
         `${config.API_BASE_URL}users?company_name=${this.state.value}`,
         data,
       )
-      .then(res => console.log('RES', res))
-      .catch(err => console.log('ERR', err));
+      .then(res =>
+        iziToast.show({
+          title: 'SUCCESS',
+          message: res.data.data.message,
+          position: 'topRight',
+          color: 'green',
+          progressBarColor: 'rgb(0, 255, 184)',
+        }),
+      )
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight',
+        }),
+      );
   };
 
   showToaster = () => {

@@ -3,6 +3,7 @@ import { Input, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 import { ToastContainer, toast } from 'react-toastify';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
@@ -23,37 +24,47 @@ class GetUser extends Component {
       showToaster: false,
       status: '',
       message: '',
-      toastId: null
+      toastId: null,
     };
   }
 
   handleClick = () => {
     this.state.searchTerm.length === 0
       ? this.setState({
-          error: true
+          error: true,
         })
       : // /users/<user-id>?company_name=<name>
         axios
           .get(
             `${config.API_BASE_URL}users/${
               this.state.searchTerm
-            }?company_name=${this.props.value}`
+            }?company_name=${this.props.value}`,
           )
           .then(res => {
             this.setState({
               user: res.data.data.user,
               error: false,
-              showToaster: true,
               status: formatStatus(res.status),
-              message: res.data.data.message
+              message: res.data.data.message,
+            });
+            iziToast.show({
+              title: 'SUCCESS',
+              message: res.data.data.message,
+              position: 'topRight',
+              color: 'green',
+              progressBarColor: 'rgb(0, 255, 184)',
             });
           })
           .catch(err => {
             this.setState({
               error: false,
-              showToaster: true,
               status: formatStatus('500'),
-              message: err.message
+              message: err.message,
+            });
+            iziToast.error({
+              title: 'Error',
+              message: 'An error occured!',
+              position: 'topRight',
             });
           });
   };
@@ -62,7 +73,7 @@ class GetUser extends Component {
     let { status, message } = this.state;
     if (!toast.isActive(this.toastId)) {
       this.toastId = toast[status](message, {
-        position: toast.POSITION.TOP_RIGHT
+        position: toast.POSITION.TOP_RIGHT,
       });
     }
   };
@@ -76,7 +87,7 @@ class GetUser extends Component {
   handleInput = event => {
     this.setState({
       searchTerm: event.target.value,
-      error: false
+      error: false,
     });
   };
 

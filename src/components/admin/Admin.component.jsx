@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Tab, Button } from 'semantic-ui-react';
 import { ToastContainer, toast } from 'react-toastify';
+import iziToast from 'izitoast';
 
 // Axios
 import axios from 'axios';
@@ -53,13 +54,26 @@ export default class Admin extends Component {
         .post(url_, data_)
         .then(res => {
           this.setState({
-            showToaster: true,
             loading: false,
             status: formatStatus(res.status),
             message: res.data.data.message,
           });
+          iziToast.show({
+            title: 'SUCCESS',
+            message: res.data.data.message,
+            position: 'topRight',
+            color: 'green',
+            progressBarColor: 'rgb(0, 255, 184)',
+          });
         })
-        .catch(err => err);
+        .catch(err => {
+          this.setState({ loading: false });
+          iziToast.error({
+            title: 'Error',
+            message: 'An error occured!',
+            position: 'topRight',
+          });
+        });
     });
   };
   showToaster = () => {
