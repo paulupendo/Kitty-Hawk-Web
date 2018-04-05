@@ -3,7 +3,6 @@ import { config } from '../../config';
 
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
-import { ToastContainer, toast } from 'react-toastify';
 import iziToast from 'izitoast';
 
 // axios
@@ -20,7 +19,7 @@ import SubHeader from './SubHeader.component';
 import CreateUser from './subComponents/CreateUser/CreateUser.component';
 import UpdateUser from './subComponents/UpdateUser/UpdateUser.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
-import formatStatus from '../../common/Status/status.component';
+import toaster from '../../common/Status/status.component'
 
 export default class User extends Component {
   constructor() {
@@ -97,16 +96,9 @@ export default class User extends Component {
       .then(res => {
         this.setState({
           users: res.data.data.users.page_items,
-          status: formatStatus(res.status),
           message: res.data.data.message,
         });
-        iziToast.show({
-          title: 'SUCCESS',
-          message: res.data.data.message,
-          position: 'topRight',
-          color: 'green',
-          progressBarColor: 'rgb(0, 255, 184)',
-        });
+        toaster(res.data.data.message);
       })
       .catch(err =>
         iziToast.error({
@@ -143,10 +135,7 @@ export default class User extends Component {
     };
 
     axios
-      .post(
-        `${config.API_BASE_URL}users?company_name=${this.state.value}`,
-        data,
-      )
+      .post(`${config.API_BASE_URL}users?company_name=${this.state.value}`, data)
       .then(res =>
         iziToast.show({
           title: 'SUCCESS',
@@ -154,24 +143,16 @@ export default class User extends Component {
           position: 'topRight',
           color: 'green',
           progressBarColor: 'rgb(0, 255, 184)',
-        }),
+          transitionIn: 'fadeInUp'
+        })
       )
       .catch(err =>
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
-        }),
+          position: 'topRight'
+        })
       );
-  };
-
-  showToaster = () => {
-    let { status, message } = this.state;
-    if (!toast.isActive(this.toastId)) {
-      this.toastId = toast[status](message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
   };
 
   /**
@@ -338,7 +319,6 @@ export default class User extends Component {
           </div>
         </div>
         {this.switchComponents()}
-        <ToastContainer />
         <div />
       </div>
     );

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Tab, Button } from 'semantic-ui-react';
-import { ToastContainer, toast } from 'react-toastify';
 import iziToast from 'izitoast';
 
 // Axios
@@ -76,12 +75,6 @@ export default class Admin extends Component {
         });
     });
   };
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
 
   panes = [
     {
@@ -95,7 +88,6 @@ export default class Admin extends Component {
             onClick={this.handleClick}
             loading={this.state.loading}
           />
-          <ToastContainer />
         </Tab.Pane>
       ),
     },

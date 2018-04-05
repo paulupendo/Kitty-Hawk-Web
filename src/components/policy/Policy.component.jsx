@@ -3,7 +3,7 @@ import { config } from '../../config';
 
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
-import { ToastContainer, toast } from 'react-toastify';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
@@ -14,7 +14,7 @@ import './Policy.css';
 // components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
-import formatStatus from '../../common/Status/status.component';
+import toaster from '../../common/Status/status.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import GetPolicies from './subComponents/GetPolicies/GetPolicies.component';
 
@@ -82,15 +82,15 @@ export default class Policy extends Component {
       .get(`${config.API_BASE_URL}policies?company_name=${this.state.value}`)
       .then(res => {
         this.setState({ policies: res.data.data.page_items });
+        toaster(res.data.data.message);
       })
-      .catch(err => err);
-  };
-
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
-    });
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
 
   /**
@@ -197,7 +197,6 @@ export default class Policy extends Component {
           </div>
         </div>
         {this.switchPolicyComponents()}
-        <ToastContainer />
       </div>
     );
   }

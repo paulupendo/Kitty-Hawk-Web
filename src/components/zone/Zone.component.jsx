@@ -109,13 +109,6 @@ export default class Zones extends Component {
       .catch(err => console.log('E', err));
   };
 
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
-
   /**
    * Handles change of active dropdowns
    * @member of UserComponent

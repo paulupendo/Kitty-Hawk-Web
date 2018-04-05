@@ -3,7 +3,7 @@ import { config } from '../../config';
 
 // third-part Libraries
 import { Dropdown, Button } from 'semantic-ui-react';
-import { ToastContainer, toast } from 'react-toastify';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
@@ -15,7 +15,7 @@ import './Device.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 
 import SubHeader from '../../common/Subheader/SubHeader.component';
-import formatStatus from '../../common/Status/status.component';
+import toaster from '../../common/Status/status.component'
 import LoaderGraphic from '../../common/Loader/loader.component';
 import GetDevices from './subComponents/GetDevices/GetDevices.component';
 import GetDevice from '../device/subComponents/GetDevice/GetDevice.components';
@@ -100,29 +100,19 @@ export default class Device extends Component {
    */
   fetchDevices = () => {
     axios
-      .get(
-        `${config.API_BASE_URL}all-devices?company_name=${
-          this.state.value
-        }&page=1&limit=1`
-      )
+      .get(`${config.API_BASE_URL}all-devices?company_name=${this.state.value}&page=1&limit=1`)
       .then(res => {
-        this.setState({
-          devices: res.data.data.device.page_items,
-          showToaster: true,
-          status: formatStatus(res.status),
-          message: res.data.data.message
-        });
+        this.setState({ devices: res.data.data.device.page_items });
+        toaster(res.data.data.message);
       })
-      .catch(err => err);
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
-
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
-    });
-  };
-
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -184,7 +174,6 @@ export default class Device extends Component {
             ) : (
               <Fragment>
                 <GetDevices devices={this.state.devices} />
-                {this.state.showToaster && this.showToaster()}
               </Fragment>
             )}
           </div>
@@ -262,7 +251,6 @@ export default class Device extends Component {
           </div>
         </div>
         {this.switchDeviceComponents()}
-        <ToastContainer />
       </div>
     );
   }

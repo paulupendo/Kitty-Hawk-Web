@@ -17,7 +17,7 @@ import './Threat.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
-import formatStatus from '../../common/Status/status.component';
+import toaster from '../../common/Status/status.component';
 import GetThreat from './subComponents/GetThreat/GetThreat.component';
 import GetThreats from './subComponents/GetThreats/GetThreats.component';
 
@@ -86,25 +86,15 @@ export default class Threat extends Component {
     axios
       .get(`${config.API_BASE_URL}threats?company_name=${this.state.value}`)
       .then(res => {
-        this.setState({
-          threats: res.data.data.policy.page_items,
-          status: formatStatus(res.status),
-          message: res.data.data.message,
-        });
-        iziToast.show({
-          title: 'SUCCESS',
-          message: res.data.data.message,
-          position: 'topRight',
-          color: 'green',
-          progressBarColor: 'rgb(0, 255, 184)',
-        });
+        this.setState({ threats: res.data.data.policy.page_items });
+        toaster(res.data.data.message);
       })
       .catch(err =>
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
-        }),
+          position: 'topRight'
+        })
       );
   };
 

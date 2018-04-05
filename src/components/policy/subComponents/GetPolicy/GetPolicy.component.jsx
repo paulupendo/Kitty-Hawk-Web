@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Input, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
-
+import iziToast from 'izitoast';
 // axios
 import axios from 'axios';
 
 // styles
 import './GetPolicy.css';
+// components
+import toaster from '../../../../common/Status/status.component';
 
 class GetDevice extends Component {
   constructor() {
@@ -24,10 +26,16 @@ class GetDevice extends Component {
         }&device_id=${this.state.searchTerm}`
       )
       .then(res => {
-        this.setState({
-          device: res.data.data.device
-        });
-      });
+        this.setState({ device: res.data.data.device });
+        toaster(res.data.data.message);
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
   /**
    * This method handles adding input for name, description, level and paths properties
