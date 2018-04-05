@@ -5,6 +5,7 @@ import { config } from '../../config';
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
 import { ToastContainer, toast } from 'react-toastify';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
@@ -17,8 +18,8 @@ import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import formatStatus from '../../common/Status/status.component';
-import  GetThreat from './subComponents/GetThreat/GetThreat.component'
-import GetThreats from './subComponents/GetThreats/GetThreats.component'
+import GetThreat from './subComponents/GetThreat/GetThreat.component';
+import GetThreats from './subComponents/GetThreats/GetThreats.component';
 
 export default class Threat extends Component {
   constructor() {
@@ -35,18 +36,22 @@ export default class Threat extends Component {
       status: '',
       message: '',
       loading: true,
-      disabled: true
+      disabled: true,
     };
   }
   data = [
     { key: 'POST-threat', value: 'Get Threat', text: 'Get Threat' },
     { key: 'GET-threats', value: 'Get Threats', text: 'Get Threats' },
-    { key: 'PUT-threats', value: 'Get Threat Devices', text: 'Get Threat Devices' },
+    {
+      key: 'PUT-threats',
+      value: 'Get Threat Devices',
+      text: 'Get Threat Devices',
+    },
     {
       key: 'GET-threat',
       value: 'Get Threat Download URL',
-      text: 'Get Threat Download URL'
-    }
+      text: 'Get Threat Download URL',
+    },
   ];
 
   /**
@@ -63,9 +68,9 @@ export default class Threat extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
@@ -83,21 +88,33 @@ export default class Threat extends Component {
       .then(res => {
         this.setState({
           threats: res.data.data.policy.page_items,
-          showToaster: true,
           status: formatStatus(res.status),
-          message: res.data.data.message
+          message: res.data.data.message,
+        });
+        iziToast.show({
+          title: 'SUCCESS',
+          message: res.data.data.message,
+          position: 'topRight',
+          color: 'green',
+          progressBarColor: 'rgb(0, 255, 184)',
         });
       })
-      .catch(err => err);
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight',
+        }),
+      );
   };
 
   showToaster = () => {
     let { status, message } = this.state;
     toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
+      position: toast.POSITION.TOP_RIGHT,
     });
   };
-  
+
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -106,7 +123,7 @@ export default class Threat extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
     switch (value) {
       case 'Get Threats':
@@ -139,10 +156,12 @@ export default class Threat extends Component {
           </div>
         );
       case 'Get Threats':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
             <GetThreats threats={this.state.threats} />
-          </div>;
+          </div>
+        );
       case 'Get Threatg Devices':
         return (
           <div>
