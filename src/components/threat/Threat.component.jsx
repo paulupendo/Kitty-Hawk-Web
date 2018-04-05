@@ -39,7 +39,7 @@ export default class Threat extends Component {
     };
   }
   data = [
-    { key: 'POST-threat', value: 'Get Threat ', text: 'Get Threat' },
+    { key: 'POST-threat', value: 'Get Threat', text: 'Get Threat' },
     { key: 'GET-threats', value: 'Get Threats', text: 'Get Threats' },
     { key: 'PUT-threats', value: 'Get Threat Devices', text: 'Get Threat Devices' },
     {
@@ -77,12 +77,12 @@ export default class Threat extends Component {
    * @member of GetUser Component
    * @returns {=>Promise<TResult2|TResult1>}
    */
-  fetchUsers = () => {
+  getThreats = () => {
     axios
-      .get(`${config.API_BASE_URL}all-users?company_name=${this.state.value}`)
+      .get(`${config.API_BASE_URL}threats?company_name=${this.state.value}`)
       .then(res => {
         this.setState({
-          users: res.data.data.users.page_items,
+          threats: res.data.data.policy.page_items,
           showToaster: true,
           status: formatStatus(res.status),
           message: res.data.data.message
@@ -111,6 +111,7 @@ export default class Threat extends Component {
     switch (value) {
       case 'Get Threats':
         this.setState({ method: 'GET' });
+        this.getThreats();
         break;
       case 'Get Threat':
         this.setState({ method: 'GET' });
@@ -140,7 +141,7 @@ export default class Threat extends Component {
       case 'Get Threats':
         return <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetThreats />
+            <GetThreats threats={this.state.threats} />
           </div>;
       case 'Get Threatg Devices':
         return (
