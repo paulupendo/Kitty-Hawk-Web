@@ -6,27 +6,27 @@ import { config } from '../../../../config';
 import axios from 'axios';
 
 // styles
-import './GetZone.css';
+import './GetThreat.css';
 
-class GetZone extends Component {
+class GetThreat extends Component {
   constructor() {
     super();
     this.state = {
       searchTerm: '',
-      zone: {}
+      threat: {}
     };
   }
 
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}zones/${this.state.searchTerm}?company_name=${
+        `${config.API_BASE_URL}threats/${this.state.searchTerm}?company_name=${
           this.props.value
         }`
       )
       .then(res => {
         this.setState({
-          zone: res.data.data
+          threat: res.data.data
         });
       });
   };
@@ -44,17 +44,17 @@ class GetZone extends Component {
 
   render() {
     return (
-      <div className="get-zone">
+      <div className="get-threat">
         <Segment>
-          <span> zone ID </span>
+          <span> threat ID </span>
           <br />
           <Input
-            placeholder="Enter zone ID to Search..."
+            placeholder="Enter threat ID to Search..."
             onChange={this.handleInput}
           />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
-        <div className="zone-table">
+        <div className="threat-table">
           <Table color="green" striped>
             <Table.Header>
               <Table.Row>
@@ -65,19 +65,19 @@ class GetZone extends Component {
                 <Table.HeaderCell>Date Offline</Table.HeaderCell>
                 <Table.HeaderCell>Host Name</Table.HeaderCell>
               </Table.Row>
-              {Object.keys(this.state.zone).length >= 1 &&
-                [this.state.zone].map(zone => {
+              {/* {Object.keys(this.state.threat).length >= 1 &&
+                [this.state.threat].map(threat => {
                   return (
-                    <Table.Row key={zone.id}>
-                      <Table.Cell>{zone.name || 'None'}</Table.Cell>
-                      <Table.Cell>{zone.criticality}</Table.Cell>
-                      <Table.Cell>{zone.policy_id}</Table.Cell>
-                      <Table.Cell>{zone.update_type}</Table.Cell>
-                      <Table.Cell>{zone.date_created}</Table.Cell>
-                      <Table.Cell>{zone.date_modified}</Table.Cell>
+                    <Table.Row key={threat.id}>
+                      <Table.Cell>{threat.name || 'None'}</Table.Cell>
+                      <Table.Cell>{threat.criticality}</Table.Cell>
+                      <Table.Cell>{threat.policy_id}</Table.Cell>
+                      <Table.Cell>{threat.update_type}</Table.Cell>
+                      <Table.Cell>{threat.date_created}</Table.Cell>
+                      <Table.Cell>{threat.date_modified}</Table.Cell>
                     </Table.Row>
                   );
-                })}
+                })} */}
             </Table.Header>
           </Table>
         </div>
@@ -86,4 +86,4 @@ class GetZone extends Component {
   }
 }
 
-export default GetZone;
+export default GetThreat;

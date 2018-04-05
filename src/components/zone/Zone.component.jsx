@@ -19,6 +19,8 @@ import LoaderGraphic from '../../common/Loader/loader.component';
 import formatStatus from '../../common/Status/status.component';
 import CreateZones from '../zone/subComponents/CreateZones/CreateZones.component';
 import GetZones from '../zone/subComponents/GetZones/GetZones.component';
+import GetZone from './subComponents/GetZone/GetZone.component';
+import DeviceZones from './subComponents/DeviceZones/DeviceZones.component'
 
 export default class Zones extends Component {
   constructor() {
@@ -136,6 +138,9 @@ export default class Zones extends Component {
       case 'Get Device Zones':
         this.setState({ method: 'GET' });
         break;
+      case 'Get Zone':
+        this.setState({ method: 'GET' });
+        break;
       default:
         break;
     }
@@ -181,9 +186,15 @@ export default class Zones extends Component {
           </div>
         );
       case 'Get Device Zones':
+        return <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <DeviceZones value={this.state.value}/>
+          </div>;
+      case 'Get Zone':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetZone value={this.state.value}/>
           </div>
         );
     }
