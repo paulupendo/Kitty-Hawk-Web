@@ -6,9 +6,9 @@ import { config } from '../../../../config';
 import axios from 'axios';
 
 // styles
-import './GetZone.css';
+import './DeviceZones.css';
 
-class GetZone extends Component {
+class DeviceZones extends Component {
   constructor() {
     super();
     this.state = {
@@ -44,7 +44,7 @@ class GetZone extends Component {
 
   render() {
     return (
-      <div className="get-zone">
+      <div className="get-device-zone">
         <Segment>
           <span> zone ID </span>
           <br />
@@ -65,7 +65,7 @@ class GetZone extends Component {
                 <Table.HeaderCell>Date Offline</Table.HeaderCell>
                 <Table.HeaderCell>Host Name</Table.HeaderCell>
               </Table.Row>
-              {Object.keys(this.state.zone).length >= 1 &&
+              {/* {Object.keys(this.state.zone).length >= 1 &&
                 [this.state.zone].map(zone => {
                   return (
                     <Table.Row key={zone.id}>
@@ -77,7 +77,7 @@ class GetZone extends Component {
                       <Table.Cell>{zone.date_modified}</Table.Cell>
                     </Table.Row>
                   );
-                })}
+                })} */}
             </Table.Header>
           </Table>
         </div>
@@ -86,4 +86,4 @@ class GetZone extends Component {
   }
 }
 
-export default GetZone;
+export default DeviceZones;

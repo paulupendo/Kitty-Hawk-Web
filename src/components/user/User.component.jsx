@@ -37,7 +37,7 @@ export default class User extends Component {
       message: '',
       loading: true,
       disabled: true,
-      toastId : null,
+      toastId: null
     };
   }
 
@@ -92,11 +92,12 @@ export default class User extends Component {
 
   showToaster = () => {
     let { status, message } = this.state;
-    if (!toast.isActive(this.toastId)){
-      this.toastId = toast[status](message, { position : toast.POSITION.TOP_RIGHT
-       });
+    if (!toast.isActive(this.toastId)) {
+      this.toastId = toast[status](message, {
+        position: toast.POSITION.TOP_RIGHT
+      });
     }
-  }
+  };
 
   /**
    * Handles change of active dropdowns
@@ -228,7 +229,11 @@ export default class User extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value, disabled: false });
+                  this.setState({
+                    value,
+                    disabled: false,
+                    showToaster: false
+                  });
                 }}
                 options={this.state.companies}
                 loading={this.state.loading}

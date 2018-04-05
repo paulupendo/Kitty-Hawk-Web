@@ -17,13 +17,15 @@ import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import formatStatus from '../../common/Status/status.component';
+import  GetThreat from './subComponents/GetThreat/GetThreat.component'
+import GetThreats from './subComponents/GetThreats/GetThreats.component'
 
-export default class Policy extends Component {
+export default class Threat extends Component {
   constructor() {
     super();
     this.state = {
-      activeComponent: 'Get Threats',
-      selection: 'Get Threats',
+      activeComponent: 'Get Threat',
+      selection: 'Get Threat',
       endpoint: '/users/v2',
       method: 'GET',
       threats: [],
@@ -132,14 +134,14 @@ export default class Policy extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetThreat />
           </div>
         );
       case 'Get Threats':
-        return (
-          <div>
+        return <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-          </div>
-        );
+            <GetThreats />
+          </div>;
       case 'Get Threatg Devices':
         return (
           <div>
@@ -155,7 +157,7 @@ export default class Policy extends Component {
    */
   render() {
     return (
-      <div className="policy-container">
+      <div className="threat-container">
         <BreadcrumbComponent
           page="Threat API"
           selection={this.state.selection}
