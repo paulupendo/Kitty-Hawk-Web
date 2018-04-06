@@ -4,7 +4,6 @@ import { config } from '../../config';
 
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
-import { ToastContainer, toast } from 'react-toastify';
 import iziToast from 'izitoast';
 
 // axios
@@ -32,11 +31,8 @@ export default class Threat extends Component {
       threats: [],
       companies: [],
       value: '',
-      showToaster: false,
-      status: '',
-      message: '',
       loading: true,
-      disabled: true,
+      disabled: true
     };
   }
   data = [
@@ -45,13 +41,13 @@ export default class Threat extends Component {
     {
       key: 'PUT-threats',
       value: 'Get Threat Devices',
-      text: 'Get Threat Devices',
+      text: 'Get Threat Devices'
     },
     {
       key: 'GET-threat',
       value: 'Get Threat Download URL',
-      text: 'Get Threat Download URL',
-    },
+      text: 'Get Threat Download URL'
+    }
   ];
 
   /**
@@ -68,9 +64,9 @@ export default class Threat extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company,
+              text: company
             };
-          }),
+          })
         });
       })
       .catch(err => err);
@@ -98,13 +94,6 @@ export default class Threat extends Component {
       );
   };
 
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
-
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -113,7 +102,7 @@ export default class Threat extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value,
+      selection: value
     });
     switch (value) {
       case 'Get Threats':
@@ -149,7 +138,11 @@ export default class Threat extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetThreats threats={this.state.threats} />
+            {this.state.threats.length === 0 ? (
+              <LoaderGraphic />
+            ) : (
+              <GetThreats threats={this.state.threats} />
+            )}
           </div>
         );
       case 'Get Threatg Devices':

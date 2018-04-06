@@ -19,7 +19,7 @@ import SubHeader from './SubHeader.component';
 import CreateUser from './subComponents/CreateUser/CreateUser.component';
 import UpdateUser from './subComponents/UpdateUser/UpdateUser.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
-import toaster from '../../common/Status/status.component'
+import toaster from '../../common/Status/status.component';
 
 export default class User extends Component {
   constructor() {
@@ -43,7 +43,7 @@ export default class User extends Component {
       last_name: null,
       user_role: null,
       email: null,
-      zoneId: null,
+      zoneId: null
     };
   }
 
@@ -51,7 +51,7 @@ export default class User extends Component {
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
     { key: 'PUT-user', value: 'Update User', text: 'Update User' },
     { key: 'GET-users', value: 'Get Users', text: 'Get Users' },
-    { key: 'GET-user', value: 'Get User', text: 'Get User' },
+    { key: 'GET-user', value: 'Get User', text: 'Get User' }
   ];
 
   /**
@@ -68,9 +68,9 @@ export default class User extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company,
+              text: company
             };
-          }),
+          })
         });
       })
       .catch(err => err);
@@ -96,7 +96,7 @@ export default class User extends Component {
       .then(res => {
         this.setState({
           users: res.data.data.users.page_items,
-          message: res.data.data.message,
+          message: res.data.data.message
         });
         toaster(res.data.data.message);
       })
@@ -104,8 +104,8 @@ export default class User extends Component {
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
-        }),
+          position: 'topRight'
+        })
       );
   };
 
@@ -129,13 +129,16 @@ export default class User extends Component {
       zones: [
         {
           id: this.state.zoneId,
-          role_type: user_role,
-        },
-      ],
+          role_type: user_role
+        }
+      ]
     };
 
     axios
-      .post(`${config.API_BASE_URL}users?company_name=${this.state.value}`, data)
+      .post(
+        `${config.API_BASE_URL}users?company_name=${this.state.value}`,
+        data
+      )
       .then(res =>
         iziToast.show({
           title: 'SUCCESS',
@@ -153,8 +156,17 @@ export default class User extends Component {
           position: 'topRight'
         })
       );
+      this.cleanForms()
   };
-
+  cleanForms = () => {
+    this.setState({
+      first_name: '',
+      last_name: '',
+      user_role: '',
+      email: '',
+      zoneId: ''
+    });
+  };
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -163,7 +175,7 @@ export default class User extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value,
+      selection: value
     });
     switch (value) {
       case 'Create User':
@@ -208,12 +220,7 @@ export default class User extends Component {
             {this.state.users.length === 0 ? (
               <LoaderGraphic />
             ) : (
-              <Fragment>
-                <div>
-                  <GetUsers users={this.state.users} />
-                  {this.state.showToaster && this.showToaster()}
-                </div>
-              </Fragment>
+              <GetUsers users={this.state.users} />
             )}
           </div>
         );
@@ -294,7 +301,7 @@ export default class User extends Component {
                   this.setState({
                     value,
                     disabled: false,
-                    showToaster: false,
+                    showToaster: false
                   });
                 }}
                 options={this.state.companies}

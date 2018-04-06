@@ -6,6 +6,7 @@ import './GetThreats.css';
 class GetThreats extends Component {
   render() {
     const { threats } = this.props;
+    const length = 30;
     return (
       <div className="Threats table">
         <Table color="green" striped>
@@ -24,11 +25,11 @@ class GetThreats extends Component {
             {threats.map(threat => {
               return (
                 <Table.Row key={threat.id}>
-                  <Table.Cell>{threat.name}</Table.Cell>
-                  <Table.Cell>{threat.classification}</Table.Cell>
+                  <Table.Cell width={1}>{threat.name}</Table.Cell>
+                  <Table.Cell>{threat.classification || 'None'}</Table.Cell>
                   <Table.Cell>{threat.cylance_score}</Table.Cell>
                   <Table.Cell>{threat.file_size}</Table.Cell>
-                  <Table.Cell>{threat.global_quarantined}</Table.Cell>
+                  <Table.Cell>{threat.global_quarantined.toString()}</Table.Cell>
                   <Table.Cell>{threat.unique_to_cylance}</Table.Cell>
                   <Table.Cell>{threat.av_industry}</Table.Cell>
                 </Table.Row>

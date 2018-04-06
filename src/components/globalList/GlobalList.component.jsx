@@ -15,7 +15,7 @@ import './Global.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
-import formatStatus from '../../common/Status/status.component';
+import toaster from '../../common/Status/status.component';
 import AddGlobalList from './subComponents/AddGlobalList/AddToGloabalList.component';
 import GetGlobalList from './subComponents/GetGlobalList/GetGlobalList.component';
 
@@ -30,9 +30,10 @@ export default class Global extends Component {
       globalist: [],
       companies: [],
       value: '',
-      showToaster: false,
-      status: '',
-      message: '',
+      sha256: '',
+      list_type: '',
+      category: '',
+      reason: '',
       loading: true,
       disabled: true
     };
@@ -90,13 +91,19 @@ export default class Global extends Component {
       .catch(err => err);
   };
 
-  showToaster = () => {
-    let { status, message } = this.state;
-    toast[status](message, {
-      position: toast.POSITION.TOP_RIGHT
-    });
+  createGlobalList = () => {
+    let { sha256, list_type, category, reason } = this.state;
+    let data = { sha256, list_type, category, reason };
+
+    axios.post ().then (res => console.log(res)).catch(err => err)
   };
 
+  handeleCreateGlobalList = (e, key) => {
+    this.setState({
+      [key]: e.target.value
+    });
+  }
+  
   /**
    * Handles change of active dropdowns
    * @member of UserComponent

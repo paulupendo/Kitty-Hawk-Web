@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
+
+// Third party libraries 
+import iziToast from 'izitoast';
+import { Input, Segment, Button, Table } from 'semantic-ui-react';
 
 // axios
 import axios from 'axios';
@@ -8,6 +11,8 @@ import axios from 'axios';
 // styles
 import './DeviceThreats.css';
 
+// Components
+import toaster from '../../../../common/Status/status.component'
 class GetDeviceThreats extends Component {
   constructor() {
     super();
@@ -24,10 +29,16 @@ class GetDeviceThreats extends Component {
         }&device_id=${this.state.searchTerm}&page=<1>&limit=<1>`
       )
       .then(res => {
-        this.setState({
-          deviceThreats: res.data.data.device.page_items
-        });
-      });
+        this.setState({ deviceThreats: res.data.data.device.page_items });
+        toaster(res.data.data.message);
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
   /**
    * This method handles adding input for name, description, level and paths properties
@@ -42,11 +53,15 @@ class GetDeviceThreats extends Component {
   };
 
   render() {
-    return <div className="get-device-threats">
+    return (
+      <div className="get-device-threats">
         <Segment>
           <span> Unique Device ID </span>
           <br />
-          <Input placeholder="Enter User ID to Search..." onChange={this.handleInput} />
+          <Input
+            placeholder="Enter User ID to Search..."
+            onChange={this.handleInput}
+          />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="user-table">
@@ -61,19 +76,22 @@ class GetDeviceThreats extends Component {
                 <Table.HeaderCell>Sub Classification</Table.HeaderCell>
               </Table.Row>
               {this.state.deviceThreats.map(threats => {
-                return <Table.Row key={threats.id}>
+                return (
+                  <Table.Row key={threats.id}>
                     <Table.Cell>{threats.name}</Table.Cell>
                     <Table.Cell>{threats.classification} </Table.Cell>
                     <Table.Cell>{threats.cylance_score}</Table.Cell>
                     <Table.Cell>{threats.date_found}</Table.Cell>
                     <Table.Cell>{threats.file_status}</Table.Cell>
                     <Table.Cell>{threats.sub_classification}</Table.Cell>
-                  </Table.Row>;
+                  </Table.Row>
+                );
               })}
             </Table.Header>
           </Table>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 

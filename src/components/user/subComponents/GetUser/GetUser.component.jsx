@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
-import { ToastContainer, toast } from 'react-toastify';
+// Third Party components
 import iziToast from 'izitoast';
 
 // axios
@@ -12,7 +12,7 @@ import axios from 'axios';
 import './GetUser.css';
 
 // components
-import formatStatus from '../../../../common/Status/status.component';
+import toaster from '../../../../common/Status/status.component';
 
 class GetUser extends Component {
   constructor() {
@@ -43,9 +43,6 @@ class GetUser extends Component {
           .then(res => {
             this.setState({
               user: res.data.data.user,
-              error: false,
-              status: formatStatus(res.status),
-              message: res.data.data.message,
             });
             iziToast.show({
               title: 'SUCCESS',
@@ -56,26 +53,12 @@ class GetUser extends Component {
             });
           })
           .catch(err => {
-            this.setState({
-              error: false,
-              status: formatStatus('500'),
-              message: err.message,
-            });
             iziToast.error({
               title: 'Error',
               message: 'An error occured!',
               position: 'topRight',
             });
           });
-  };
-
-  showToaster = () => {
-    let { status, message } = this.state;
-    if (!toast.isActive(this.toastId)) {
-      this.toastId = toast[status](message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
   };
 
   /**
@@ -129,7 +112,6 @@ class GetUser extends Component {
             </Table.Header>
           </Table>
           {this.state.showToaster && this.showToaster()}
-          <ToastContainer />
         </div>
       </div>
     );
