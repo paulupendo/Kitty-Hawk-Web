@@ -4,12 +4,14 @@
   border: none;
   box-shadow: none;
   background: #f3f5f7;
-  height: 20rem;
+  height: 18rem;
   padding: 1.3rem 1.5rem;
   border-radius: 5px;
   .btns {
     display: flex;
     flex-direction: column;
+    margin-top: 2rem;
+    margin-left: 2rem;
     .btns-row {
       display: flex;
       flex-direction: row;
@@ -28,7 +30,6 @@
       }
       .ui.input > input {
         border-radius: 8px;
-        max-width: 13rem;
         &:focus {
           border: solid 1px #38b557;
         }

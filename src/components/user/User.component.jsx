@@ -43,7 +43,8 @@ export default class User extends Component {
       last_name: null,
       user_role: null,
       email: null,
-      zoneId: null
+      zoneId: null,
+      user_id: null,
     };
   }
 
@@ -51,7 +52,7 @@ export default class User extends Component {
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
     { key: 'PUT-user', value: 'Update User', text: 'Update User' },
     { key: 'GET-users', value: 'Get Users', text: 'Get Users' },
-    { key: 'GET-user', value: 'Get User', text: 'Get User' }
+    { key: 'GET-user', value: 'Get User', text: 'Get User' },
   ];
 
   /**
@@ -68,19 +69,19 @@ export default class User extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
   }
 
-  handleCreateUserChange = (e, key) => {
+  handleInputChange = (e, key) => {
     this.setState({ [key]: e.target.value });
   };
 
-  handleCreateUserDropDown = (e, { value }) => {
+  handleUserRoleDropDown = (e, { value }) => {
     this.setState({ user_role: value });
   };
 
@@ -96,7 +97,7 @@ export default class User extends Component {
       .then(res => {
         this.setState({
           users: res.data.data.users.page_items,
-          message: res.data.data.message
+          message: res.data.data.message,
         });
         toaster(res.data.data.message);
       })
@@ -104,8 +105,8 @@ export default class User extends Component {
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight'
-        })
+          position: 'topRight',
+        }),
       );
   };
 
@@ -129,15 +130,15 @@ export default class User extends Component {
       zones: [
         {
           id: this.state.zoneId,
-          role_type: user_role
-        }
-      ]
+          role_type: user_role,
+        },
+      ],
     };
 
     axios
       .post(
         `${config.API_BASE_URL}users?company_name=${this.state.value}`,
-        data
+        data,
       )
       .then(res => toaster(res.data.data.message))
       .catch(err => {
@@ -156,15 +157,69 @@ export default class User extends Component {
             });
       });
   };
+
   cleanForms = () => {
     this.setState({
       first_name: '',
       last_name: '',
       user_role: '',
       email: '',
-      zoneId: ''
+      zoneId: '',
     });
   };
+
+  updateUser = () => {
+    let user_role;
+    let { user_id, first_name, last_name, email } = this.state;
+
+    this.state.user_role === 'User'
+      ? (user_role = '00000000-0000-0000-0000-000000000001')
+      : this.state.user_role === 'Administrator'
+        ? (user_role = '00000000-0000-0000-0000-000000000002')
+        : this.state.user_role === 'Zone Manager'
+          ? (user_role = '00000000-0000-0000-0000-000000000003')
+          : (user_role = '00000000-0000-0000-0000-000000000000');
+
+    let data = {
+      email,
+      user_role,
+      first_name,
+      last_name,
+      zones: [
+        {
+          id: this.state.zoneId,
+          role_type: user_role,
+        },
+      ],
+    };
+
+    axios
+      .put(
+        `${config.API_BASE_URL}users/${user_id}?company_name=${
+          this.state.value
+        }`,
+        data,
+      )
+      .then(res => {
+        iziToast.show({
+          title: 'SUCCESS',
+          message: res.data.message,
+          position: 'topRight',
+          color: 'green',
+          progressBarColor: 'rgb(0, 255, 184)',
+          transitionIn: 'fadeInUp',
+        });
+      })
+      .catch(err => {
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight',
+        });
+      });
+    this.cleanForms();
+  };
+
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -173,7 +228,7 @@ export default class User extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
     switch (value) {
       case 'Create User':
@@ -230,8 +285,8 @@ export default class User extends Component {
             User being created"
             />
             <CreateUser
-              handleChange={this.handleCreateUserChange}
-              handleDropDownChange={this.handleCreateUserDropDown}
+              handleChange={this.handleInputChange}
+              handleDropDownChange={this.handleUserRoleDropDown}
             />
             <div className="btn-bottom">
               <Button content="CREATE USER" onClick={this.createUser} />
@@ -242,9 +297,12 @@ export default class User extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to update an existing Console User resource." />
-            <UpdateUser />
+            <UpdateUser
+              handleInputChange={this.handleInputChange}
+              handleUserRoleDropDown={this.handleUserRoleDropDown}
+            />
             <div className="btn-bottom">
-              <Button content="UPDATE" />
+              <Button content="UPDATE" onClick={this.updateUser} />
             </div>
           </div>
         );
@@ -271,8 +329,8 @@ export default class User extends Component {
               User being created"
             />
             <CreateUser
-              handleChange={this.handleCreateUserChange}
-              handleDropDownChange={this.handleCreateUserDropDown}
+              handleChange={this.handleInputChange}
+              handleDropDownChange={this.handleUserRoleDropDown}
             />
             <Button content="CREATE USER" onClick={this.createUser} />
           </div>
@@ -299,7 +357,7 @@ export default class User extends Component {
                   this.setState({
                     value,
                     disabled: false,
-                    showToaster: false
+                    showToaster: false,
                   });
                 }}
                 options={this.state.companies}

@@ -11,6 +11,7 @@ class GetUsers extends Component {
         <Table color="green" striped>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell>User Id</Table.HeaderCell>
               <Table.HeaderCell>First Name</Table.HeaderCell>
               <Table.HeaderCell>Last Name</Table.HeaderCell>
               <Table.HeaderCell>Email</Table.HeaderCell>
@@ -19,20 +20,18 @@ class GetUsers extends Component {
           </Table.Header>
           <Table.Body>
             {users.map(user => {
-              return (<Table.Row key={user.id}>
-                  <Table.Cell>
-                    {user.first_name || 'No Name'}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {user.last_name || 'No Name'}
-                  </Table.Cell>
+              return (
+                <Table.Row key={user.id}>
+                  <Table.Cell>{user.id || 'No Id'}</Table.Cell>
+                  <Table.Cell>{user.first_name || 'No Name'}</Table.Cell>
+                  <Table.Cell>{user.last_name || 'No Name'}</Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>{user.role_name}</Table.Cell>
-                </Table.Row>)
+                </Table.Row>
+              );
             })}
           </Table.Body>
         </Table>
-
       </div>
     );
   }
