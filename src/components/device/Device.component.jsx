@@ -15,13 +15,15 @@ import './Device.css';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 
 import SubHeader from '../../common/Subheader/SubHeader.component';
-import toaster from '../../common/Status/status.component'
+import toaster from '../../common/Status/status.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import GetDevices from './subComponents/GetDevices/GetDevices.component';
 import GetDevice from '../device/subComponents/GetDevice/GetDevice.components';
 import GetDeviceThreats from '../device/subComponents/GetDeviceThreats/GetDeviceThreats.component';
 import GetZoneDevices from '../device/subComponents/GetZoneDevices/GetZoneDevices.component';
 import GetByMACAddress from '../device/subComponents/GetDevicebyMACAddress/GetByMACAddress.componet';
+import UpdateDevice from './subComponents/UpdateDevice/UpdateDevice.component';
+import DeleteDevices from './subComponents/DeleteDevices/DeleteDevices.component';
 
 export default class Device extends Component {
   constructor() {
@@ -46,11 +48,6 @@ export default class Device extends Component {
       key: 'GET-device-threats',
       value: 'Get Device Threats',
       text: 'Get Device Threats'
-    },
-    {
-      key: 'PUT-device-threat',
-      value: 'Update Device Threat ',
-      text: 'Update Device Threat'
     },
     {
       key: 'GET-device-zone',
@@ -100,9 +97,15 @@ export default class Device extends Component {
    */
   fetchDevices = () => {
     axios
-      .get(`${config.API_BASE_URL}all-devices?company_name=${this.state.value}&page=1&limit=1`)
+      .get(
+        `${config.API_BASE_URL}all-devices?company_name=${
+          this.state.value
+        }&page=1&limit=1`
+      )
       .then(res => {
-        this.setState({ devices: res.data.data.device.page_items });
+        this.setState({
+          devices: res.data.data.device.page_items
+        });
         toaster(res.data.data.message);
       })
       .catch(err =>
@@ -165,6 +168,16 @@ export default class Device extends Component {
    */
   switchDeviceComponents = () => {
     switch (this.state.activeComponent) {
+      case 'Update Device':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <UpdateDevice />
+            <div className="btn-bottom">
+              <Button content="UPDATE DEVICE" />
+            </div>
+          </div>
+        );
       case 'Get Devices':
         return (
           <div>
@@ -205,6 +218,13 @@ export default class Device extends Component {
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
             <GetByMACAddress value={this.state.value} />
+          </div>
+        );
+      case 'Delete Devices':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <DeleteDevices />
           </div>
         );
     }

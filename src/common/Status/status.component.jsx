@@ -2,7 +2,7 @@
 import iziToast from 'izitoast';
 
 const toaster = (message)=> {
-  iziToast.show({
+  iziToast.success({
     title: 'SUCCESS',
     position: 'topRight',
     color: '#BBF3CA',

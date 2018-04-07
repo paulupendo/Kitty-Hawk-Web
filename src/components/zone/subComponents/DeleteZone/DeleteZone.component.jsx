@@ -6,9 +6,9 @@ import { config } from '../../../../config';
 import axios from 'axios';
 
 // styles
-import './DeleteDevices.css';
+import './DeleteZone.css';
 
-class DeleteDevices extends Component {
+class DeleteZone extends Component {
   constructor() {
     super();
     this.state = {
@@ -44,19 +44,16 @@ class DeleteDevices extends Component {
 
   render() {
     return (
-      <div className="delete-device">
+      <div className="get-threat">
         <Segment>
           <span> threat ID </span>
           <br />
-          <Input
-            placeholder="Enter Device ID"
-            onChange={this.handleInput}
-          />
-          <Button onClick={this.handleClick}>DELETE DEVICE</Button>
+          <Input placeholder="Enter Device ID" onChange={this.handleInput} />
+          <Button onClick={this.handleClick}>DELETE ZONE</Button>
         </Segment>
       </div>
     );
   }
 }
 
-export default DeleteDevices;
+export default DeleteZone;

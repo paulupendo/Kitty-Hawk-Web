@@ -140,24 +140,22 @@ export default class User extends Component {
         `${config.API_BASE_URL}users?company_name=${this.state.value}`,
         data,
       )
-      .then(res =>
-        iziToast.show({
-          title: 'SUCCESS',
-          message: res.data.data.message,
-          position: 'topRight',
-          color: 'green',
-          progressBarColor: 'rgb(0, 255, 184)',
-          transitionIn: 'fadeInUp',
-        }),
-      )
-      .catch(err =>
-        iziToast.error({
-          title: 'Error',
-          message: 'An error occured!',
-          position: 'topRight',
-        }),
-      );
-    this.cleanForms();
+      .then(res => toaster(res.data.data.message))
+      .catch(err => {
+        this.state.value.length === 0 && err
+          ? iziToast.info({
+              title: 'Error',
+              message: 'Please Select a Company To Continue',
+              position: 'topRight',
+              transitionIn: 'bounceInLeft'
+            })
+          : iziToast.error({
+              title: 'Error',
+              message: 'An error occured!',
+              position: 'topRight',
+              transitionIn: 'bounceInLeft'
+            });
+      });
   };
 
   cleanForms = () => {
