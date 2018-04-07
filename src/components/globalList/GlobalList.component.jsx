@@ -3,7 +3,6 @@ import { config } from '../../config';
 
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
-import { ToastContainer, toast } from 'react-toastify';
 
 // axios
 import axios from 'axios';
@@ -12,12 +11,12 @@ import axios from 'axios';
 import './Global.css';
 
 // components
+import AddGlobalList from './subComponents/AddGlobalList/AddToGloabalList.component';
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
 import SubHeader from '../../common/Subheader/SubHeader.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
-import toaster from '../../common/Status/status.component';
-import AddGlobalList from './subComponents/AddGlobalList/AddToGloabalList.component';
 import GetGlobalList from './subComponents/GetGlobalList/GetGlobalList.component';
+import toaster from './../../common/Status/status.component';
 
 export default class Global extends Component {
   constructor() {
@@ -87,6 +86,7 @@ export default class Global extends Component {
         this.setState({
           globalist: res.data.data.page_items
         });
+        toaster('Global Lists fetched Successfully');
       })
       .catch(err => err);
   };
@@ -95,15 +95,25 @@ export default class Global extends Component {
     let { sha256, list_type, category, reason } = this.state;
     let data = { sha256, list_type, category, reason };
 
-    axios.post ().then (res => console.log(res)).catch(err => err)
+    axios
+      .post(
+        `${config.API_BASE_URL}global-lists?company_name=${this.state.value}`
+      )
+      .then(res => console.log(res))
+      .catch(err => err);
   };
 
   handeleCreateGlobalList = (e, key) => {
-    this.setState({
-      [key]: e.target.value
-    });
+    this.setState({ [key]: e.target.value });
+  };
+
+  handleDropDown(key) {
+    return (value) => {
+    this.setState({ [key]:value });
+    console.log(value)
+    }
   }
-  
+
   /**
    * Handles change of active dropdowns
    * @member of UserComponent
@@ -141,7 +151,10 @@ export default class Global extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <AddGlobalList />
+            <AddGlobalList
+              handleChange={this.handeleCreateGlobalList}
+              handleDropDown={this.handleDropDown}
+            />
           </div>
         );
       case 'Get Global List':
@@ -154,7 +167,6 @@ export default class Global extends Component {
               <Fragment>
                 <div>
                   <GetGlobalList globalist={this.state.globalist} />
-                  {this.state.showToaster && this.showToaster()}
                 </div>
               </Fragment>
             )}
@@ -189,7 +201,10 @@ export default class Global extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value, disabled: false });
+                  this.setState({
+                    value,
+                    disabled: false
+                  });
                 }}
                 options={this.state.companies}
                 loading={this.state.loading}
@@ -212,7 +227,6 @@ export default class Global extends Component {
           </div>
         </div>
         {this.switchGlobalComponents()}
-        <ToastContainer />
       </div>
     );
   }

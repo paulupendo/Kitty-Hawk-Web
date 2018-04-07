@@ -182,7 +182,7 @@ export default class Policy extends Component {
             </div>
             <div>
               <Dropdown
-                placeholder="Add To Global List"
+                placeholder="Create Policy"
                 fluid
                 selection
                 options={this.data}

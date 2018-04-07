@@ -20,7 +20,8 @@ import formatStatus from '../../common/Status/status.component';
 import CreateZones from '../zone/subComponents/CreateZones/CreateZones.component';
 import GetZones from '../zone/subComponents/GetZones/GetZones.component';
 import GetZone from './subComponents/GetZone/GetZone.component';
-import DeviceZones from './subComponents/DeviceZones/DeviceZones.component'
+import DeviceZones from './subComponents/DeviceZones/DeviceZones.component';
+import DeleteZone from './subComponents/DeleteZone/DeleteZone.component';
 
 export default class Zones extends Component {
   constructor() {
@@ -41,7 +42,7 @@ export default class Zones extends Component {
       disabled: true,
       name: null,
       policyId: null,
-      criticality: null,
+      criticality: null
     };
   }
 
@@ -51,7 +52,7 @@ export default class Zones extends Component {
     { key: 'PUT-zones', value: 'Get Device Zones', text: 'Get Device Zones' },
     { key: 'GET-zone', value: 'Get Zone', text: 'Get Zone' },
     { key: 'PUT-zone', value: 'Update Zone', text: 'Update Zone' },
-    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' },
+    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' }
   ];
 
   /**
@@ -68,9 +69,9 @@ export default class Zones extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company,
+              text: company
             };
-          }),
+          })
         });
       })
       .catch(err => err);
@@ -87,7 +88,7 @@ export default class Zones extends Component {
       .get(`${config.API_BASE_URL}zones?company_name=${this.state.value}`)
       .then(res => {
         this.setState({
-          zones: res.data.data.page_items,
+          zones: res.data.data.page_items
         });
       })
       .catch(err => err);
@@ -97,13 +98,13 @@ export default class Zones extends Component {
     let data = {
       name: this.state.name,
       policy_id: this.state.policyId,
-      criticality: this.state.criticality,
+      criticality: this.state.criticality
     };
 
     axios
       .post(
         `${config.API_BASE_URL}zones?company_name=${this.state.value}`,
-        data,
+        data
       )
       .then(res => console.log(res))
       .catch(err => console.log('E', err));
@@ -117,7 +118,7 @@ export default class Zones extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value,
+      selection: value
     });
 
     switch (value) {
@@ -133,6 +134,9 @@ export default class Zones extends Component {
         break;
       case 'Get Zone':
         this.setState({ method: 'GET' });
+        break;
+      case 'Delete Zone':
+        this.setState({ method: 'DELETE' });
         break;
       default:
         break;
@@ -179,15 +183,24 @@ export default class Zones extends Component {
           </div>
         );
       case 'Get Device Zones':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <DeviceZones value={this.state.value}/>
-          </div>;
+            <DeviceZones value={this.state.value} />
+          </div>
+        );
       case 'Get Zone':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetZone value={this.state.value}/>
+            <GetZone value={this.state.value} />
+          </div>
+        );
+      case 'Delete Zone':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <DeleteZone />
           </div>
         );
     }
