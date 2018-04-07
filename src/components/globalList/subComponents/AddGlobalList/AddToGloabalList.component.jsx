@@ -6,9 +6,24 @@ import './GlobalList.css';
 
 const AddGlobalList = ({ handleChange, handleDropDown }) => {
   const ListOptions = [
+    { key: 'User', value: 'User', text: 'Global Quaratine' },
+    { key: 'Administrator', value: 'Administrator', text: 'Global Safe' }
+  ];
+  const Category = [
     { key: 'User', value: 'User', text: 'User' },
-    { key: 'Administrator', value: 'Administrator', text: 'Administrator' },
-    { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' }
+    { key: 'Administrator', value: 'Administrator', text: 'Admin Tool' },
+    {
+      key: 'Administrator',
+      value: 'Administrator',
+      text: 'Commercial Software'
+    },
+    { key: 'Administrator', value: 'Administrator', text: 'Drivers' },
+    {
+      key: 'Administrator',
+      value: 'Administrator',
+      text: 'Internal Application'
+    },
+    { key: 'Administrator', value: 'Administrator', text: 'Operating System' }
   ];
 
   return (
@@ -49,7 +64,7 @@ const AddGlobalList = ({ handleChange, handleDropDown }) => {
             <Dropdown
               selection
               placeholder="Select Role"
-              options={ListOptions}
+              options={Category}
               onChange={e => handleDropDown(e, 'category')}
             />
           </div>
