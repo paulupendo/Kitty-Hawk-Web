@@ -44,6 +44,7 @@ export default class Zones extends Component {
       name: null,
       policyId: null,
       criticality: null,
+      zone_id: null,
     };
   }
 
@@ -118,8 +119,12 @@ export default class Zones extends Component {
       criticality: this.state.criticality,
     };
 
+    let url_ = `${config.API_BASE_URL}zones/${
+      this.state.zone_id
+    }?company_name=${this.state.value}`;
+    console.log(data);
     axios
-      .put(`${config.API_BASE_URL}zones?company_name=${this.state.value}`, data)
+      .put(url_, data)
       .then(res => console.log(res))
       .catch(err => console.log('E', err));
   };
@@ -227,6 +232,7 @@ export default class Zones extends Component {
             <UpdateZones
               value={this.state.value}
               handleChange={this.handleZonesChange}
+              handleDropDownChange={this.handleDropDownChange}
             />
             <div className="btn-bottom">
               <Button content="UPDATE ZONE" onClick={this.updateZones_} />

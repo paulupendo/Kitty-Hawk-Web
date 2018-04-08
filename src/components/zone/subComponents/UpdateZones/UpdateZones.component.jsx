@@ -13,8 +13,16 @@ const UpdateZones = ({ handleChange, handleDropDownChange }) => {
 
   return (
     <div className="create-zones-container">
-      <div className="create-input">
+      <div className="update-input">
         <div className="btns-row">
+          <div>
+            <span>Zone Id</span>
+            <br />
+            <Input
+              placeholder="(required):{string}"
+              onChange={e => handleChange(e, 'zone_id')}
+            />
+          </div>
           <div>
             <span>Name</span>
             <br />
@@ -31,6 +39,8 @@ const UpdateZones = ({ handleChange, handleDropDownChange }) => {
               onChange={e => handleChange(e, 'policyId')}
             />
           </div>
+        </div>
+        <div className="btns-row">
           <div>
             <span>Criticality</span> <br />
             <Dropdown
