@@ -2,7 +2,7 @@
   padding: 6rem 5rem;
   width: 70%;
   @media (max-width: 1680px) {
-    width:90%;
+    width: 90%;
   }
   @media (max-width: 1280px) {
     width: 90%;
@@ -10,7 +10,7 @@
   @media (max-width: 960px) {
     width: 90%;
   }
-    .header-nav {
+  .header-nav {
     display: flex;
     flex-direction: row;
     padding-top: 35px;
@@ -44,5 +44,15 @@
       }
     }
   }
+  .btn-bottom {
+    .ui.button {
+      background: #38b557;
+      color: #fff;
+      font-weight: 400;
+      border-radius: 0.9rem;
+      margin-top: 1rem;
+      margin-right: -0.1rem;
+      float: right;
+    }
+  }
 }
-

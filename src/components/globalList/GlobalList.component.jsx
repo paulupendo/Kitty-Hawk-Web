@@ -3,6 +3,7 @@ import { config } from '../../config';
 
 // third-party libraries
 import { Dropdown, Button } from 'semantic-ui-react';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
@@ -97,22 +98,35 @@ export default class Global extends Component {
 
     axios
       .post(
-        `${config.API_BASE_URL}global-lists?company_name=${this.state.value}`
+        `${config.API_BASE_URL}global-lists?company_name=${this.state.value}`,
+        data
       )
-      .then(res => console.log(res))
-      .catch(err => err);
+      .then(res => toaster(res.data.data.message))
+      .catch(err => {
+        this.state.value.length === 0 && err
+          ? iziToast.info({
+              title: 'Error',
+              message: 'Please Select a Company To Continue',
+              position: 'topRight',
+              transitionIn: 'bounceInLeft',
+              timeout: 2000
+            })
+          : iziToast.error({
+              title: 'Error',
+              message: err.message,
+              position: 'topRight',
+              transitionIn: 'bounceInLeft'
+            });
+      });
   };
 
   handeleCreateGlobalList = (e, key) => {
     this.setState({ [key]: e.target.value });
   };
 
-  handleDropDown(key) {
-    return (value) => {
-    this.setState({ [key]:value });
-    console.log(value)
-    }
-  }
+  handleDropDown = (e, key, { value }) => {
+    this.setState({ [key]: value });
+  };
 
   /**
    * Handles change of active dropdowns
@@ -155,6 +169,12 @@ export default class Global extends Component {
               handleChange={this.handeleCreateGlobalList}
               handleDropDown={this.handleDropDown}
             />
+            <div className="btn-bottom">
+              <Button
+                content="ADD GLOBAL LIST"
+                onClick={this.createGlobalList}
+              />
+            </div>
           </div>
         );
       case 'Get Global List':

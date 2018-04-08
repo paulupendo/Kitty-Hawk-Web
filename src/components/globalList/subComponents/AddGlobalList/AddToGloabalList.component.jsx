@@ -6,24 +6,37 @@ import './GlobalList.css';
 
 const AddGlobalList = ({ handleChange, handleDropDown }) => {
   const ListOptions = [
-    { key: 'User', value: 'User', text: 'Global Quaratine' },
-    { key: 'Administrator', value: 'Administrator', text: 'Global Safe' }
+    {
+      key: 'GlobalQuarantine',
+      value: 'GlobalQuarantine',
+      text: 'Global Quarantine'
+    },
+    { key: 'GlobalSafe', value: 'GlobalSafe', text: 'Global Safe' }
   ];
   const Category = [
-    { key: 'User', value: 'User', text: 'User' },
-    { key: 'Administrator', value: 'Administrator', text: 'Admin Tool' },
+    { key: 'Admin Tool', value: 'Admin Tool', text: 'Admin Tool' },
     {
-      key: 'Administrator',
-      value: 'Administrator',
+      key: 'Commercial Software',
+      value: 'Commercial Software',
       text: 'Commercial Software'
     },
-    { key: 'Administrator', value: 'Administrator', text: 'Drivers' },
+    { key: 'Drivers', value: 'Drivers', text: 'Drivers' },
     {
-      key: 'Administrator',
-      value: 'Administrator',
+      key: 'Internal Application',
+      value: 'Internal Application',
       text: 'Internal Application'
     },
-    { key: 'Administrator', value: 'Administrator', text: 'Operating System' }
+    {
+      key: 'Operating System',
+      value: 'Operating System',
+      text: 'Operating System'
+    },
+    {
+      key: 'Security Software',
+      value: 'Security Software',
+      text: 'Security Software'
+    },
+    { key: 'None', value: 'None', text: 'None' }
   ];
 
   return (
@@ -45,7 +58,7 @@ const AddGlobalList = ({ handleChange, handleDropDown }) => {
               selection
               placeholder="List Type"
               options={ListOptions}
-              onChange={handleDropDown}
+              onChange={(e, value) => handleDropDown(e, 'list_type', value)}
             />
           </div>
         </div>
@@ -63,9 +76,9 @@ const AddGlobalList = ({ handleChange, handleDropDown }) => {
             <br />
             <Dropdown
               selection
-              placeholder="Select Role"
+              placeholder="Select Category"
               options={Category}
-              onChange={e => handleDropDown(e, 'category')}
+              onChange={(e, value) => handleDropDown(e, 'category', value)}
             />
           </div>
         </div>
