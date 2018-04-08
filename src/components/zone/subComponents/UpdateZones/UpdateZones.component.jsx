@@ -2,9 +2,9 @@ import React from 'react';
 import { Input, Dropdown } from 'semantic-ui-react';
 
 // styles
-import './CreateZones.css';
+import './UpdateZones.css';
 
-const CreateZones = ({ handleChange, handleDropDownChange }) => {
+const UpdateZones = ({ handleChange, handleDropDownChange }) => {
   const zoneOptions = [
     { key: 'High', value: 'High', text: 'High' },
     { key: 'Normal', value: 'Normal', text: 'Normal' },
@@ -46,4 +46,4 @@ const CreateZones = ({ handleChange, handleDropDownChange }) => {
   );
 };
 
-export default CreateZones;
+export default UpdateZones;
