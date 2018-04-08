@@ -24,7 +24,7 @@ class DeleteDevices extends Component {
     console.log(data);
     axios
       .delete(
-        `${config.API_BASE_URL}all-device?company_name=${this.props.value}`,
+        `${config.API_BASE_URL}device-delete?company_name=${this.props.value}`,
         data,
       )
       .then(res => {

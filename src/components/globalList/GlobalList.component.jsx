@@ -36,7 +36,7 @@ export default class Global extends Component {
       category: '',
       reason: '',
       loading: true,
-      disabled: true
+      disabled: true,
     };
   }
   data = [
@@ -45,8 +45,8 @@ export default class Global extends Component {
     {
       key: 'DELETE',
       value: 'Delete Device Global List',
-      text: 'Delete Device Global List'
-    }
+      text: 'Delete Device Global List',
+    },
   ];
 
   /**
@@ -63,9 +63,9 @@ export default class Global extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
@@ -82,15 +82,28 @@ export default class Global extends Component {
       .get(
         `${config.API_BASE_URL}global-lists?company_name=${
           this.state.value
-        }&list_typed_id=1`
+        }&list_typed_id=1`,
       )
       .then(res => {
         this.setState({
-          globalist: res.data.data.page_items
+          globalist: res.data.data.page_items,
         });
         toaster('Global Lists fetched Successfully');
       })
-      .catch(err => err);
+      .catch(err => {
+        console.log(err.message);
+        err.message === 'Request failed with status code 404'
+          ? iziToast.error({
+              title: '404',
+              message: 'No Global Lists found',
+              position: 'topRight',
+            })
+          : iziToast.error({
+              title: 'Error:',
+              message: 'An error occured',
+              position: 'topRight',
+            });
+      });
   };
 
   createGlobalList = () => {
@@ -100,7 +113,7 @@ export default class Global extends Component {
     axios
       .post(
         `${config.API_BASE_URL}global-lists?company_name=${this.state.value}`,
-        data
+        data,
       )
       .then(res => toaster(res.data.data.message))
       .catch(err => {
@@ -110,13 +123,13 @@ export default class Global extends Component {
               message: 'Please Select a Company To Continue',
               position: 'topRight',
               transitionIn: 'bounceInLeft',
-              timeout: 2000
+              timeout: 2000,
             })
           : iziToast.error({
               title: 'Error',
               message: err.message,
               position: 'topRight',
-              transitionIn: 'bounceInLeft'
+              transitionIn: 'bounceInLeft',
             });
       });
   };
@@ -137,7 +150,7 @@ export default class Global extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
     switch (value) {
       case 'Add To Global List':
@@ -194,10 +207,12 @@ export default class Global extends Component {
           </div>
         );
       case 'Delete Device Global List':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
             <DeleteGlobal value={this.state.value} />
-          </div>;
+          </div>
+        );
     }
   };
 
@@ -223,7 +238,7 @@ export default class Global extends Component {
                 onChange={(_, { value }) => {
                   this.setState({
                     value,
-                    disabled: false
+                    disabled: false,
                   });
                 }}
                 options={this.state.companies}

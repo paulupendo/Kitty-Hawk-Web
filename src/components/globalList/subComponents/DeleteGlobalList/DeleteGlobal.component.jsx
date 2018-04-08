@@ -12,9 +12,9 @@ const ListOptions = [
   {
     key: 'GlobalQuarantine',
     value: 'GlobalQuarantine',
-    text: 'Global Quarantine'
+    text: 'Global Quarantine',
   },
-  { key: 'GlobalSafe', value: 'GlobalSafe', text: 'Global Safe' }
+  { key: 'GlobalSafe', value: 'GlobalSafe', text: 'Global Safe' },
 ];
 
 class DeleteGlobal extends Component {
@@ -22,21 +22,22 @@ class DeleteGlobal extends Component {
     super();
     this.state = {
       searchTerm: '',
-      list_options: ''
+      list_options: '',
     };
   }
 
   handleClick = () => {
     let data = {
       sha256: this.state.searchTerm,
-      list_type: this.state.list_options
+      list_type: this.state.list_options,
     };
 
     console.log(data);
+
     axios
       .delete(
         `${config.API_BASE_URL}global-lists?company_name=${this.props.value}`,
-        data
+        data,
       )
       .then(res => {
         console.log(res);
@@ -45,6 +46,7 @@ class DeleteGlobal extends Component {
         console.log('E', err);
       });
   };
+
   /**
    * This method handles adding input for name, description, level and paths properties
    *
@@ -53,12 +55,12 @@ class DeleteGlobal extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
     });
   };
 
-  handleDropDown = (e, key, { value }) => {
-    this.setState({ [key]: value });
+  handleDropDown = (e, { value }) => {
+    this.setState({ list_options: value });
   };
 
   render() {
@@ -72,9 +74,7 @@ class DeleteGlobal extends Component {
             selection
             placeholder="Select Category"
             options={ListOptions}
-            onChange={(e, value) =>
-              this.handleDropDown(e, 'list_options', value)
-            }
+            onChange={this.handleDropDown}
           />
           <Button onClick={this.handleClick}>DELETE</Button>
         </Segment>
