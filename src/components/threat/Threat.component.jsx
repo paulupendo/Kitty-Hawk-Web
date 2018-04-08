@@ -85,13 +85,22 @@ export default class Threat extends Component {
         this.setState({ threats: res.data.data.policy.page_items });
         toaster(res.data.data.message);
       })
-      .catch(err =>
-        iziToast.error({
-          title: 'Error',
-          message: 'An error occured!',
-          position: 'topRight'
-        })
-      );
+      .catch(err => {
+        this.state.value.length === 0 && err
+          ? iziToast.info({
+              title: 'Error',
+              message: 'Please Select a Company To Continue',
+              position: 'topRight',
+              transitionIn: 'bounceInLeft',
+              timeout: 2000
+            })
+          : iziToast.error({
+              title: 'Error',
+              message: err.message,
+              position: 'topRight',
+              transitionIn: 'bounceInLeft'
+            });
+      });
   };
 
   /**
@@ -131,7 +140,7 @@ export default class Threat extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetThreat />
+            <GetThreat value={this.state.value} />
           </div>
         );
       case 'Get Threats':
