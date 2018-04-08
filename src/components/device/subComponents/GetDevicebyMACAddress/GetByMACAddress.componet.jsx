@@ -8,12 +8,14 @@ import axios from 'axios';
 // styles
 import './getbyMacAddress.css';
 
+import toaster from '../../../../common/Status/status.component';
+
 class GetByMACAddress extends Component {
   constructor() {
     super();
     this.state = {
       searchTerm: '',
-      deviceMac: [],
+      deviceMac: []
     };
   }
   handleClick = () => {
@@ -21,13 +23,14 @@ class GetByMACAddress extends Component {
       .get(
         `${config.API_BASE_URL}devices/mac-address/${
           this.state.searchTerm
-        }?company_name=${this.props.value}`,
+        }?company_name=${this.props.value}`
       )
-      .then(res =>
+      .then(res => {
         this.setState({
-          deviceMac: res.data.data.device,
-        }),
-      )
+          deviceMac: res.data.data.device
+        });
+        toaster(res.data.data.message);
+      })
       .catch(err => err);
   };
   /**
@@ -38,7 +41,7 @@ class GetByMACAddress extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value,
+      searchTerm: event.target.value
     });
   };
 

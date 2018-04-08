@@ -4,6 +4,8 @@ import { config } from '../../../../config';
 
 // axios
 import axios from 'axios';
+import LoaderGraphic from '../../../../common/Loader/loader.component';
+import iziToast from 'izitoast';
 
 // styles
 import './GetThreat.css';
@@ -26,8 +28,24 @@ class GetThreat extends Component {
       )
       .then(res => {
         this.setState({
-          threat: res.data.data
+          threat: res.data.data.threat
         });
+      })
+      .catch(err => {
+        this.props.value.length === 0 && err
+          ? iziToast.info({
+              title: 'Error',
+              message: 'Please Select a Company To Continue',
+              position: 'topRight',
+              transitionIn: 'bounceInLeft',
+              timeout: 2000
+            })
+          : iziToast.error({
+              title: 'Error',
+              message: err.message,
+              position: 'topRight',
+              transitionIn: 'bounceInLeft'
+            });
       });
   };
   /**
@@ -65,20 +83,21 @@ class GetThreat extends Component {
                 <Table.HeaderCell>Date Offline</Table.HeaderCell>
                 <Table.HeaderCell>Host Name</Table.HeaderCell>
               </Table.Row>
-              {/* {Object.keys(this.state.threat).length >= 1 &&
+            </Table.Header>
+            <Table.Body>
+              {Object.keys(this.state.threat).length >= 1 &&
                 [this.state.threat].map(threat => {
                   return (
                     <Table.Row key={threat.id}>
-                      <Table.Cell>{threat.name || 'None'}</Table.Cell>
-                      <Table.Cell>{threat.criticality}</Table.Cell>
-                      <Table.Cell>{threat.policy_id}</Table.Cell>
-                      <Table.Cell>{threat.update_type}</Table.Cell>
-                      <Table.Cell>{threat.date_created}</Table.Cell>
-                      <Table.Cell>{threat.date_modified}</Table.Cell>
+                      <Table.Cell>{threat.name}</Table.Cell>
+                      <Table.Cell>{threat.classification}</Table.Cell>
+                      <Table.Cell>{threat.cylance_score}</Table.Cell>
+                      <Table.Cell>{threat.detected_by}</Table.Cell>
+                      <Table.Cell>{threat.sub_classification}</Table.Cell>
                     </Table.Row>
                   );
-                })} */}
-            </Table.Header>
+                })}
+            </Table.Body>
           </Table>
         </div>
       </div>
