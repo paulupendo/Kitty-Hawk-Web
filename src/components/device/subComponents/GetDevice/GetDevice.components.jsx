@@ -13,19 +13,19 @@ class GetDevice extends Component {
     super();
     this.state = {
       searchTerm: '',
-      device: {}
+      device: {},
     };
   }
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}single-device?company_name=${
-          this.props.value
-        }&device_id=${this.state.searchTerm}`
+        `${config.API_BASE_URL}single-device/${
+          this.state.searchTerm
+        }?company_name=${this.props.value}`,
       )
       .then(res => {
         this.setState({
-          device: res.data.data.device
+          device: res.data.data.device,
         });
       });
   };
@@ -37,7 +37,7 @@ class GetDevice extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
     });
   };
 

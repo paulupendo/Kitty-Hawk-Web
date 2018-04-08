@@ -41,7 +41,6 @@ class GetUser extends Component {
             }?company_name=${this.props.value}`,
           )
           .then(res => {
-            console.log(res);
             this.setState({
               user: res.data.data.user,
             });
@@ -54,7 +53,6 @@ class GetUser extends Component {
             });
           })
           .catch(err => {
-            console.log('E', err);
             iziToast.error({
               title: 'Error',
               message: 'An error occured!',

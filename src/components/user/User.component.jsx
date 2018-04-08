@@ -147,13 +147,13 @@ export default class User extends Component {
               title: 'Error',
               message: 'Please Select a Company To Continue',
               position: 'topRight',
-              transitionIn: 'bounceInLeft'
+              transitionIn: 'bounceInLeft',
             })
           : iziToast.error({
               title: 'Error',
               message: 'An error occured!',
               position: 'topRight',
-              transitionIn: 'bounceInLeft'
+              transitionIn: 'bounceInLeft',
             });
       });
   };
@@ -259,10 +259,7 @@ export default class User extends Component {
       case 'Get User':
         return (
           <div>
-            <SubHeader
-              info="Create a new User. This requires a unique email address for the
-              User being created"
-            />
+            <SubHeader info="Allows a caller to request a specific Console User resource belonging to a Tenant." />
             <GetUser value={this.state.value} />
           </div>
         );
@@ -304,21 +301,6 @@ export default class User extends Component {
             <div className="btn-bottom">
               <Button content="UPDATE" onClick={this.updateUser} />
             </div>
-          </div>
-        );
-
-      case 'Get Users':
-        return (
-          <div>
-            <SubHeader info="Allows a caller to request a page with a list of Users resources belonging to a Tenant" />
-            <GetUsers />
-          </div>
-        );
-      case 'Get User':
-        return (
-          <div>
-            <SubHeader info="Allows a caller to request User information by ID" />
-            <GetUser />
           </div>
         );
       default:

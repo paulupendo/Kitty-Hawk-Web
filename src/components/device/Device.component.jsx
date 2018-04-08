@@ -28,6 +28,7 @@ import DeleteDevices from './subComponents/DeleteDevices/DeleteDevices.component
 export default class Device extends Component {
   constructor() {
     super();
+
     this.state = {
       activeComponent: 'Update Device',
       selection: 'Update Device',
@@ -37,9 +38,14 @@ export default class Device extends Component {
       companies: [],
       value: '',
       loading: true,
-      devices: []
+      devices: [],
+      name: null,
+      policy_id: null,
+      add_zone_ids: '',
+      remove_zone_ids: '',
     };
   }
+
   data = [
     { key: 'POST-device', value: 'Get Devices', text: 'Get Devices' },
     { key: 'GET-device', value: 'Get Device', text: 'Get Device' },
@@ -47,24 +53,19 @@ export default class Device extends Component {
     {
       key: 'GET-device-threats',
       value: 'Get Device Threats',
-      text: 'Get Device Threats'
+      text: 'Get Device Threats',
     },
     {
       key: 'GET-device-zone',
       value: 'Get Zone Devices',
-      text: 'Get Zone Devices'
-    },
-    {
-      key: 'GET-device-agent',
-      value: 'Get Agent Installer Link',
-      text: 'Get Agent Installer Link'
+      text: 'Get Zone Devices',
     },
     { key: 'DELETE-device', value: 'Delete Devices', text: 'Delete Devices' },
     {
       key: 'GET-device-MAC',
       value: 'Get By MAC Address',
-      text: 'Get By MAC Address'
-    }
+      text: 'Get By MAC Address',
+    },
   ];
 
   /**
@@ -81,13 +82,43 @@ export default class Device extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
   }
+
+  handleInputChange = (e, key) => {
+    this.setState({ [key]: e.target.value });
+  };
+
+  updateDevice_ = () => {
+    let {
+      name,
+      policy_id,
+      add_zone_ids,
+      remove_zone_ids,
+      device_id,
+    } = this.state;
+
+    let data = {
+      name,
+      policy_id,
+    };
+
+    console.log('D', data);
+
+    let url_ = `${config.API_BASE_URL}single-device/${device_id}?company_name=${
+      this.state.value
+    }`;
+
+    axios
+      .put(url_, data)
+      .then(res => console.log(res))
+      .catch(err => console.log('E', err));
+  };
 
   /**
    * method to get all users in a specific company
@@ -100,11 +131,11 @@ export default class Device extends Component {
       .get(
         `${config.API_BASE_URL}all-devices?company_name=${
           this.state.value
-        }&page=1&limit=1`
+        }&page=1&limit=1`,
       )
       .then(res => {
         this.setState({
-          devices: res.data.data.device.page_items
+          devices: res.data.data.device.page_items,
         });
         toaster(res.data.data.message);
       })
@@ -112,8 +143,8 @@ export default class Device extends Component {
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight'
-        })
+          position: 'topRight',
+        }),
       );
   };
   /**
@@ -124,8 +155,9 @@ export default class Device extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
+
     switch (value) {
       case 'Get Devices':
         this.setState({ method: 'GET' });
@@ -144,9 +176,6 @@ export default class Device extends Component {
         this.setState({ method: 'GET' });
         break;
       case 'Get Zone Devices':
-        this.setState({ method: 'GET' });
-        break;
-      case 'Get Agent Installer Link':
         this.setState({ method: 'GET' });
         break;
       case 'Delete Device':
@@ -171,10 +200,10 @@ export default class Device extends Component {
       case 'Update Device':
         return (
           <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <UpdateDevice />
+            <SubHeader info="Allows a caller to update a specific Console device resource belonging to a Tenant." />
+            <UpdateDevice handleInputChange={this.handleInputChange} />
             <div className="btn-bottom">
-              <Button content="UPDATE DEVICE" />
+              <Button content="UPDATE DEVICE" onClick={this.updateDevice_} />
             </div>
           </div>
         );
@@ -194,7 +223,7 @@ export default class Device extends Component {
       case 'Get Device':
         return (
           <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <SubHeader info="Allows a caller to request a specific device resource belonging to a Tenant." />
             <GetDevice value={this.state.value} />
           </div>
         );
@@ -209,8 +238,8 @@ export default class Device extends Component {
       case 'Get Zone Devices':
         return (
           <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetZoneDevices />
+            <SubHeader info="Allows a caller to request a page with a list of Console device resources belonging to a Zone," />
+            <GetZoneDevices value={this.state.value} />
           </div>
         );
       case 'Get By MAC Address':
@@ -223,8 +252,8 @@ export default class Device extends Component {
       case 'Delete Devices':
         return (
           <div>
-            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <DeleteDevices />
+            <SubHeader info="Allows a caller to delete one or more devices from an organization." />
+            <DeleteDevices value={this.state.value} />
           </div>
         );
     }
@@ -248,7 +277,7 @@ export default class Device extends Component {
                 onChange={(_, { value }) => {
                   this.setState({
                     value,
-                    disabled: false
+                    disabled: false,
                   });
                 }}
                 options={this.state.companies}

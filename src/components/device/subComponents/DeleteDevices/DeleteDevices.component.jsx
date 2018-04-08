@@ -13,21 +13,25 @@ class DeleteDevices extends Component {
     super();
     this.state = {
       searchTerm: '',
-      threat: {}
     };
   }
 
   handleClick = () => {
+    let data = {
+      device_ids: [this.state.searchTerm],
+    };
+
+    console.log(data);
     axios
-      .get(
-        `${config.API_BASE_URL}threats/${this.state.searchTerm}?company_name=${
-          this.props.value
-        }`
+      .delete(
+        `${config.API_BASE_URL}all-device?company_name=${this.props.value}`,
+        data,
       )
       .then(res => {
-        this.setState({
-          threat: res.data.data
-        });
+        console.log(res);
+      })
+      .catch(err => {
+        console.log('E', err);
       });
   };
   /**
@@ -38,7 +42,7 @@ class DeleteDevices extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
     });
   };
 
@@ -46,12 +50,9 @@ class DeleteDevices extends Component {
     return (
       <div className="delete-device">
         <Segment>
-          <span> threat ID </span>
+          <span> Device Id </span>
           <br />
-          <Input
-            placeholder="Enter Device ID"
-            onChange={this.handleInput}
-          />
+          <Input placeholder="Enter Device ID" onChange={this.handleInput} />
           <Button onClick={this.handleClick}>DELETE DEVICE</Button>
         </Segment>
       </div>
