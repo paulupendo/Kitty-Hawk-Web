@@ -13,21 +13,22 @@ class GetByMACAddress extends Component {
     super();
     this.state = {
       searchTerm: '',
-      deviceMac: []
+      deviceMac: [],
     };
   }
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}devices/mac-address?company_name=${
-          this.props.value
-        }&mac_address=${this.state.searchTerm}`
+        `${config.API_BASE_URL}devices/mac-address/${
+          this.state.searchTerm
+        }?company_name=${this.props.value}`,
       )
       .then(res =>
         this.setState({
-          deviceMac: res.data.data.device
-        })
-      ).catch(err => err)
+          deviceMac: res.data.data.device,
+        }),
+      )
+      .catch(err => err);
   };
   /**
    * This method handles adding input for name, description, level and paths properties
@@ -37,7 +38,7 @@ class GetByMACAddress extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
     });
   };
 
@@ -46,7 +47,7 @@ class GetByMACAddress extends Component {
     return (
       <div className="mac-devices">
         <Segment>
-          <span> Unique Zone ID </span>
+          <span> Mac Address</span>
           <br />
           <Input
             placeholder="Enter User ID to Search..."

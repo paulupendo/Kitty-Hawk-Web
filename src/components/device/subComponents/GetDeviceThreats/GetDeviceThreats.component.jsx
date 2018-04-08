@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { config } from '../../../../config';
 
-// Third party libraries 
+// Third party libraries
 import iziToast from 'izitoast';
 import { Input, Segment, Button, Table } from 'semantic-ui-react';
 
@@ -12,21 +12,21 @@ import axios from 'axios';
 import './DeviceThreats.css';
 
 // Components
-import toaster from '../../../../common/Status/status.component'
+import toaster from '../../../../common/Status/status.component';
 class GetDeviceThreats extends Component {
   constructor() {
     super();
     this.state = {
       searchTerm: '',
-      deviceThreats: []
+      deviceThreats: [],
     };
   }
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}device-threats?company_name=${
-          this.props.value
-        }&device_id=${this.state.searchTerm}&page=<1>&limit=<1>`
+        `${config.API_BASE_URL}device-threats/${
+          this.state.searchTerm
+        }?company_name=${this.props.value}&page=<1>&limit=<1>`,
       )
       .then(res => {
         this.setState({ deviceThreats: res.data.data.device.page_items });
@@ -36,8 +36,8 @@ class GetDeviceThreats extends Component {
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight'
-        })
+          position: 'topRight',
+        }),
       );
   };
   /**
@@ -48,7 +48,7 @@ class GetDeviceThreats extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
     });
   };
 
