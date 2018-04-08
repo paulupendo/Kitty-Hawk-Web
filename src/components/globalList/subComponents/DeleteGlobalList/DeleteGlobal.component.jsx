@@ -32,7 +32,6 @@ class DeleteGlobal extends Component {
       list_type: this.state.list_options,
     };
 
-    console.log(data);
 
     axios
       .delete(
