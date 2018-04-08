@@ -13,22 +13,25 @@ class DeleteZone extends Component {
     super();
     this.state = {
       searchTerm: '',
-      threat: {}
     };
   }
 
   handleClick = () => {
+    let data = {
+      zone_id: this.state.searchTerm,
+    };
+
     axios
-      .get(
-        `${config.API_BASE_URL}threats/${this.state.searchTerm}?company_name=${
+      .delete(
+        `${config.API_BASE_URL}zones/${this.state.searchTerm}?company_name=${
           this.props.value
-        }`
+        }`,
+        data,
       )
       .then(res => {
-        this.setState({
-          threat: res.data.data
-        });
-      });
+        console.log(res);
+      })
+      .catch(err => console.log('E', err));
   };
   /**
    * This method handles adding input for name, description, level and paths properties
@@ -38,7 +41,7 @@ class DeleteZone extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
     });
   };
 
@@ -46,9 +49,9 @@ class DeleteZone extends Component {
     return (
       <div className="get-threat">
         <Segment>
-          <span> threat ID </span>
+          <span> Zone Id </span>
           <br />
-          <Input placeholder="Enter Device ID" onChange={this.handleInput} />
+          <Input placeholder="Enter Zone ID" onChange={this.handleInput} />
           <Button onClick={this.handleClick}>DELETE ZONE</Button>
         </Segment>
       </div>

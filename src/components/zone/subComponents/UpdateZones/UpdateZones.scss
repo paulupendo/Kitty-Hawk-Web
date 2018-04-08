@@ -1,0 +1,47 @@
+.create-zones-container {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  box-shadow: none;
+  background: #f3f5f7;
+  height: 15rem;
+  width: 100%;
+  padding: 1.3rem 1.5rem;
+  border-radius: 5px;
+  .create-input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    margin-left: 2rem;
+    .btns-row {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 1.5rem;
+      div {
+        margin-right: 2rem;
+      }
+      .ui.input {
+        width: 17rem;
+        margin-top: 0.5rem;
+      }
+      .ui.input > input {
+        border-radius: 5px;
+        // max-width: 13rem;
+        &:focus {
+          border: solid 1px #38b557;
+        }
+        &::placeholder {
+          font-size: 0.8rem;
+          font-style: italic;
+          letter-spacing: 1px;
+        }
+      }
+    }
+    .ui.selection.dropdown {
+      margin-top: 0.5rem;
+      border-radius: 5px;
+      // min-width: 13rem;
+      margin-right: 2rem;
+    }
+  }
+}
