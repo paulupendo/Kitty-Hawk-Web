@@ -37,7 +37,7 @@ class DeleteGlobal extends Component {
     axios
       .delete(
         `${config.API_BASE_URL}global-lists?company_name=${this.props.value}`,
-        data,
+        { data: data },
       )
       .then(res => {
         console.log(res);
