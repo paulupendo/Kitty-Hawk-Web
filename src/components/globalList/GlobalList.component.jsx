@@ -35,8 +35,9 @@ export default class Global extends Component {
       list_type: '',
       category: '',
       reason: '',
-      loading: true,
+      loading: false,
       disabled: true,
+      isLoadingCompanies: true
     };
   }
   data = [
@@ -59,7 +60,7 @@ export default class Global extends Component {
       .get(`${config.API_BASE_URL}company-info`)
       .then(res => {
         this.setState({
-          loading: false,
+          isLoadingCompanies: false,
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
@@ -83,15 +84,21 @@ export default class Global extends Component {
         `${config.API_BASE_URL}global-lists?company_name=${
           this.state.value
         }&list_typed_id=1`,
+        this.setState({
+          loading: true
+        })
       )
       .then(res => {
         this.setState({
           globalist: res.data.data.page_items,
+          loading: false
         });
         toaster('Global Lists fetched Successfully');
       })
       .catch(err => {
-        console.log(err.message);
+        this.setState({
+          loading: false
+        });
         err.message === 'Request failed with status code 404'
           ? iziToast.error({
               title: '404',
@@ -192,18 +199,17 @@ export default class Global extends Component {
           </div>
         );
       case 'Get Global List':
+        if (this.state.loading) {
+          return <LoaderGraphic />;
+        }
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of global list resources for a Tenant, sorted by the date when the hash was added to the Global List, in descending order" />
-            {this.state.globalist.length === 0 ? (
-              <LoaderGraphic />
-            ) : (
-              <Fragment>
-                <div>
-                  <GetGlobalList globalist={this.state.globalist} />
-                </div>
-              </Fragment>
-            )}
+            <Fragment>
+              <div>
+                <GetGlobalList globalist={this.state.globalist} />
+              </div>
+            </Fragment>
           </div>
         );
       case 'Delete Device Global List':
@@ -221,7 +227,6 @@ export default class Global extends Component {
    * @member of DeviceComponent
    */
   render() {
-    console.log(this.state);
     return (
       <div className="global-container">
         <BreadcrumbComponent
@@ -236,13 +241,10 @@ export default class Global extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({
-                    value,
-                    disabled: false,
-                  });
+                  this.setState({ value, disabled: false });
                 }}
                 options={this.state.companies}
-                loading={this.state.loading}
+                loading={this.state.isLoadingCompanies}
               />
             </div>
             <div>

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Input, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
+import iziToast from 'izitoast';
 
 // axios
 import axios from 'axios';
 
 // styles
 import './DeleteZone.css';
+
+// components
+import toaster from '../../../../common/Status/status.component'
 
 class DeleteZone extends Component {
   constructor() {
@@ -22,16 +26,17 @@ class DeleteZone extends Component {
     };
 
     axios
-      .delete(
-        `${config.API_BASE_URL}zones/${this.state.searchTerm}?company_name=${
-          this.props.value
-        }`,
-        data,
-      )
+      .delete(`${config.API_BASE_URL}zones/${this.state.searchTerm}?company_name=${this.props.value}`, data)
       .then(res => {
-        console.log(res);
+        toaster(res.data.data.message);
       })
-      .catch(err => console.log('E', err));
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
   /**
    * This method handles adding input for name, description, level and paths properties
