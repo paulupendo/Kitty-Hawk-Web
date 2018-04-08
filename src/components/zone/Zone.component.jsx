@@ -54,7 +54,7 @@ export default class Zones extends Component {
     { key: 'PUT-zones', value: 'Get Device Zones', text: 'Get Device Zones' },
     { key: 'GET-zone', value: 'Get Zone', text: 'Get Zone' },
     { key: 'PUT-zone', value: 'Update Zone', text: 'Update Zone' },
-    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' }
+    { key: 'DELETE-zone', value: 'Delete Zone', text: 'Delete Zone' },
   ];
 
   /**
@@ -71,9 +71,9 @@ export default class Zones extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company
+              text: company,
             };
-          })
+          }),
         });
       })
       .catch(err => err);
@@ -90,23 +90,30 @@ export default class Zones extends Component {
       .get(`${config.API_BASE_URL}zones?company_name=${this.state.value}`)
       .then(res => {
         this.setState({
-          zones: res.data.data.page_items
+          zones: res.data.data.page_items,
         });
+        toaster(res.data.data.message);
       })
-      .catch(err => err);
+      .catch(err =>
+        iziToast.error({
+          title: 'ERROR',
+          message: 'An error occured!',
+          position: 'topRight',
+        }),
+      );
   };
 
   postZones = () => {
     let data = {
       name: this.state.name,
       policy_id: this.state.policyId,
-      criticality: this.state.criticality
+      criticality: this.state.criticality,
     };
 
     axios
       .post(
         `${config.API_BASE_URL}zones?company_name=${this.state.value}`,
-        data
+        data,
       )
       .then(res => {
         toaster(res.data.data.message);
@@ -118,13 +125,13 @@ export default class Zones extends Component {
               message: 'Please Select a Company To Continue',
               position: 'topRight',
               transitionIn: 'bounceInLeft',
-              timeout: 2000
+              timeout: 2000,
             })
           : iziToast.error({
               title: 'Error',
               message: err.message,
               position: 'topRight',
-              transitionIn: 'bounceInLeft'
+              transitionIn: 'bounceInLeft',
             });
       });
   };
@@ -133,17 +140,23 @@ export default class Zones extends Component {
     let data = {
       name: this.state.name,
       policy_id: this.state.policyId,
-      criticality: this.state.criticality
+      criticality: this.state.criticality,
     };
 
     let url_ = `${config.API_BASE_URL}zones/${
       this.state.zone_id
     }?company_name=${this.state.value}`;
-    console.log(data);
     axios
       .put(url_, data)
-      .then(res => console.log(res))
-      .catch(err => console.log('E', err));
+      .then(res => toaster(res.data.data.message))
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: err.message,
+          position: 'topRight',
+          transitionIn: 'bounceInLeft',
+        }),
+      );
   };
 
   /**
@@ -154,7 +167,7 @@ export default class Zones extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value
+      selection: value,
     });
 
     switch (value) {

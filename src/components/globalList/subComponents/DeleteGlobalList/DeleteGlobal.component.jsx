@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Input, Segment, Button, Dropdown } from 'semantic-ui-react';
 import { config } from '../../../../config';
+import toaster from '../../../../common/Status/status.component';
 
 // axios
 import axios from 'axios';
 
 // styles
 import './DeleteGlobal.css';
+
+// third party libraries
+import iziToast from 'izitoast';
 
 const ListOptions = [
   {
@@ -32,17 +36,20 @@ class DeleteGlobal extends Component {
       list_type: this.state.list_options,
     };
 
-
     axios
       .delete(
         `${config.API_BASE_URL}global-lists?company_name=${this.props.value}`,
         { data: data },
       )
       .then(res => {
-        console.log(res);
+        toaster('Global List deleted successfully');
       })
       .catch(err => {
-        console.log('E', err);
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured',
+          position: 'topRight',
+        });
       });
   };
 
