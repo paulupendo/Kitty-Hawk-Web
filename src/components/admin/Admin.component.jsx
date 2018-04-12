@@ -4,20 +4,23 @@ import iziToast from 'izitoast';
 
 // Axios
 import axios from 'axios';
-
+import { config } from '../../config';
 //styles
 import './Admin.css';
 
 // components
 import CompanyInfo from './SubComponents/CompanyInfo.component';
+import AdminActions from './SubComponents/AdminActions.component';
 
 // common components
 import BreadcrumbComponent from '../../common/BreadCrumb.component';
-import formatStatus from '../../common/Status/status.component';
+import toaster from '../../common/Status/status.component';
 
 const BASE_URL = `https://cyapi-db.herokuapp.com`;
 export default class Admin extends Component {
   state = {
+    companies: [],
+    value: '',
     name: null,
     company: null,
     email: null,
@@ -29,7 +32,47 @@ export default class Admin extends Component {
     status: '',
     message: ' ',
     showToaster: false,
-    loading: false,
+    loading: false
+  };
+
+  componentDidMount() {
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies: res.data.data.companies.map(company => {
+            return {
+              value: company,
+              text: company
+            };
+          })
+        });
+      })
+      .catch(err => err);
+  }
+
+  handleDropdownchange = (_, { value }) => {
+    this.setState({
+      value
+    });
+  };
+
+  handleDelete = () => {
+    axios
+      .delete(
+        `${config.API_BASE_URL}company-info?company_name=${this.state.value}`
+      )
+      .then(res => {
+        toaster(res.data.data.message);
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
 
   handleChange = (e, key) => {
@@ -45,7 +88,7 @@ export default class Admin extends Component {
       tenant_id: this.state.tenant_id,
       app_id: this.state.app_id,
       app_secret: this.state.app_secret,
-      comment: this.state.comment,
+      comment: this.state.comment
     };
     let url_ = `${BASE_URL}/api/company-info`;
     this.setState({ loading: true }, () => {
@@ -54,15 +97,14 @@ export default class Admin extends Component {
         .then(res => {
           this.setState({
             loading: false,
-            status: formatStatus(res.status),
-            message: res.data.data.message,
+            message: res.data.data.message
           });
           iziToast.show({
             title: 'SUCCESS',
             message: res.data.data.message,
             position: 'topRight',
             color: 'green',
-            progressBarColor: 'rgb(0, 255, 184)',
+            progressBarColor: 'rgb(0, 255, 184)'
           });
         })
         .catch(err => {
@@ -70,7 +112,7 @@ export default class Admin extends Component {
           iziToast.error({
             title: 'Error',
             message: 'An error occured!',
-            position: 'topRight',
+            position: 'topRight'
           });
         });
     });
@@ -82,15 +124,26 @@ export default class Admin extends Component {
       render: () => (
         <Tab.Pane attached={false}>
           <CompanyInfo handleChange={this.handleChange} />
-          {this.state.showToaster && this.showToaster()}
           <Button
             content="AUTHORIZE"
             onClick={this.handleClick}
             loading={this.state.loading}
           />
         </Tab.Pane>
-      ),
+      )
     },
+    {
+      menuItem: 'Admin Actions',
+      render: () => (
+        <Tab.Pane attached={false}>
+          <AdminActions
+            companies={this.state.companies}
+            handleDropdownchange={this.handleDropdownchange}
+            deleteCompany={this.handleDelete}
+          />
+        </Tab.Pane>
+      )
+    }
   ];
 
   render() {
@@ -98,7 +151,7 @@ export default class Admin extends Component {
       <div className="admin-container">
         <BreadcrumbComponent page="Admin" selection="Company Info" />
         <div className="info-tabs">
-          <Tab menu={{ secondary: true, pointing: true }} panes={this.panes} />
+          <Tab menu={{ secondary: true }} panes={this.panes} />
         </div>
       </div>
     );
