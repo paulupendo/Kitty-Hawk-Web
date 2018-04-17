@@ -8,28 +8,28 @@ import LoaderGraphic from '../../../../common/Loader/loader.component';
 import iziToast from 'izitoast';
 
 // styles
-import './GetThreat.css';
+import './GetThreatDevices.css';
 
-class GetThreat extends Component {
+class GetThreatDevices extends Component {
   constructor() {
     super();
     this.state = {
       searchTerm: '',
-      threat: {}
+      threat_devices: []
     };
   }
 
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}threats/${this.state.searchTerm}?company_name=${
-          this.props.value
-        }`
+        `${config.API_BASE_URL}threat-devices/${
+          this.state.searchTerm
+        }/devices?company_name=${this.props.value}`
       )
       .then(res => {
-        this.setState({
-          threat: res.data.data.threat
-        });
+          this.setState({
+            threat_devices: res.data.data.device_threats.page_items
+          });
       })
       .catch(err => {
         this.props.value.length === 0 && err
@@ -61,48 +61,42 @@ class GetThreat extends Component {
   };
 
   render() {
-    return (
-      <div className="get-threat">
+      console.log('stttttttate',this.state.threat_devices)
+    return <div className="get-threat-devices">
         <Segment>
-          <span> Threat ID </span>
+          <span> Threat Hash ID </span>
           <br />
-          <Input
-            placeholder="Enter threat ID to Search..."
-            onChange={this.handleInput}
-          />
+          <Input placeholder="Enter threat_devices ID to Search..." onChange={this.handleInput} />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
-        <div className="threat-table">
+        <div className="threat_devices-table">
           <Table color="green" striped>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
                 <Table.HeaderCell>Agent Version</Table.HeaderCell>
-                <Table.HeaderCell>Date Fist Registered</Table.HeaderCell>
-                <Table.HeaderCell>Date Modified</Table.HeaderCell>
-                <Table.HeaderCell>Date Offline</Table.HeaderCell>
-                <Table.HeaderCell>Host Name</Table.HeaderCell>
+                <Table.HeaderCell>File Status</Table.HeaderCell>
+                <Table.HeaderCell>State</Table.HeaderCell>
+                <Table.HeaderCell>Mac Addresses</Table.HeaderCell>
+                <Table.HeaderCell>Ip Adresses</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {Object.keys(this.state.threat).length >= 1 &&
-                [this.state.threat].map(threat => {
-                  return (
-                    <Table.Row key={threat.id}>
-                      <Table.Cell>{threat.name}</Table.Cell>
-                      <Table.Cell>{threat.classification}</Table.Cell>
-                      <Table.Cell>{threat.cylance_score}</Table.Cell>
-                      <Table.Cell>{threat.detected_by}</Table.Cell>
-                      <Table.Cell>{threat.sub_classification}</Table.Cell>
-                    </Table.Row>
-                  );
-                })}
+              {this.state.threat_devices.map(threat_devices => {
+                return <Table.Row key={threat_devices.id}>
+                    <Table.Cell>{threat_devices.name}</Table.Cell>
+                    <Table.Cell>{threat_devices.agent_version}</Table.Cell>
+                    <Table.Cell>{threat_devices.file_status}</Table.Cell>
+                    <Table.Cell>{threat_devices.state}</Table.Cell>
+                    <Table.Cell>{threat_devices.mac_addresses}</Table.Cell>
+                    <Table.Cell>{threat_devices.ip_addresses}</Table.Cell>
+                  </Table.Row>;
+              })}
             </Table.Body>
           </Table>
         </div>
-      </div>
-    );
+      </div>;
   }
 }
 
-export default GetThreat;
+export default GetThreatDevices;

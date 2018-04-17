@@ -92,7 +92,7 @@ export default class Zones extends Component {
         this.setState({
           zones: res.data.data.page_items,
         });
-        toaster(res.data.data.message);
+        toaster(res.data.message);
       })
       .catch(err =>
         iziToast.error({

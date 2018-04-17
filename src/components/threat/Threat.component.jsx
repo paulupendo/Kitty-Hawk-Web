@@ -19,6 +19,7 @@ import LoaderGraphic from '../../common/Loader/loader.component';
 import toaster from '../../common/Status/status.component';
 import GetThreat from './subComponents/GetThreat/GetThreat.component';
 import GetThreats from './subComponents/GetThreats/GetThreats.component';
+import GetThreatDevices from './subComponents/GetThreatDevices/GetThreatDevices.component';
 
 export default class Threat extends Component {
   constructor() {
@@ -154,10 +155,11 @@ export default class Threat extends Component {
             )}
           </div>
         );
-      case 'Get Threatg Devices':
+      case 'Get Threat Devices':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetThreatDevices  value={this.state.value}/>
           </div>
         );
     }

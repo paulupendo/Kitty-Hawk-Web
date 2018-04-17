@@ -4,9 +4,13 @@ import { config } from '../../../../config';
 
 // axios
 import axios from 'axios';
+import iziToast from 'izitoast';
 
 // styles
 import './GetZone.css';
+
+// components
+import toaster from '../../../../common/Status/status.component';
 
 class GetZone extends Component {
   constructor() {
@@ -25,10 +29,16 @@ class GetZone extends Component {
         }`
       )
       .then(res => {
-        this.setState({
-          zone: res.data.data
-        });
-      });
+        this.setState({ zone: res.data.data });
+        toaster(res.data.message);
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
   };
   /**
    * This method handles adding input for name, description, level and paths properties
