@@ -17,6 +17,8 @@ import SubHeader from '../../common/Subheader/SubHeader.component';
 import toaster from '../../common/Status/status.component';
 import LoaderGraphic from '../../common/Loader/loader.component';
 import GetPolicies from './subComponents/GetPolicies/GetPolicies.component';
+import GetPolicy from './subComponents/GetPolicy/GetPolicy.component';
+import DeletePolicy from './subComponents/DeletePolicy/DeletePolicy.component';
 
 export default class Policy extends Component {
   constructor() {
@@ -82,7 +84,7 @@ export default class Policy extends Component {
       .get(`${config.API_BASE_URL}policies?company_name=${this.state.value}`)
       .then(res => {
         this.setState({ policies: res.data.data.page_items });
-        toaster(res.data.data.message);
+        toaster(res.data.message);
       })
       .catch(err =>
         iziToast.error({
@@ -113,6 +115,12 @@ export default class Policy extends Component {
       case 'Get Policies':
         this.setState({ method: 'PUT' });
         this.getpolicies();
+        break;
+      case 'Get Policy':
+        this.setState({ method: 'GET' });
+        break;
+      case 'Delete Policy':
+        this.setState({ method: 'GET' });
         break;
       default:
         break;
@@ -150,6 +158,20 @@ export default class Policy extends Component {
                 {this.state.showToaster && this.showToaster()}
               </Fragment>
             )}
+          </div>
+        );
+      case 'Get Policy':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <GetPolicy value={this.state.value} />
+          </div>
+        );
+      case 'Delete Policy':
+        return (
+          <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <DeletePolicy value={this.state.value} />
           </div>
         );
     }

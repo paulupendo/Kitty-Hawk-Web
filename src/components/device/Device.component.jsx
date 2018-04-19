@@ -28,7 +28,6 @@ import DeleteDevices from './subComponents/DeleteDevices/DeleteDevices.component
 export default class Device extends Component {
   constructor() {
     super();
-
     this.state = {
       activeComponent: 'Update Device',
       selection: 'Update Device',

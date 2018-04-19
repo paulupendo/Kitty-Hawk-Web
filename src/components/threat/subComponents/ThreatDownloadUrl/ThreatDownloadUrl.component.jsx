@@ -4,13 +4,14 @@ import { config } from '../../../../config';
 
 // axios
 import axios from 'axios';
+import LoaderGraphic from '../../../../common/Loader/loader.component';
 import iziToast from 'izitoast';
 import toaster from '../../../../common/Status/status.component';
 
 // styles
-import './GetPolicy.css';
+import './ThreatDownload.css';
 
-class GetPolicy extends Component {
+class ThreatDownloadUrl extends Component {
   constructor() {
     super();
     this.state = {
@@ -23,7 +24,7 @@ class GetPolicy extends Component {
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}get-policy/${
+        `${config.API_BASE_URL}threat-download-url/${
           this.state.searchTerm
         }/?company_name=${this.props.value}`,
         this.setState({
@@ -69,19 +70,15 @@ class GetPolicy extends Component {
 
   render() {
     const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
-    return (
-      <div className="get-threat-url">
+    return <div className="get-threat-url">
         <Segment>
-          <span> Policy ID </span>
+          <span> Threat ID </span>
           <br />
-          <Input
-            placeholder="Enter threat ID to Search..."
-            onChange={this.handleInput}
-          />
+          <Input placeholder="Enter threat ID to Search..." onChange={this.handleInput} />
           <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
         <div className="threat-table">
-          {/* <Table color="green" striped>
+          <Table color="green" striped>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
@@ -100,36 +97,38 @@ class GetPolicy extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {Object.keys(this.state.threat_url).length >= 1 &&
-                [this.state.threat_url].map((threat, i) => {
-                  return (
-                    <Table.Row key={i}>
-                      <Table.Cell>{threat.name}</Table.Cell>
-                      <Table.Cell>{threat.cert_issuer}</Table.Cell>
-                      <Table.Cell>{threat.cert_publisher}</Table.Cell>
-                      <Table.Cell>{threat.classification}</Table.Cell>
-                      <Table.Cell>{threat.cylance_score}</Table.Cell>
-                      <Table.Cell>{threat.detected_by}</Table.Cell>
-                      <Table.Cell>{threat.file_size}</Table.Cell>
-                      <Table.Cell>
-                        {threat.global_quarantined.toString()}
-                      </Table.Cell>
-                      <Table.Cell>{threat.running.toString()}</Table.Cell>
-                      <Table.Cell>{threat.safelisted.toString()}</Table.Cell>
-                      <Table.Cell>{threat.sub_classification}</Table.Cell>
-                      <Table.Cell>{threat.signed.toString()}</Table.Cell>
-                      <Table.Cell>
-                        {threat.unique_to_cylance.toString()}
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
+              {Object.keys(this.state.threat_url).length >= 1 && [this.state.threat_url].map(
+                  (threat, i) => {
+                    return (
+                      <Table.Row key={i}>
+                        <Table.Cell>{threat.name}</Table.Cell>
+                        <Table.Cell>{threat.cert_issuer}</Table.Cell>
+                        <Table.Cell>{threat.cert_publisher}</Table.Cell>
+                        <Table.Cell>{threat.classification}</Table.Cell>
+                        <Table.Cell>{threat.cylance_score}</Table.Cell>
+                        <Table.Cell>{threat.detected_by}</Table.Cell>
+                        <Table.Cell>{threat.file_size}</Table.Cell>
+                        <Table.Cell>
+                          {threat.global_quarantined.toString()}
+                        </Table.Cell>
+                        <Table.Cell>{threat.running.toString()}</Table.Cell>
+                        <Table.Cell>
+                          {threat.safelisted.toString()}
+                        </Table.Cell>
+                        <Table.Cell>{threat.sub_classification}</Table.Cell>
+                        <Table.Cell>{threat.signed.toString()}</Table.Cell>
+                        <Table.Cell>
+                          {threat.unique_to_cylance.toString()}
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  }
+                )}
             </Table.Body>
-          </Table> */}
+          </Table>
         </div>
-      </div>
-    );
+      </div>;
   }
 }
 
-export default GetPolicy;
+export default ThreatDownloadUrl;
