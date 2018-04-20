@@ -3,7 +3,7 @@ import { config } from '../../../../config';
 
 // Third party libraries
 import iziToast from 'izitoast';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 
 // axios
 import axios from 'axios';
@@ -17,16 +17,28 @@ class GetDeviceThreats extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
       deviceThreats: [],
+      selected: [],
+      value: ''
     };
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.getThreatDevice.map(threats => {
+          return { value: threats.id, text: threats.name };
+        })
+      });
+    }
+  }
+
   handleClick = () => {
     axios
       .get(
         `${config.API_BASE_URL}device-threats/${
-          this.state.searchTerm
-        }?company_name=${this.props.value}&page=<1>&limit=<1>`,
+          this.state.value
+        }?company_name=${this.props.value}&page=<1>&limit=<1>`
       )
       .then(res => {
         this.setState({ deviceThreats: res.data.data.device.page_items });
@@ -36,8 +48,8 @@ class GetDeviceThreats extends Component {
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
-        }),
+          position: 'topRight'
+        })
       );
   };
   /**
@@ -48,7 +60,7 @@ class GetDeviceThreats extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value,
+      searchTerm: event.target.value
     });
   };
 
@@ -58,9 +70,14 @@ class GetDeviceThreats extends Component {
         <Segment>
           <span> Unique Device ID </span>
           <br />
-          <Input
-            placeholder="Enter User ID to Search..."
-            onChange={this.handleInput}
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
           />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
@@ -75,9 +92,9 @@ class GetDeviceThreats extends Component {
                 <Table.HeaderCell>File Status</Table.HeaderCell>
                 <Table.HeaderCell>Sub Classification</Table.HeaderCell>
               </Table.Row>
-              {this.state.deviceThreats.map(threats => {
+              {this.state.deviceThreats.map((threats, index) => {
                 return (
-                  <Table.Row key={threats.id}>
+                  <Table.Row key={index}>
                     <Table.Cell>{threats.name}</Table.Cell>
                     <Table.Cell>{threats.classification} </Table.Cell>
                     <Table.Cell>{threats.cylance_score}</Table.Cell>

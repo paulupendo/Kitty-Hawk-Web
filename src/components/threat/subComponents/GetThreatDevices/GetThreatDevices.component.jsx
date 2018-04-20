@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // axios
 import axios from 'axios';
-import LoaderGraphic from '../../../../common/Loader/loader.component';
 import iziToast from 'izitoast';
 
 // styles
@@ -14,22 +13,32 @@ class GetThreatDevices extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
+      value: '',
       threat_devices: []
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.getThreats.map(threats => {
+          return { value: threats.sha256, text: threats.name };
+        })
+      });
+    }
   }
 
   handleClick = () => {
     axios
       .get(
         `${config.API_BASE_URL}threat-devices/${
-          this.state.searchTerm
+          this.state.value
         }/devices?company_name=${this.props.value}`
       )
       .then(res => {
-          this.setState({
-            threat_devices: res.data.data.device_threats.page_items
-          });
+        this.setState({
+          threat_devices: res.data.data.device_threats.page_items
+        });
       })
       .catch(err => {
         this.props.value.length === 0 && err
@@ -56,17 +65,25 @@ class GetThreatDevices extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      value: event.target.value
     });
   };
 
   render() {
-      console.log('stttttttate',this.state.threat_devices)
-    return <div className="get-threat-devices">
+    return (
+      <div className="get-threat-devices">
         <Segment>
           <span> Threat Hash ID </span>
           <br />
-          <Input placeholder="Enter threat_devices ID to Search..." onChange={this.handleInput} />
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
+          />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="threat_devices-table">
@@ -83,19 +100,22 @@ class GetThreatDevices extends Component {
             </Table.Header>
             <Table.Body>
               {this.state.threat_devices.map(threat_devices => {
-                return <Table.Row key={threat_devices.id}>
+                return (
+                  <Table.Row key={threat_devices.id}>
                     <Table.Cell>{threat_devices.name}</Table.Cell>
                     <Table.Cell>{threat_devices.agent_version}</Table.Cell>
                     <Table.Cell>{threat_devices.file_status}</Table.Cell>
                     <Table.Cell>{threat_devices.state}</Table.Cell>
                     <Table.Cell>{threat_devices.mac_addresses}</Table.Cell>
                     <Table.Cell>{threat_devices.ip_addresses}</Table.Cell>
-                  </Table.Row>;
+                  </Table.Row>
+                );
               })}
             </Table.Body>
           </Table>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 

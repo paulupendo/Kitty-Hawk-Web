@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // Third Party components
@@ -25,65 +25,64 @@ class GetUser extends Component {
       status: '',
       message: '',
       toastId: null,
+      selected: [],
+      value: ''
     };
   }
 
-  handleClick = () => {
-    this.state.searchTerm.length === 0
-      ? this.setState({
-          error: true,
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.fetchUsers.map(user => {
+          return { value: user.id, text: user.first_name || 'No name' };
         })
-      : // /users/<user-id>?company_name=<name>
-        axios
-          .get(
-            `${config.API_BASE_URL}users/${
-              this.state.searchTerm
-            }?company_name=${this.props.value}`,
-          )
-          .then(res => {
-            this.setState({
-              user: res.data.data.user,
-            });
-            iziToast.show({
-              title: 'SUCCESS',
-              message: res.data.data.message,
-              position: 'topRight',
-              color: 'green',
-              progressBarColor: 'rgb(0, 255, 184)',
-            });
-          })
-          .catch(err => {
-            iziToast.error({
-              title: 'Error',
-              message: 'An error occured!',
-              position: 'topRight',
-            });
-          });
-  };
+      });
+    }
+  }
 
-  /**
-   * This method handles adding input for name, description, level and paths properties
-   *
-   * @param {string} name the property the value should be added to
-   * @returns {function} that sets the value for the property [name] provided
-   */
-  handleInput = event => {
-    this.setState({
-      searchTerm: event.target.value,
-      error: false,
-    });
+  handleClick = () => {
+    axios
+      .get(
+        `${config.API_BASE_URL}users/${this.state.value}?company_name=${
+          this.props.value
+        }`
+      )
+      .then(res => {
+        this.setState({
+          user: res.data.data.user
+        });
+        iziToast.show({
+          title: 'SUCCESS',
+          message: res.data.data.message,
+          position: 'topRight',
+          color: 'green',
+          progressBarColor: 'rgb(0, 255, 184)'
+        });
+      })
+      .catch(err => {
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        });
+      });
   };
 
   render() {
     return (
       <div className="user">
         <Segment>
-          <span> User ID </span>
+          <span> Select User Name</span>
           <br />
-          <Input
-            placeholder="Enter User ID to Search..."
-            onChange={this.handleInput}
-            error={this.state.error}
+          <Dropdown
+            placeholder="Select User"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
+            // loading={this.state.loading}
           />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>

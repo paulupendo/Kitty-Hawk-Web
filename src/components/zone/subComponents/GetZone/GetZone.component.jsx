@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // axios
@@ -16,15 +16,26 @@ class GetZone extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
-      zone: {}
+      value: '',
+      zone: {},
+      selected: []
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.getZone.map(zone => {
+          return { value: zone.id, text: zone.name };
+        })
+      });
+    }
   }
 
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}zones/${this.state.searchTerm}?company_name=${
+        `${config.API_BASE_URL}zones/${this.state.value}?company_name=${
           this.props.value
         }`
       )
@@ -48,7 +59,7 @@ class GetZone extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value
+      value: event.target.value
     });
   };
 
@@ -58,9 +69,14 @@ class GetZone extends Component {
         <Segment>
           <span> zone ID </span>
           <br />
-          <Input
-            placeholder="Enter zone ID to Search..."
-            onChange={this.handleInput}
+          <Dropdown
+            placeholder="Select Zone"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
           />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>

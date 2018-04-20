@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // axios
@@ -14,15 +14,27 @@ class GetByMACAddress extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
-      deviceMac: []
+      value: '',
+      deviceMac: [],
+      selected: []
     };
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.getDevices.map(device => {
+          return { value: device.mac_addresses[0], text: device.name };
+        })
+      });
+    }
+  }
+
   handleClick = () => {
     axios
       .get(
         `${config.API_BASE_URL}devices/mac-address/${
-          this.state.searchTerm
+          this.state.value
         }?company_name=${this.props.value}`
       )
       .then(res => {
@@ -46,16 +58,21 @@ class GetByMACAddress extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="mac-devices">
         <Segment>
           <span> Mac Address</span>
           <br />
-          <Input
-            placeholder="Enter User ID to Search..."
-            onChange={this.handleInput}
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
           />
+
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="user-table">

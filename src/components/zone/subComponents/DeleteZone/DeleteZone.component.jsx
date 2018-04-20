@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button } from 'semantic-ui-react';
 import { config } from '../../../../config';
 import iziToast from 'izitoast';
 
@@ -10,23 +10,38 @@ import axios from 'axios';
 import './DeleteZone.css';
 
 // components
-import toaster from '../../../../common/Status/status.component'
+import toaster from '../../../../common/Status/status.component';
 
 class DeleteZone extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
+      value: '',
+      selected: []
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.deleteZone.map(zone => {
+          return { value: zone.id, text: zone.name };
+        })
+      });
+    }
+  }
   handleClick = () => {
     let data = {
-      zone_id: this.state.searchTerm,
+      zone_id: this.state.value
     };
 
     axios
-      .delete(`${config.API_BASE_URL}zones/${this.state.searchTerm}?company_name=${this.props.value}`, data)
+      .delete(
+        `${config.API_BASE_URL}zones/${this.state.value}?company_name=${
+          this.props.value
+        }`,
+        data
+      )
       .then(res => {
         toaster(res.data.data.message);
       })
@@ -38,17 +53,6 @@ class DeleteZone extends Component {
         })
       );
   };
-  /**
-   * This method handles adding input for name, description, level and paths properties
-   *
-   * @param {string} name the property the value should be added to
-   * @returns {function} that sets the value for the property [name] provided
-   */
-  handleInput = event => {
-    this.setState({
-      searchTerm: event.target.value,
-    });
-  };
 
   render() {
     return (
@@ -56,7 +60,15 @@ class DeleteZone extends Component {
         <Segment>
           <span> Zone Id </span>
           <br />
-          <Input placeholder="Enter Zone ID" onChange={this.handleInput} />
+          <Dropdown
+            placeholder="Select Zone"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
+          />
           <Button onClick={this.handleClick}>DELETE ZONE</Button>
         </Segment>
       </div>

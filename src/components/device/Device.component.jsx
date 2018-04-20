@@ -41,7 +41,7 @@ export default class Device extends Component {
       name: null,
       policy_id: null,
       add_zone_ids: '',
-      remove_zone_ids: '',
+      remove_zone_ids: ''
     };
   }
 
@@ -52,19 +52,19 @@ export default class Device extends Component {
     {
       key: 'GET-device-threats',
       value: 'Get Device Threats',
-      text: 'Get Device Threats',
+      text: 'Get Device Threats'
     },
     {
       key: 'GET-device-zone',
       value: 'Get Zone Devices',
-      text: 'Get Zone Devices',
+      text: 'Get Zone Devices'
     },
-    { key: 'DELETE-device', value: 'Delete Devices', text: 'Delete Devices' },
+    { key: 'DELETE-devices', value: 'Delete Devices', text: 'Delete Devices' },
     {
       key: 'GET-device-MAC',
       value: 'Get By MAC Address',
-      text: 'Get By MAC Address',
-    },
+      text: 'Get By MAC Address'
+    }
   ];
 
   /**
@@ -81,9 +81,9 @@ export default class Device extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company,
+              text: company
             };
-          }),
+          })
         });
       })
       .catch(err => err);
@@ -99,15 +99,13 @@ export default class Device extends Component {
       policy_id,
       add_zone_ids,
       remove_zone_ids,
-      device_id,
+      device_id
     } = this.state;
 
     let data = {
       name,
-      policy_id,
+      policy_id
     };
-
-    console.log('D', data);
 
     let url_ = `${config.API_BASE_URL}single-device/${device_id}?company_name=${
       this.state.value
@@ -130,20 +128,20 @@ export default class Device extends Component {
       .get(
         `${config.API_BASE_URL}all-devices?company_name=${
           this.state.value
-        }&page=1&limit=1`,
+        }&page=1&limit=1`
       )
       .then(res => {
         this.setState({
-          devices: res.data.data.device.page_items,
+          devices: res.data.data.device.page_items
         });
-        toaster(res.data.data.message);
+        // toaster(res.data.data.message);
       })
       .catch(err =>
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
-        }),
+          position: 'topRight'
+        })
       );
   };
   /**
@@ -154,7 +152,7 @@ export default class Device extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value,
+      selection: value
     });
 
     switch (value) {
@@ -164,12 +162,14 @@ export default class Device extends Component {
         break;
       case 'Get Device':
         this.setState({ method: 'GET' });
+        this.fetchDevices();
         break;
       case 'Update Device':
         this.setState({ method: 'PUT' });
         break;
       case 'Get Device Threats':
         this.setState({ method: 'GET' });
+        this.fetchDevices();
         break;
       case 'Update Device Threat':
         this.setState({ method: 'GET' });
@@ -177,11 +177,13 @@ export default class Device extends Component {
       case 'Get Zone Devices':
         this.setState({ method: 'GET' });
         break;
-      case 'Delete Device':
+      case 'Delete Devices':
         this.setState({ method: 'GET' });
+        this.fetchDevices();
         break;
       case 'Get By MAC Address':
         this.setState({ method: 'GET' });
+        this.fetchDevices();
         break;
 
       default:
@@ -223,7 +225,10 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a specific device resource belonging to a Tenant." />
-            <GetDevice value={this.state.value} />
+            <GetDevice
+              value={this.state.value}
+              getDevices={this.state.devices}
+            />
           </div>
         );
 
@@ -231,7 +236,10 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetDeviceThreats value={this.state.value} />
+            <GetDeviceThreats
+              value={this.state.value}
+              getThreatDevice={this.state.devices}
+            />
           </div>
         );
       case 'Get Zone Devices':
@@ -245,14 +253,20 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetByMACAddress value={this.state.value} />
+            <GetByMACAddress
+              value={this.state.value}
+              getDevices={this.state.devices}
+            />
           </div>
         );
       case 'Delete Devices':
         return (
           <div>
             <SubHeader info="Allows a caller to delete one or more devices from an organization." />
-            <DeleteDevices value={this.state.value} />
+            <DeleteDevices
+              value={this.state.value}
+              getDevices={this.state.devices}
+            />
           </div>
         );
     }
@@ -276,7 +290,7 @@ export default class Device extends Component {
                 onChange={(_, { value }) => {
                   this.setState({
                     value,
-                    disabled: false,
+                    disabled: false
                   });
                 }}
                 options={this.state.companies}

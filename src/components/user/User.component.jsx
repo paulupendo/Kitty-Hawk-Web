@@ -44,7 +44,7 @@ export default class User extends Component {
       user_role: null,
       email: null,
       zoneId: null,
-      user_id: null,
+      user_id: null
     };
   }
 
@@ -52,7 +52,7 @@ export default class User extends Component {
     { key: 'POST-user', value: 'Create User', text: 'Create User' },
     { key: 'PUT-user', value: 'Update User', text: 'Update User' },
     { key: 'GET-users', value: 'Get Users', text: 'Get Users' },
-    { key: 'GET-user', value: 'Get User', text: 'Get User' },
+    { key: 'GET-user', value: 'Get User', text: 'Get User' }
   ];
 
   /**
@@ -69,9 +69,9 @@ export default class User extends Component {
           companies: res.data.data.companies.map(company => {
             return {
               value: company,
-              text: company,
+              text: company
             };
-          }),
+          })
         });
       })
       .catch(err => err);
@@ -97,16 +97,15 @@ export default class User extends Component {
       .then(res => {
         this.setState({
           users: res.data.data.users.page_items,
-          message: res.data.data.message,
+          message: res.data.data.message
         });
-        toaster(res.data.data.message);
       })
       .catch(err =>
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
-        }),
+          position: 'topRight'
+        })
       );
   };
 
@@ -130,15 +129,15 @@ export default class User extends Component {
       zones: [
         {
           id: this.state.zoneId,
-          role_type: user_role,
-        },
-      ],
+          role_type: user_role
+        }
+      ]
     };
 
     axios
       .post(
         `${config.API_BASE_URL}users?company_name=${this.state.value}`,
-        data,
+        data
       )
       .then(res => toaster(res.data.data.message))
       .catch(err => {
@@ -147,13 +146,13 @@ export default class User extends Component {
               title: 'Error',
               message: 'Please Select a Company To Continue',
               position: 'topRight',
-              transitionIn: 'bounceInLeft',
+              transitionIn: 'bounceInLeft'
             })
           : iziToast.error({
               title: 'Error',
               message: 'An error occured!',
               position: 'topRight',
-              transitionIn: 'bounceInLeft',
+              transitionIn: 'bounceInLeft'
             });
       });
   };
@@ -164,7 +163,7 @@ export default class User extends Component {
       last_name: '',
       user_role: '',
       email: '',
-      zoneId: '',
+      zoneId: ''
     });
   };
 
@@ -188,9 +187,9 @@ export default class User extends Component {
       zones: [
         {
           id: this.state.zoneId,
-          role_type: user_role,
-        },
-      ],
+          role_type: user_role
+        }
+      ]
     };
 
     axios
@@ -198,7 +197,7 @@ export default class User extends Component {
         `${config.API_BASE_URL}users/${user_id}?company_name=${
           this.state.value
         }`,
-        data,
+        data
       )
       .then(res => {
         iziToast.show({
@@ -207,14 +206,14 @@ export default class User extends Component {
           position: 'topRight',
           color: 'green',
           progressBarColor: 'rgb(0, 255, 184)',
-          transitionIn: 'fadeInUp',
+          transitionIn: 'fadeInUp'
         });
       })
       .catch(err => {
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
-          position: 'topRight',
+          position: 'topRight'
         });
       });
     this.cleanForms();
@@ -228,7 +227,7 @@ export default class User extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value,
+      selection: value
     });
     switch (value) {
       case 'Create User':
@@ -236,6 +235,7 @@ export default class User extends Component {
         break;
       case 'Get User':
         this.setState({ method: 'GET' });
+        this.fetchUsers();
         break;
       case 'Get Users':
         this.setState({ method: 'GET' });
@@ -260,7 +260,7 @@ export default class User extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a specific Console User resource belonging to a Tenant." />
-            <GetUser value={this.state.value} />
+            <GetUser value={this.state.value}  fetchUsers={this.state.users}/>
           </div>
         );
       case 'Get Users':
@@ -339,7 +339,7 @@ export default class User extends Component {
                   this.setState({
                     value,
                     disabled: false,
-                    showToaster: false,
+                    showToaster: false
                   });
                 }}
                 options={this.state.companies}

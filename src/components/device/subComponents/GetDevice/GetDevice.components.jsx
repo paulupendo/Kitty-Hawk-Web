@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // axios
@@ -12,20 +12,32 @@ class GetDevice extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
       device: {},
+      selected: [],
+      value: ''
     };
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.getDevices.map(device => {
+          return { value: device.id, text: device.name };
+        })
+      });
+    }
+  }
+
   handleClick = () => {
     axios
       .get(
         `${config.API_BASE_URL}single-device/${
-          this.state.searchTerm
-        }?company_name=${this.props.value}`,
+          this.state.value
+        }?company_name=${this.props.value}`
       )
       .then(res => {
         this.setState({
-          device: res.data.data.device,
+          device: res.data.data.device
         });
       });
   };
@@ -37,20 +49,24 @@ class GetDevice extends Component {
    */
   handleInput = event => {
     this.setState({
-      searchTerm: event.target.value,
+      searchTerm: event.target.value
     });
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="get-device">
         <Segment>
           <span> Device ID </span>
           <br />
-          <Input
-            placeholder="Enter Device ID to Search..."
-            onChange={this.handleInput}
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
           />
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>

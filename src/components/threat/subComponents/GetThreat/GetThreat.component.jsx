@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // axios
@@ -14,15 +14,26 @@ class GetThreat extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
-      threat: {}
+      threat: {},
+      selected: [],
+      value: ''
     };
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps) {
+  //     this.setState({
+  //       selected: nextProps.getThreats.map(threats => {
+  //         return { value: threats.sha256, text: threats.name };
+  //       })
+  //     });
+  //   }
+  // }
 
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}threats/${this.state.searchTerm}?company_name=${
+        `${config.API_BASE_URL}threats/${this.state.value}?company_name=${
           this.props.value
         }`
       )
@@ -66,10 +77,16 @@ class GetThreat extends Component {
         <Segment>
           <span> Threat ID </span>
           <br />
-          <Input
-            placeholder="Enter threat ID to Search..."
-            onChange={this.handleInput}
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
           />
+          // loading={this.state.loading}
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="threat-table">

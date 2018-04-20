@@ -85,7 +85,6 @@ export default class Threat extends Component {
       .get(`${config.API_BASE_URL}threats?company_name=${this.state.value}`)
       .then(res => {
         this.setState({ threats: res.data.data.policy.page_items });
-        toaster(res.data.data.message);
       })
       .catch(err => {
         this.state.value.length === 0 && err
@@ -122,12 +121,15 @@ export default class Threat extends Component {
         break;
       case 'Get Threat':
         this.setState({ method: 'GET' });
+        this.getThreats();
         break;
       case 'Get Threat Devices':
         this.setState({ method: 'PUT' });
+        this.getThreats();
         break;
       case 'Get Threat Download URL':
         this.setState({ method: 'GET' });
+        this.getThreats();
         break;
       default:
         break;
@@ -155,7 +157,10 @@ export default class Threat extends Component {
             {this.state.threats.length === 0 ? (
               <LoaderGraphic />
             ) : (
-              <GetThreats threats={this.state.threats} />
+              <GetThreats
+                threats={this.state.threats}
+                getThreats={this.state.threats}
+              />
             )}
           </div>
         );
@@ -163,14 +168,20 @@ export default class Threat extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetThreatDevices value={this.state.value} />
+            <GetThreatDevices
+              value={this.state.value}
+              getThreats={this.state.threats}
+            />
           </div>
         );
       case 'Get Threat Download URL':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <ThreatDownloadUrl value={this.state.value} />
+            <ThreatDownloadUrl
+              value={this.state.value}
+              getThreats={this.state.threats}
+            />
           </div>
         );
     }

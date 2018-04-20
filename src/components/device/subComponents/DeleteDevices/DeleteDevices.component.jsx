@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 import iziToast from 'izitoast';
 
@@ -10,26 +10,36 @@ import axios from 'axios';
 import './DeleteDevices.css';
 
 // components
-import toaster from '../../../../common/Status/status.component'
+import toaster from '../../../../common/Status/status.component';
 
 class DeleteDevices extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: ''
+      value: '',
+      selected: []
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        selected: nextProps.getDevices.map(device => {
+          return { value: device.id, text: device.name };
+        })
+      });
+    }
   }
 
   handleClick = () => {
     let data = {
-      device_ids: [this.state.searchTerm]
+      device_ids: [this.state.value]
     };
-
-    console.log(data);
+    
     axios
       .delete(
         `${config.API_BASE_URL}device-delete?company_name=${this.props.value}`,
-        { data: data },
+        { data: data }
       )
       .then(res => {
         toaster(res.data.data.message);
@@ -58,9 +68,17 @@ class DeleteDevices extends Component {
     return (
       <div className="delete-device">
         <Segment>
-          <span> Device Id </span>
+          <span> Select Device </span>
           <br />
-          <Input placeholder="Enter Device ID" onChange={this.handleInput} />
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
+          />
           <Button onClick={this.handleClick}>DELETE DEVICE</Button>
         </Segment>
       </div>

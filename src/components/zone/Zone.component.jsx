@@ -92,7 +92,6 @@ export default class Zones extends Component {
         this.setState({
           zones: res.data.data.page_items
         });
-        toaster(res.data.message);
       })
       .catch(err =>
         iziToast.error({
@@ -180,12 +179,15 @@ export default class Zones extends Component {
         break;
       case 'Get Device Zones':
         this.setState({ method: 'GET' });
+        this.getZones();
         break;
       case 'Get Zone':
         this.setState({ method: 'GET' });
+        this.getZones();
         break;
       case 'Delete Zone':
         this.setState({ method: 'DELETE' });
+        this.getZones();
         break;
       case 'Update Zone':
         this.setState({ method: 'PUT' });
@@ -230,7 +232,7 @@ export default class Zones extends Component {
             {this.state.zones.length === 0 ? (
               <LoaderGraphic />
             ) : (
-              <GetZones zones={this.state.zones} />
+              <GetZones zones={this.state.zones} getZone={this.state.zones} />
             )}
           </div>
         );
@@ -238,23 +240,22 @@ export default class Zones extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <DeviceZones value={this.state.value} />
+            <DeviceZones
+              value={this.state.value}
+              getDeviceZone={this.state.zones}
+            />
           </div>
         );
       case 'Get Zone':
-        return (
-          <div>
+        return <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetZone value={this.state.value} />
-          </div>
-        );
+            <GetZone value={this.state.value} getZone={this.state.zones} />
+          </div>;
       case 'Delete Zone':
-        return (
-          <div>
+        return <div>
             <SubHeader info="Delete (remove) a zone from your Console." />
-            <DeleteZone value={this.state.value} />
-          </div>
-        );
+            <DeleteZone value={this.state.value} deleteZone={this.state.zones} />
+          </div>;
       case 'Update Zone':
         return (
           <div>
