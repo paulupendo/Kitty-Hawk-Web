@@ -8,7 +8,7 @@ const CreateUser = ({ handleChange, handleDropDownChange }) => {
   const zoneOptions = [
     { key: 'User', value: 'User', text: 'User' },
     { key: 'Administrator', value: 'Administrator', text: 'Administrator' },
-    { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' },
+    { key: 'Zone Manager', value: 'Zone Manager', text: 'Zone Manager' }
   ];
 
   return (
@@ -43,9 +43,11 @@ const CreateUser = ({ handleChange, handleDropDownChange }) => {
           </div>
           <div>
             <span>Zone Id</span> <br />
-            <Input
-              placeholder="(required):{string}"
-              onChange={e => handleChange(e, 'zoneId')}
+            <Dropdown
+              selection
+              placeholder="Select Zone Id"
+              options={zoneOptions}
+              onChange={handleDropDownChange}
             />
           </div>
           <div>

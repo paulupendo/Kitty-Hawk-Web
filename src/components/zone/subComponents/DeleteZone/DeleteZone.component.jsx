@@ -17,13 +17,15 @@ class DeleteZone extends Component {
     super();
     this.state = {
       value: '',
-      selected: []
+      selected: [],
+      isLoadingProps_: true
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps) {
       this.setState({
+        isLoadingProps_: false,
         selected: nextProps.deleteZone.map(zone => {
           return { value: zone.id, text: zone.name };
         })
@@ -68,6 +70,7 @@ class DeleteZone extends Component {
               this.setState({ value });
             }}
             options={this.state.selected}
+            loading={this.state.isLoadingProps_}
           />
           <Button onClick={this.handleClick}>DELETE ZONE</Button>
         </Segment>

@@ -147,7 +147,10 @@ export default class Threat extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetThreat value={this.state.value} />
+            <GetThreat
+              value={this.state.value}
+              getThreats={this.state.threats}
+            />
           </div>
         );
       case 'Get Threats':

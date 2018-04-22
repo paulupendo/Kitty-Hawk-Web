@@ -14,16 +14,6 @@
   @media (max-width: 960px) {
     width: 79vw;
   }
-  span {
-    margin-left: 2rem;
-  }
-  .ui.input > input {
-    margin-left: 2rem;
-    width: 24rem;
-    &:focus {
-      border-color: #38b557;
-    }
-  }
   .ui.button {
     background:#38b557;
     color: #fff;

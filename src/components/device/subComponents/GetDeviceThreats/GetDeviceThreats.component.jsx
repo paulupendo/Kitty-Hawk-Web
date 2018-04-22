@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { config } from '../../../../config';
+import Skeleton from 'react-loading-skeleton';
 
 // Third party libraries
 import iziToast from 'izitoast';
@@ -19,13 +20,16 @@ class GetDeviceThreats extends Component {
     this.state = {
       deviceThreats: [],
       selected: [],
-      value: ''
+      value: '',
+      loading: false,
+      isLoadingProps_: true
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps) {
       this.setState({
+        isLoadingProps_: false,
         selected: nextProps.getThreatDevice.map(threats => {
           return { value: threats.id, text: threats.name };
         })
@@ -38,33 +42,30 @@ class GetDeviceThreats extends Component {
       .get(
         `${config.API_BASE_URL}device-threats/${
           this.state.value
-        }?company_name=${this.props.value}&page=<1>&limit=<1>`
+        }?company_name=${this.props.value}&page=<1>&limit=<1>`,
+        this.setState({
+          loading: true
+        })
       )
       .then(res => {
-        this.setState({ deviceThreats: res.data.data.device.page_items });
+        this.setState({
+          deviceThreats: res.data.data.device.page_items,
+          loading: false
+        });
         toaster(res.data.data.message);
       })
-      .catch(err =>
+      .catch(err => {
+        this.setState({ loading: false });
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
           position: 'topRight'
-        })
-      );
-  };
-  /**
-   * This method handles adding input for name, description, level and paths properties
-   *
-   * @param {string} name the property the value should be added to
-   * @returns {function} that sets the value for the property [name] provided
-   */
-  handleInput = event => {
-    this.setState({
-      searchTerm: event.target.value
-    });
+        });
+      });
   };
 
   render() {
+    const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
     return (
       <div className="get-device-threats">
         <Segment>
@@ -78,8 +79,9 @@ class GetDeviceThreats extends Component {
               this.setState({ value });
             }}
             options={this.state.selected}
+            loading={this.state.isLoadingProps_}
           />
-          <Button onClick={this.handleClick}>SEARCH</Button>
+          <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
         <div className="user-table">
           <Table color="green" striped>

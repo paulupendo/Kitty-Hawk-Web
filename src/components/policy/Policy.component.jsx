@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { config } from '../../config';
 
 // third-party libraries
@@ -153,10 +153,7 @@ export default class Policy extends Component {
             {this.state.policies.length === 0 ? (
               <LoaderGraphic />
             ) : (
-              <Fragment>
                 <GetPolicies policies={this.state.policies} />
-                {this.state.showToaster && this.showToaster()}
-              </Fragment>
             )}
           </div>
         );

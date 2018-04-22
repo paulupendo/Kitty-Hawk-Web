@@ -7,13 +7,9 @@
   span {
     margin-left: 2rem;
   }
-  .ui.input > input {
-    margin-left: 2rem;
-    width: 35rem;
-    &:focus {
-      border-color: #38b557;
-    }
-  }
+.ui.selection.dropdown .menu>.item {
+  margin-left: -2rem
+}
   .ui.button {
     background:#38b557;
     width: 20%;
@@ -26,6 +22,6 @@
   }
 }
 .user-table {
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 }

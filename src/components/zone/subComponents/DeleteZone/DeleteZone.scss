@@ -1,4 +1,4 @@
- .delete-zone {
+.delete-zone {
   .ui.segment {
     border: none;
     background: #f3f5f7;
@@ -7,12 +7,8 @@
     span {
       margin-left: 2rem;
     }
-    .ui.input > input {
-      margin-left: 2rem;
-      width: 35rem;
-      &:focus {
-        border-color: #38b557;
-      }
+    .ui.selection.dropdown .menu > .item {
+      margin-left: -2rem;
     }
     .ui.button {
       background: #38b557;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
+import Skeleton from 'react-loading-skeleton';
 
 // axios
 import axios from 'axios';
-import LoaderGraphic from '../../../../common/Loader/loader.component';
 import iziToast from 'izitoast';
 import toaster from '../../../../common/Status/status.component';
 
@@ -18,6 +18,7 @@ class ThreatDownloadUrl extends Component {
       searchTerm: '',
       threat_url: {},
       loading: false,
+      isLoadingProps_: true,
       selected: [],
       value: ''
     };
@@ -26,6 +27,7 @@ class ThreatDownloadUrl extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps) {
       this.setState({
+        isLoadingProps_: false,
         selected: nextProps.getThreats.map(threats => {
           return { value: threats.sha256, text: threats.name };
         })
@@ -85,7 +87,7 @@ class ThreatDownloadUrl extends Component {
     return (
       <div className="get-threat-url">
         <Segment>
-          <span> Threat ID </span>
+          <span> Threat Name </span>
           <br />
           <Dropdown
             placeholder="Select Threat"
@@ -95,34 +97,37 @@ class ThreatDownloadUrl extends Component {
               this.setState({ value });
             }}
             options={this.state.selected}
-            // loading={this.state.loading}
+            loading={this.state.isLoadingProps_}
           />
           <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
-        <div className="threat-table">
-          <Table color="green" striped>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Cert Issuer</Table.HeaderCell>
-                <Table.HeaderCell>Cert Publisher</Table.HeaderCell>
-                <Table.HeaderCell>Classification</Table.HeaderCell>
-                <Table.HeaderCell>Cylance Score</Table.HeaderCell>
-                <Table.HeaderCell>Detected By</Table.HeaderCell>
-                <Table.HeaderCell>File Size</Table.HeaderCell>
-                <Table.HeaderCell>Global Quarantined</Table.HeaderCell>
-                <Table.HeaderCell>Running</Table.HeaderCell>
-                <Table.HeaderCell>Safelisted</Table.HeaderCell>
-                <Table.HeaderCell>Sub Classification</Table.HeaderCell>
-                <Table.HeaderCell>Signed</Table.HeaderCell>
-                <Table.HeaderCell>Unique to Cylance</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {Object.keys(this.state.threat_url).length >= 1 &&
-                [this.state.threat_url].map((threat, i) => {
-                  return (
-                    <Table.Row key={threat.id}>
+        {this.state.loading ? (
+          <Skeleton count={6} duration={2} />
+        ) : (
+          Object.keys(this.state.threat_url).length >= 1 &&
+          [this.state.threat_url].map((threat, i) => {
+            return (
+              <div className="threat-table">
+                <Table color="green" striped>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell>Cert Issuer</Table.HeaderCell>
+                      <Table.HeaderCell>Cert Publisher</Table.HeaderCell>
+                      <Table.HeaderCell>Classification</Table.HeaderCell>
+                      <Table.HeaderCell>Cylance Score</Table.HeaderCell>
+                      <Table.HeaderCell>Detected By</Table.HeaderCell>
+                      <Table.HeaderCell>File Size</Table.HeaderCell>
+                      <Table.HeaderCell>Global Quarantined</Table.HeaderCell>
+                      <Table.HeaderCell>Running</Table.HeaderCell>
+                      <Table.HeaderCell>Safelisted</Table.HeaderCell>
+                      <Table.HeaderCell>Sub Classification</Table.HeaderCell>
+                      <Table.HeaderCell>Signed</Table.HeaderCell>
+                      <Table.HeaderCell>Unique to Cylance</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    <Table.Row key={i}>
                       <Table.Cell>{threat.name}</Table.Cell>
                       <Table.Cell>{threat.cert_issuer}</Table.Cell>
                       <Table.Cell>{threat.cert_publisher}</Table.Cell>
@@ -141,11 +146,12 @@ class ThreatDownloadUrl extends Component {
                         {threat.unique_to_cylance.toString()}
                       </Table.Cell>
                     </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
-        </div>
+                  </Table.Body>
+                </Table>
+              </div>
+            );
+          })
+        )}
       </div>
     );
   }

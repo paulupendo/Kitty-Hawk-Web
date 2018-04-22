@@ -32,7 +32,7 @@ export default class Device extends Component {
       activeComponent: 'Update Device',
       selection: 'Update Device',
       endpoint: '/users/v2',
-      method: 'GET',
+      method: null,
       showToaster: true,
       companies: [],
       value: '',

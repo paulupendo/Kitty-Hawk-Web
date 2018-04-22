@@ -21,15 +21,14 @@ class GetThreat extends Component {
   }
 
   // componentWillReceiveProps(nextProps) {
-  //   if (nextProps) {
-  //     this.setState({
-  //       selected: nextProps.getThreats.map(threats => {
-  //         return { value: threats.sha256, text: threats.name };
-  //       })
-  //     });
-  //   }
+  //   console.log(nextProps)
   // }
 
+  // // componentDidMount() {
+  // //   console.log(this.props)
+  // // }
+
+  
   handleClick = () => {
     axios
       .get(
@@ -86,7 +85,6 @@ class GetThreat extends Component {
             }}
             options={this.state.selected}
           />
-          // loading={this.state.loading}
           <Button onClick={this.handleClick}>SEARCH</Button>
         </Segment>
         <div className="threat-table">

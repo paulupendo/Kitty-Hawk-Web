@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
+import Skeleton from 'react-loading-skeleton';
 
 // Third Party components
 import iziToast from 'izitoast';
@@ -26,13 +27,16 @@ class GetUser extends Component {
       message: '',
       toastId: null,
       selected: [],
-      value: ''
+      value: '',
+      loading: false,
+      isLoadingProps_: true
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps) {
       this.setState({
+        isLoadingProps_: false,
         selected: nextProps.fetchUsers.map(user => {
           return { value: user.id, text: user.first_name || 'No name' };
         })
@@ -45,12 +49,13 @@ class GetUser extends Component {
       .get(
         `${config.API_BASE_URL}users/${this.state.value}?company_name=${
           this.props.value
-        }`
+        }`,
+        this.setState({
+          loading: true
+        })
       )
       .then(res => {
-        this.setState({
-          user: res.data.data.user
-        });
+        this.setState({ user: res.data.data.user, loading: false });
         iziToast.show({
           title: 'SUCCESS',
           message: res.data.data.message,
@@ -60,6 +65,7 @@ class GetUser extends Component {
         });
       })
       .catch(err => {
+        this.setState({ loading: false });
         iziToast.error({
           title: 'Error',
           message: 'An error occured!',
@@ -69,6 +75,7 @@ class GetUser extends Component {
   };
 
   render() {
+    const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
     return (
       <div className="user">
         <Segment>
@@ -82,23 +89,28 @@ class GetUser extends Component {
               this.setState({ value });
             }}
             options={this.state.selected}
-            // loading={this.state.loading}
+            loading={this.state.isLoadingProps_}
           />
-          <Button onClick={this.handleClick}>SEARCH</Button>
+          <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
-        <div className="user-table">
-          <Table color="green" striped>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>First Name</Table.HeaderCell>
-                <Table.HeaderCell>Last Name</Table.HeaderCell>
-                <Table.HeaderCell>Email</Table.HeaderCell>
-                <Table.HeaderCell>Role Name</Table.HeaderCell>
-                <Table.HeaderCell>Default Zone Role Name</Table.HeaderCell>
-              </Table.Row>
-              {Object.keys(this.state.user).length >= 1 &&
-                [this.state.user].map(user => {
-                  return (
+        {this.state.loading ? (
+          <Skeleton count={3} duration={2} />
+        ) : (
+          Object.keys(this.state.user).length >= 1 &&
+          [this.state.user].map(user => {
+            return (
+              <div className="user-table">
+                <Table color="green" striped>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>First Name</Table.HeaderCell>
+                      <Table.HeaderCell>Last Name</Table.HeaderCell>
+                      <Table.HeaderCell>Email</Table.HeaderCell>
+                      <Table.HeaderCell>Role Name</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        Default Zone Role Name
+                      </Table.HeaderCell>
+                    </Table.Row>
                     <Table.Row key={user.id}>
                       <Table.Cell>{user.first_name || 'None'}</Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
@@ -106,12 +118,12 @@ class GetUser extends Component {
                       <Table.Cell>{user.role_name}</Table.Cell>
                       <Table.Cell>{user.default_zone_role_name}</Table.Cell>
                     </Table.Row>
-                  );
-                })}
-            </Table.Header>
-          </Table>
-          {this.state.showToaster && this.showToaster()}
-        </div>
+                  </Table.Header>
+                </Table>
+              </div>
+            );
+          })
+        )}
       </div>
     );
   }
