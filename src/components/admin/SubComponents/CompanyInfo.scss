@@ -7,9 +7,11 @@
     .btns-row {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       margin-bottom: 1.5rem;
       div {
         margin-right: 1.5rem;
+        margin-bottom: 0.5rem;
       }
       .ui.input {
         width: 243px;

@@ -5,9 +5,14 @@ import { Dropdown, Button } from 'semantic-ui-react';
 import './AdminActions.css';
 
 const AdminActions = props => {
-  const { handleChange, companies, handleDropdownchange, deleteCompany } = props;
+  const {
+    handleChange,
+    companies,
+    handleDropdownchange,
+    deleteCompany
+  } = props;
   return (
-    <div className="actions-container">
+    <div className="ctions-container">
       <div className="dropdown-nav">
         <Dropdown
           placeholder="Select Company"
@@ -18,9 +23,7 @@ const AdminActions = props => {
         />
       </div>
       <div className="admin-btn">
-        <Button content="DELETE COMPANY"
-        onClick={deleteCompany}
-        />
+        <Button content="DELETE COMPANY" onClick={deleteCompany} />
       </div>
     </div>
   );

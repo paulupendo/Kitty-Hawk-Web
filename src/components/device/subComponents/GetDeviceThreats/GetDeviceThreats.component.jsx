@@ -63,6 +63,11 @@ class GetDeviceThreats extends Component {
         });
       });
   };
+  loadSkeleton = () => {
+    if (this.state.loading) {
+      return       <Skeleton />
+    }
+  }
 
   render() {
     const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
@@ -97,8 +102,9 @@ class GetDeviceThreats extends Component {
               {this.state.deviceThreats.map((threats, index) => {
                 return (
                   <Table.Row key={index}>
-                    <Table.Cell>{threats.name}</Table.Cell>
-                    <Table.Cell>{threats.classification} </Table.Cell>
+                    <Table.Cell>{threats.name.substring(0,14)}</Table.Cell>
+                    <Table.Cell>{ this.state.loading ? <Skeleton/> :
+                      threats.classification} </Table.Cell>
                     <Table.Cell>{threats.cylance_score}</Table.Cell>
                     <Table.Cell>{threats.date_found}</Table.Cell>
                     <Table.Cell>{threats.file_status}</Table.Cell>
