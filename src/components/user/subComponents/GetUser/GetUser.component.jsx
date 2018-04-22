@@ -38,7 +38,7 @@ class GetUser extends Component {
       this.setState({
         isLoadingProps_: false,
         selected: nextProps.fetchUsers.map(user => {
-          return { value: user.id, text: user.first_name || 'No name' };
+          return { value: user.id, text: user.id };
         })
       });
     }
@@ -79,7 +79,7 @@ class GetUser extends Component {
     return (
       <div className="user">
         <Segment>
-          <span> Select User Name</span>
+          <span> Select User ID</span>
           <br />
           <Dropdown
             placeholder="Select User"
@@ -94,7 +94,7 @@ class GetUser extends Component {
           <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
         {this.state.loading ? (
-          <Skeleton count={3} duration={2} />
+          <Skeleton count={4} duration={2} />
         ) : (
           Object.keys(this.state.user).length >= 1 &&
           [this.state.user].map(user => {
@@ -104,6 +104,7 @@ class GetUser extends Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>First Name</Table.HeaderCell>
+                      <Table.HeaderCell>User ID</Table.HeaderCell>
                       <Table.HeaderCell>Last Name</Table.HeaderCell>
                       <Table.HeaderCell>Email</Table.HeaderCell>
                       <Table.HeaderCell>Role Name</Table.HeaderCell>
@@ -113,6 +114,7 @@ class GetUser extends Component {
                     </Table.Row>
                     <Table.Row key={user.id}>
                       <Table.Cell>{user.first_name || 'None'}</Table.Cell>
+                      <Table.Cell>{user.id}</Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>
                       <Table.Cell>{user.role_name}</Table.Cell>

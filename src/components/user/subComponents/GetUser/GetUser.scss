@@ -4,16 +4,16 @@
   background: #f3f5f7;
   padding: 3em 1em;
   box-shadow: none;
-  width: 55vw;
-  @media (max-width: 1680px) {
-    width:60vw;
-  }
-  @media (max-width: 1280px) {
-    width: 70vw;
-  }
-  @media (max-width: 960px) {
-    width: 79vw;
-  }
+  // width: 55vw;
+  // @media (max-width: 1680px) {
+  //   width:60vw;
+  // }
+  // @media (max-width: 1280px) {
+  //   width: 70vw;
+  // }
+  // @media (max-width: 960px) {
+  //   width: 79vw;
+  // }
   .ui.button {
     background:#38b557;
     color: #fff;
@@ -25,8 +25,6 @@
     margin-left: 20rem;
   }
 }
-.user-table {
-  margin-top: 4rem;
-}
+
 }
 

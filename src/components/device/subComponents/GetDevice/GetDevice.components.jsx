@@ -73,13 +73,13 @@ class GetDevice extends Component {
           [this.state.device].map((device, index) => {
             return (
               <div className="device-table">
-                <Table color="green" striped >
+                <Table color="green" striped>
                   <Table.Header>
-                    <Table.Row >
+                    <Table.Row>
                       <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell>Device ID</Table.HeaderCell>
                       <Table.HeaderCell>Agent Version</Table.HeaderCell>
                       <Table.HeaderCell>Date Fist Registered</Table.HeaderCell>
-                      <Table.HeaderCell>Date Modified</Table.HeaderCell>
                       <Table.HeaderCell>Date Offline</Table.HeaderCell>
                       <Table.HeaderCell>Host Name</Table.HeaderCell>
                       <Table.HeaderCell>Last Looged In User</Table.HeaderCell>
@@ -88,9 +88,9 @@ class GetDevice extends Component {
                     </Table.Row>
                     <Table.Row key={device.id}>
                       <Table.Cell>{device.name || 'None'}</Table.Cell>
-                      <Table.Cell>{device.agent_version}</Table.Cell>
+                      <Table.Cell>{device.id}</Table.Cell>
+                      <Table.Cell>{device.agent_version || 'None'}</Table.Cell>
                       <Table.Cell>{device.date_first_registered}</Table.Cell>
-                      <Table.Cell>{device.date_last_modified}</Table.Cell>
                       <Table.Cell>{device.date_offline}</Table.Cell>
                       <Table.Cell>{device.host_name}</Table.Cell>
                       <Table.Cell>{device.last_logged_in_user}</Table.Cell>
