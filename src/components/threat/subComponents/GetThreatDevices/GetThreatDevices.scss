@@ -4,12 +4,6 @@
     background: #f3f5f7;
     padding: 3em 1em;
     box-shadow: none;
-    span {
-      margin-left: 2rem;
-    }
-    .ui.selection.dropdown .menu > .item {
-      margin-left: -2.5rem;
-    }
     .ui.button {
       background: #38b557;
       width: 20%;
@@ -18,7 +12,7 @@
       border-radius: 0.4rem;
       margin-top: 1rem;
       margin-right: -0.1rem;
-      margin-left: 10rem;
+      margin-left: 1rem;
     }
   }
   .user-table {

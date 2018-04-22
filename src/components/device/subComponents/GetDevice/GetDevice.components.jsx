@@ -26,7 +26,7 @@ class GetDevice extends Component {
       this.setState({
         isLoadingProps_: false,
         selected: nextProps.getDevices.map(device => {
-          return { value: device.id, text: device.name };
+          return { value: device.id, text: device.id };
         })
       });
     }

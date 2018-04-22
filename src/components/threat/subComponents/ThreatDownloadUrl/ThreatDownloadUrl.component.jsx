@@ -112,8 +112,6 @@ class ThreatDownloadUrl extends Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>Name</Table.HeaderCell>
-                      <Table.HeaderCell>Cert Issuer</Table.HeaderCell>
-                      <Table.HeaderCell>Cert Publisher</Table.HeaderCell>
                       <Table.HeaderCell>Classification</Table.HeaderCell>
                       <Table.HeaderCell>Cylance Score</Table.HeaderCell>
                       <Table.HeaderCell>Detected By</Table.HeaderCell>
@@ -128,9 +126,7 @@ class ThreatDownloadUrl extends Component {
                   </Table.Header>
                   <Table.Body>
                     <Table.Row key={i}>
-                      <Table.Cell>{threat.name}</Table.Cell>
-                      <Table.Cell>{threat.cert_issuer}</Table.Cell>
-                      <Table.Cell>{threat.cert_publisher}</Table.Cell>
+                      <Table.Cell>{threat.name.substring(0,15)}</Table.Cell>
                       <Table.Cell>{threat.classification}</Table.Cell>
                       <Table.Cell>{threat.cylance_score}</Table.Cell>
                       <Table.Cell>{threat.detected_by}</Table.Cell>

@@ -30,7 +30,7 @@ class GetZone extends Component {
       this.setState({
         isLoadingProps_: false,
         selected: nextProps.getZone.map(zone => {
-          return { value: zone.id, text: zone.name };
+          return { value: zone.id, text: zone.id};
         })
       });
     }

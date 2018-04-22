@@ -31,7 +31,7 @@ class GetDeviceThreats extends Component {
       this.setState({
         isLoadingProps_: false,
         selected: nextProps.getThreatDevice.map(threats => {
-          return { value: threats.id, text: threats.name };
+          return { value: threats.id, text: threats.id };
         })
       });
     }

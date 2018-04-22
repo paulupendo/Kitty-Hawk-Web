@@ -27,7 +27,7 @@ class DeleteZone extends Component {
       this.setState({
         isLoadingProps_: false,
         selected: nextProps.deleteZone.map(zone => {
-          return { value: zone.id, text: zone.name };
+          return { value: zone.id, text: zone.id };
         })
       });
     }
@@ -58,7 +58,7 @@ class DeleteZone extends Component {
 
   render() {
     return (
-      <div className="get-threat">
+      <div className="delete-zone">
         <Segment>
           <span> Zone Id </span>
           <br />

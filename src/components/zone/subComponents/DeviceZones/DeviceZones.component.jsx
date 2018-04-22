@@ -30,7 +30,7 @@ class DeviceZones extends Component {
       this.setState({
         isLoadingProps_: false,
         selected: nextProps.getDeviceZone.map(zone => {
-          return { value: zone.id, text: zone.name };
+          return { value: zone.id, text: zone.id};
         })
       });
     }

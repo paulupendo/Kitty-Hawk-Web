@@ -4,16 +4,6 @@
     background: #f3f5f7;
     padding: 3em 1em;
     box-shadow: none;
-    span {
-      margin-left: 2rem;
-    }
-    .ui.input > input {
-      margin-left: 2rem;
-      width: 35rem;
-      &:focus {
-        border-color: #38b557;
-      }
-    }
     .ui.button {
       background: #38b557;
       width: 20%;

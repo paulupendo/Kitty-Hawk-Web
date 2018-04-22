@@ -104,8 +104,8 @@ class GetUser extends Component {
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>First Name</Table.HeaderCell>
-                      <Table.HeaderCell>User ID</Table.HeaderCell>
                       <Table.HeaderCell>Last Name</Table.HeaderCell>
+                      <Table.HeaderCell>User ID</Table.HeaderCell>
                       <Table.HeaderCell>Email</Table.HeaderCell>
                       <Table.HeaderCell>Role Name</Table.HeaderCell>
                       <Table.HeaderCell>
@@ -114,8 +114,8 @@ class GetUser extends Component {
                     </Table.Row>
                     <Table.Row key={user.id}>
                       <Table.Cell>{user.first_name || 'None'}</Table.Cell>
-                      <Table.Cell>{user.id}</Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
+                      <Table.Cell>{user.id}</Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>
                       <Table.Cell>{user.role_name}</Table.Cell>
                       <Table.Cell>{user.default_zone_role_name}</Table.Cell>
