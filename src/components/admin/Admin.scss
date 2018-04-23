@@ -1,17 +1,16 @@
 .admin-container {
   padding: 6rem 2rem;
-  height: 100%;
-  width: 100%;
-  width: 60%;
-  @media (max-width: 1680px) {
-    width: 90%;
-  }
-  @media (max-width: 1280px) {
-    width: 100%;
-  }
-  @media (max-width: 960px) {
-    width: 100%;
-  }
+  min-width: 550px;
+  max-width: 1150px;
+  // @media (max-width: 1680px) {
+  //   width: 90%;
+  // }
+  // @media (max-width: 1280px) {
+  //   width: 100%;
+  // }
+  // @media (max-width: 960px) {
+  //   width: 100%;
+  // }
   .info-tabs {
     margin-top: 2.3125rem;
     .ui.secondary.pointing.menu .active.item {
@@ -44,9 +43,104 @@
         border: solid 1px #38b557;
       }
       &::placeholder {
-        font-size: 0.8rem;
+        font-size: 0.5rem;
         font-style: italic;
         letter-spacing: 1px;
+      }
+    }
+  }
+  .list-adimin-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    .list-admin {
+      display: flex;
+      flex-direction: row;
+      width: 510px;
+      height: 60px;
+      border-radius: 5px;
+      align-items: center;
+      padding: 1rem 3rem 1rem 1rem;
+      background-color: white;
+      img {
+        width: 40px;
+        height: 3rem;
+      }
+      span {
+        color: #9b9b9b;
+        margin-left: 1rem;
+      }
+      .delete-admin {
+        margin-left: auto;
+        color: #e74c3c;
+        cursor: pointer;
+      }
+    }
+  }
+  .delete-company-container {
+    display: flex;
+    flex-direction: row;
+    .dropdwn-nav {
+      display: flex;
+      flex-direction: row;
+      .ui.selection.dropdown {
+        border-radius: 2px;
+        width: 11rem;
+      }
+      .ui.search.dropdown {
+        min-width: 2rem !important ;
+      }
+      .ui.loading.dropdown > i.icon:after {
+        border-color: #009688 transparent transparent;
+      }
+    }
+    .admin-btn {
+      display: flex;
+      flex-direction: row;
+      .ui.button {
+        margin-top: 0 !important;
+        margin-left: 3rem;
+        border-radius: 5px;
+      }
+    }
+  }
+  .change-adimin-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    .list-admin {
+      display: flex;
+      flex-direction: row;
+      width: 510px;
+      height: 60px;
+      border-radius: 5px;
+      align-items: center;
+      padding: 1rem 3rem 1rem 1rem;
+      background-color: white;
+      img {
+        width: 40px;
+        height: 3rem;
+      }
+      span {
+        color: #9b9b9b;
+        margin-left: 1rem;
+      }
+      .change-admin {
+        margin-left: auto;
+        color: #38b557;
+        cursor: pointer;
+      }
+    }
+    .change-admin-btn {
+      display: flex;
+      flex-direction: row;
+      margin-left: 140px;
+      .ui.button {
+        border-radius: 5px;
+        width: 223px;
+        background-color: #38b557;
+        align-items: center;
       }
     }
   }

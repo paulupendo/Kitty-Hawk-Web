@@ -4,7 +4,7 @@ import iziToast from 'izitoast';
 const toaster = (message)=> {
   iziToast.success({
     title: 'SUCCESS',
-    position: 'topRight',
+    position: 'topCenter',
     color: '#BBF3CA',
     message: message,
     progressBarColor: 'rgb(0, 255, 184)',

@@ -1,15 +1,8 @@
 .global-container {
   padding: 6rem 2rem;
-  width: 70%;
-  @media (max-width: 1680px) {
-    width: 90%;
-  }
-  @media (max-width: 1280px) {
-    width: 90%;
-  }
-  @media (max-width: 960px) {
-    width: 90%;
-  }
+  min-width: 550px;
+  max-width: 1150px;
+  
   .header-nav {
     display: flex;
     flex-direction: row;

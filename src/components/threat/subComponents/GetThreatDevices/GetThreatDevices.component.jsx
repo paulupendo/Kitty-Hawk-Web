@@ -105,7 +105,7 @@ class GetThreatDevices extends Component {
                 {this.state.threat_devices.map(threat_devices => {
                   return (
                     <Table.Row key={threat_devices.id}>
-                      <Table.Cell>{threat_devices.name}</Table.Cell>
+                      <Table.Cell>{threat_devices.name.substring(0,15)}</Table.Cell>
                       <Table.Cell>{threat_devices.agent_version}</Table.Cell>
                       <Table.Cell>{threat_devices.file_status}</Table.Cell>
                       <Table.Cell>{threat_devices.state}</Table.Cell>

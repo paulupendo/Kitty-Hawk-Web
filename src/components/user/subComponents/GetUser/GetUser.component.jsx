@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table, Icon } from 'semantic-ui-react';
 import { config } from '../../../../config';
 import Skeleton from 'react-loading-skeleton';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // Third Party components
 import iziToast from 'izitoast';
@@ -29,7 +30,8 @@ class GetUser extends Component {
       selected: [],
       value: '',
       loading: false,
-      isLoadingProps_: true
+      isLoadingProps_: true,
+      copied: false
     };
   }
 
@@ -73,7 +75,7 @@ class GetUser extends Component {
         });
       });
   };
-
+ 
   render() {
     const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
     return (
@@ -113,9 +115,15 @@ class GetUser extends Component {
                       </Table.HeaderCell>
                     </Table.Row>
                     <Table.Row key={user.id}>
-                      <Table.Cell>{user.first_name || 'None'}</Table.Cell>
+                      <Table.Cell>{user.first_name || 'None'} </Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
-                      <Table.Cell>{user.id}</Table.Cell>
+                      <Table.Cell>
+                        {user.id}{' '}
+                        <Icon
+                          name="copy"
+                          color="green"
+                        />
+                      </Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>
                       <Table.Cell>{user.role_name}</Table.Cell>
                       <Table.Cell>{user.default_zone_role_name}</Table.Cell>

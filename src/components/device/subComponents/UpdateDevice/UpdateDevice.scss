@@ -4,7 +4,8 @@
   border: none;
   box-shadow: none;
   background: #f3f5f7;
-  height: 20rem;
+  height: 100%;
+  width: 100%;
   padding: 1.3rem 1.5rem;
   border-radius: 5px;
   .btns {
@@ -15,6 +16,7 @@
     .btns-row {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       margin-bottom: 1.5rem;
       div {
         margin-right: 2rem;

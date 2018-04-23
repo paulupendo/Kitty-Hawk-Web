@@ -27,7 +27,7 @@ class GetThreats extends Component {
             {threats.map(threat => {
               return (
                 <Table.Row key={threat.id}>
-                  <Table.Cell width={1}>{threat.name}</Table.Cell>
+                  <Table.Cell>{threat.name.substring(0, 18)}</Table.Cell>
                   <Table.Cell>{threat.av_industry || 'None'}</Table.Cell>
                   <Table.Cell>{threat.classification}</Table.Cell>
                   <Table.Cell>{threat.cylance_score}</Table.Cell>

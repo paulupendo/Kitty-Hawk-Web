@@ -1,0 +1,10 @@
+.list-adimin-container {
+  display: flex;
+  height: 100%;
+
+  .list-admin{
+    span {
+      color: red !default;
+    }
+  }
+}
