@@ -163,6 +163,7 @@ export default class Device extends Component {
         break;
       case 'Update Device':
         this.setState({ method: 'PUT' });
+        this.fetchDevices();
         break;
       case 'Get Device Threats':
         this.setState({ method: 'GET' });
@@ -170,6 +171,7 @@ export default class Device extends Component {
         break;
       case 'Update Device Threat':
         this.setState({ method: 'GET' });
+        this.fetchDevices();
         break;
       case 'Get Zone Devices':
         this.setState({ method: 'GET' });
@@ -199,7 +201,11 @@ export default class Device extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to update a specific Console device resource belonging to a Tenant." />
-            <UpdateDevice handleInputChange={this.handleInputChange} />
+            <UpdateDevice
+              value={this.state.value}
+              handleInputChange={this.handleInputChange}
+              fetchDevices={this.state.devices}
+            />
             <div className="btn-bottom">
               <Button content="UPDATE DEVICE" onClick={this.updateDevice_} />
             </div>

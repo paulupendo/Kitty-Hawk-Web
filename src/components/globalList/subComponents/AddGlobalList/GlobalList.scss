@@ -24,6 +24,7 @@
       }
       .ui.input {
         width: 17rem;
+        margin-top: 0.5rem;
       }
       .ui.input > input {
         border-radius: 5px;
@@ -35,6 +36,12 @@
           font-style: italic;
           letter-spacing: 1px;
         }
+      }
+      .ui.selection.dropdown {
+        margin-top: 0.5rem;
+        border-radius: 5px;
+        min-width: 18rem;
+        margin-right: 2rem;
       }
     }
   }

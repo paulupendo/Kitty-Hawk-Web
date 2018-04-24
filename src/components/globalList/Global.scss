@@ -2,7 +2,7 @@
   padding: 6rem 2rem;
   min-width: 550px;
   max-width: 1150px;
-  
+
   .header-nav {
     display: flex;
     flex-direction: row;
@@ -15,7 +15,7 @@
         border-radius: 8px;
       }
       .ui.fluid.dropdown {
-        width: 11rem;
+        width: auto;
       }
       .ui.loading.dropdown > i.icon:after {
         border-color: #009688 transparent transparent;
@@ -42,10 +42,11 @@
       background: #38b557;
       color: #fff;
       font-weight: 400;
-      border-radius: 0.9rem;
-      margin-top: 1rem;
+      border-radius: 5px;
+      width: 200px;
+      margin-top: 2rem;
       margin-right: -0.1rem;
-      float: right;
+      float: left;
     }
   }
 }

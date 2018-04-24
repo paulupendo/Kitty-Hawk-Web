@@ -11,14 +11,19 @@ class CreateUser extends Component {
     super();
     this.state = {
       selected: [],
-      isLoadingProps_: true
+      isLoadingProps_: false
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.props.value) {
       axios
-        .get(`${config.API_BASE_URL}zones?company_name=${nextProps.value}`)
+        .get(
+          `${config.API_BASE_URL}zones?company_name=${nextProps.value}`,
+          this.setState({
+            isLoadingProps_: true
+          })
+        )
         .then(res => {
           this.setState({
             isLoadingProps_: false,
@@ -30,7 +35,7 @@ class CreateUser extends Component {
             })
           });
         })
-        .catch(err => console.log(err));
+        .catch(err => this.setState({ isLoadingProps_: false }));
     }
   }
 

@@ -14,7 +14,7 @@
         border-radius: 8px;
       }
       .ui.fluid.dropdown {
-        width: 11rem;
+        width: 13rem;
       }
       .ui.loading.dropdown > i.icon:after {
         border-color: #009688 transparent transparent;
@@ -41,10 +41,11 @@
       background: #38b557;
       color: #fff;
       font-weight: 400;
-      border-radius: 0.9rem;
+      border-radius: 5px;
+      width: 200px;
       margin-top: 2rem;
       margin-right: -0.1rem;
-      float: right;
+      float: left;
     }
   }
 }
