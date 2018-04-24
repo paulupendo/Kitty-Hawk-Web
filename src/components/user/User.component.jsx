@@ -244,7 +244,7 @@ export default class User extends Component {
     switch (value) {
       case 'Create User':
         this.setState({ method: 'POST' });
-        this.getZones();
+        // this.getZones();
         break;
       case 'Get User':
         this.setState({ method: 'GET' });
