@@ -46,9 +46,9 @@ export default class Device extends Component {
   }
 
   data = [
+    { key: 'PUT-device', value: 'Update Device', text: 'Update Device' },
     { key: 'POST-device', value: 'Get Devices', text: 'Get Devices' },
     { key: 'GET-device', value: 'Get Device', text: 'Get Device' },
-    { key: 'PUT-device', value: 'Update Device', text: 'Update Device' },
     {
       key: 'GET-device-threats',
       value: 'Get Device Threats',
@@ -102,14 +102,11 @@ export default class Device extends Component {
       device_id
     } = this.state;
 
-    let data = {
-      name,
-      policy_id
-    };
+    let data = { name, policy_id };
 
-    let url_ = `${config.API_BASE_URL}single-device/${device_id}?company_name=${
-      this.state.value
-    }`;
+    let url_ = `${
+      config.API_BASE_URL
+    }single-device/${device_id}?comp≤any_name=${this.state.value}`;
 
     axios
       .put(url_, data)

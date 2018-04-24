@@ -31,7 +31,7 @@
         margin-top: 0.5rem;
       }
       .ui.input > input {
-        border-radius: 8px;
+        border-radius: 5px;
         &:focus {
           border: solid 1px #38b557;
         }
@@ -44,7 +44,8 @@
     }
     .ui.selection.dropdown {
       margin-top: 0.5rem;
-      border-radius: 8px;
+      border-radius: 5px;
+      min-width: 18rem;
     }
   }
 }

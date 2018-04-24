@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dropdown, Segment, Button,} from 'semantic-ui-react';
+import { Segment, Button, Checkbox } from 'semantic-ui-react';
 import { config } from '../../../../config';
 import iziToast from 'izitoast';
 
@@ -7,30 +7,18 @@ import iziToast from 'izitoast';
 import axios from 'axios';
 
 // styles
-import './DeletePolicy.css';
+import './DeletePolicies.css';
 
 // components
 import toaster from '../../../../common/Status/status.component';
 
-class DeletePolicy extends Component {
+class DeletePolicies extends Component {
   constructor() {
     super();
     this.state = {
       value: '',
-      selected: [],
-      isLoadingProps_: true
+      active: true
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps) {
-      this.setState({
-        isLoadingProps_: false,
-        selected: nextProps.deletePolicy.map(zone => {
-          return { value: zone.id, text: zone.id };
-        })
-      });
-    }
   }
 
   handleClick = () => {
@@ -63,21 +51,16 @@ class DeletePolicy extends Component {
         <Segment>
           <span> Policy Id </span>
           <br />
-          <Dropdown
-            placeholder="Select Zone"
-            search
-            selection
-            onChange={(_, { value }) => {
-              this.setState({ value });
-            }}
-            options={this.state.selected}
-            loading={this.state.isLoadingProps_}
+          <Checkbox
+            label="Delete All Policies ?"
           />
-          <Button onClick={this.handleClick}>DELETE POLICY</Button>
+          <Button onClick={this.handleClick} disabled={this.state.active}>
+            DELETE POLICIES
+          </Button>
         </Segment>
       </div>
     );
   }
 }
 
-export default DeletePolicy;
+export default DeletePolicies;

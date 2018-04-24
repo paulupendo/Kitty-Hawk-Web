@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Segment, Button, Table } from 'semantic-ui-react';
+import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
 
 // axios
@@ -14,57 +14,50 @@ class GetPolicy extends Component {
   constructor() {
     super();
     this.state = {
-      searchTerm: '',
-      threat_url: {},
-      loading: false
+      policies: {},
+      loading: false,
+      isLoadingProps_: true,
+      selected: [],
+      value: ''
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps) {
+      this.setState({
+        isLoadingProps_: false,
+        selected: nextProps.getPolicy.map(policy => {
+          return { value: policy.id, text: policy.id };
+        })
+      });
+    }
   }
 
   handleClick = () => {
     axios
       .get(
-        `${config.API_BASE_URL}get-policy/${
-          this.state.searchTerm
-        }/?company_name=${this.props.value}`,
+        `${config.API_BASE_URL}policies/${this.state.value}?company_name=${
+          this.props.value
+        }`,
         this.setState({
           loading: true
         })
       )
       .then(res => {
         this.setState({
-          threat_url: res.data.data.threat_download_url,
+          policies: res.data.data,
           loading: false
         });
-        toaster(res.data.data.message);
+        toaster(res.data.message);
       })
       .catch(err => {
         this.setState({ loading: false });
-        this.props.value.length === 0 && err
-          ? iziToast.info({
-              title: 'Error',
-              message: 'Please Select a Company To Continue',
-              position: 'topRight',
-              transitionIn: 'bounceInLeft',
-              timeout: 2000
-            })
-          : iziToast.error({
-              title: 'Error',
-              message: err.message,
-              position: 'topRight',
-              transitionIn: 'bounceInLeft'
-            });
+        iziToast.error({
+          title: 'Error',
+          position: 'topRight',
+          transitionIn: 'bounceInLeft'
+        });
       });
-  };
-  /**
-   * This method handles adding input for name, description, level and paths properties
-   *
-   * @param {string} name the property the value should be added to
-   * @returns {function} that sets the value for the property [name] provided
-   */
-  handleInput = event => {
-    this.setState({
-      searchTerm: event.target.value
-    });
   };
 
   render() {
@@ -74,58 +67,58 @@ class GetPolicy extends Component {
         <Segment>
           <span> Policy ID </span>
           <br />
-          <Input
-            placeholder="Enter threat ID to Search..."
-            onChange={this.handleInput}
+          <Dropdown
+            placeholder="Select Threat"
+            search
+            selection
+            onChange={(_, { value }) => {
+              this.setState({ value });
+            }}
+            options={this.state.selected}
+            loading={this.state.isLoadingProps_}
           />
           <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
-        <div className="threat-table">
-          {/* <Table color="green" striped>
+        <div className="policy-table">
+          <Table color="green" striped>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Cert Issuer</Table.HeaderCell>
-                <Table.HeaderCell>Cert Publisher</Table.HeaderCell>
-                <Table.HeaderCell>Classification</Table.HeaderCell>
-                <Table.HeaderCell>Cylance Score</Table.HeaderCell>
-                <Table.HeaderCell>Detected By</Table.HeaderCell>
-                <Table.HeaderCell>File Size</Table.HeaderCell>
-                <Table.HeaderCell>Global Quarantined</Table.HeaderCell>
-                <Table.HeaderCell>Running</Table.HeaderCell>
-                <Table.HeaderCell>Safelisted</Table.HeaderCell>
-                <Table.HeaderCell>Sub Classification</Table.HeaderCell>
-                <Table.HeaderCell>Signed</Table.HeaderCell>
-                <Table.HeaderCell>Unique to Cylance</Table.HeaderCell>
+                <Table.HeaderCell>Policy ID</Table.HeaderCell>
+                <Table.HeaderCell>Policy UTC Timestamp</Table.HeaderCell>
+                <Table.HeaderCell>Checksum</Table.HeaderCell>
+                <Table.HeaderCell>Suspicious File Type Action</Table.HeaderCell>
+                <Table.HeaderCell>
+                  Suspicious Threat Type Action
+                </Table.HeaderCell>
+                <Table.HeaderCell>Max Log size</Table.HeaderCell>
+                <Table.HeaderCell>Retention Days</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {Object.keys(this.state.threat_url).length >= 1 &&
-                [this.state.threat_url].map((threat, i) => {
+              {Object.keys(this.state.policies).length >= 1 &&
+                [this.state.policies].map((policy, i) => {
                   return (
                     <Table.Row key={i}>
-                      <Table.Cell>{threat.name}</Table.Cell>
-                      <Table.Cell>{threat.cert_issuer}</Table.Cell>
-                      <Table.Cell>{threat.cert_publisher}</Table.Cell>
-                      <Table.Cell>{threat.classification}</Table.Cell>
-                      <Table.Cell>{threat.cylance_score}</Table.Cell>
-                      <Table.Cell>{threat.detected_by}</Table.Cell>
-                      <Table.Cell>{threat.file_size}</Table.Cell>
                       <Table.Cell>
-                        {threat.global_quarantined.toString()}
+                        {policy.filetype_actions.suspicious_files[0].file_type}
                       </Table.Cell>
-                      <Table.Cell>{threat.running.toString()}</Table.Cell>
-                      <Table.Cell>{threat.safelisted.toString()}</Table.Cell>
-                      <Table.Cell>{threat.sub_classification}</Table.Cell>
-                      <Table.Cell>{threat.signed.toString()}</Table.Cell>
+                      <Table.Cell>{policy.policy_id}</Table.Cell>
+                      <Table.Cell>{policy.policy_utctimestamp}</Table.Cell>
+                      <Table.Cell>{policy.checksum}</Table.Cell>
                       <Table.Cell>
-                        {threat.unique_to_cylance.toString()}
+                        {policy.filetype_actions.suspicious_files[0].file_type}
                       </Table.Cell>
+                      <Table.Cell>
+                        {policy.filetype_actions.threat_files[0].file_type}
+                      </Table.Cell>
+                      <Table.Cell>{policy.logpolicy.maxlogsize}</Table.Cell>
+                      <Table.Cell>{policy.logpolicy.retentiondays}</Table.Cell>
                     </Table.Row>
                   );
                 })}
             </Table.Body>
-          </Table> */}
+          </Table>
         </div>
       </div>
     );

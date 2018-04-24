@@ -38,7 +38,9 @@ class DeleteDevices extends Component {
     
     axios
       .delete(
-        `${config.API_BASE_URL}device-delete?company_name=${this.props.value}`,
+        `${config.API_BASE_URL}device-delete?company_name=${
+          this.props.value
+        }`,
         { data: data }
       )
       .then(res => {
@@ -47,7 +49,7 @@ class DeleteDevices extends Component {
       .catch(err =>
         iziToast.error({
           title: 'Error',
-          message: 'An error occured!',
+          message: err.response.data.message,
           position: 'topRight'
         })
       );

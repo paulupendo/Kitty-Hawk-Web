@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, Segment, Button, Table, Icon } from 'semantic-ui-react';
 import { config } from '../../../../config';
-import Skeleton from 'react-loading-skeleton';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 // Third Party components
@@ -75,7 +75,7 @@ class GetUser extends Component {
         });
       });
   };
- 
+
   render() {
     const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
     return (
@@ -96,7 +96,7 @@ class GetUser extends Component {
           <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
         {this.state.loading ? (
-          <Skeleton count={4} duration={2} />
+            <Skeleton count={4} duration={2} />
         ) : (
           Object.keys(this.state.user).length >= 1 &&
           [this.state.user].map(user => {
@@ -118,11 +118,7 @@ class GetUser extends Component {
                       <Table.Cell>{user.first_name || 'None'} </Table.Cell>
                       <Table.Cell>{user.last_name || 'None'}</Table.Cell>
                       <Table.Cell>
-                        {user.id}{' '}
-                        <Icon
-                          name="copy"
-                          color="green"
-                        />
+                        {user.id} <Icon name="copy" color="green" />
                       </Table.Cell>
                       <Table.Cell>{user.email}</Table.Cell>
                       <Table.Cell>{user.role_name}</Table.Cell>

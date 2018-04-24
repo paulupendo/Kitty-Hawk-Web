@@ -31,6 +31,7 @@ export default class User extends Component {
       method: 'POST',
       selection: 'Create User',
       users: [],
+      zones: [],
       companies: [],
       value: '',
       showToaster: false,
@@ -38,13 +39,14 @@ export default class User extends Component {
       message: '',
       loading: true,
       disabled: true,
-      toastId: null,
       first_name: null,
       last_name: null,
       user_role: null,
       email: null,
       zoneId: null,
-      user_id: null
+      user_id: null,
+      zone_id: null,
+      isLoading_: false
     };
   }
 
@@ -81,8 +83,8 @@ export default class User extends Component {
     this.setState({ [key]: e.target.value });
   };
 
-  handleUserRoleDropDown = (e, { value }) => {
-    this.setState({ user_role: value });
+  handleDropDown = (e, key, { value }) => {
+    this.setState({ [key]: value });
   };
 
   /**
@@ -109,6 +111,23 @@ export default class User extends Component {
       );
   };
 
+  /**
+   * method to get all users in a specific company
+   * @returns {object} data Users
+   * @member of GetUser Component
+   * @returns {=>Promise<TResult2|TResult1>}
+   */
+  getZones = () => {
+    axios
+      .get(`${config.API_BASE_URL}zones?company_name=${this.state.value}`)
+      .then(res => {
+        this.setState({
+          zones: res.data.data.page_items
+        });
+      })
+      .catch(err => console.log(err));
+  };
+
   createUser = () => {
     let user_role;
     let { first_name, last_name, email } = this.state;
@@ -126,21 +145,23 @@ export default class User extends Component {
       user_role,
       first_name,
       last_name,
-      zones: [
-        {
-          id: this.state.zoneId,
-          role_type: user_role
-        }
-      ]
+      zones: [{ id: this.state.zone_id, role_type: user_role }]
     };
 
     axios
       .post(
         `${config.API_BASE_URL}users?company_name=${this.state.value}`,
-        data
+        data,
+        this.setState({
+          isLoading_: true
+        })
       )
-      .then(res => toaster(res.data.data.message))
+      .then(res => {
+        this.setState({ isLoading_: false });
+        toaster(res.data.data.message);
+      })
       .catch(err => {
+        this.setState({ isLoading_: false });
         this.state.value.length === 0 && err
           ? iziToast.info({
               title: 'Error',
@@ -150,21 +171,11 @@ export default class User extends Component {
             })
           : iziToast.error({
               title: 'Error',
-              message: 'An error occured!',
+              message: err.response.data.message,
               position: 'topRight',
               transitionIn: 'bounceInLeft'
             });
       });
-  };
-
-  cleanForms = () => {
-    this.setState({
-      first_name: '',
-      last_name: '',
-      user_role: '',
-      email: '',
-      zoneId: ''
-    });
   };
 
   updateUser = () => {
@@ -184,12 +195,7 @@ export default class User extends Component {
       user_role,
       first_name,
       last_name,
-      zones: [
-        {
-          id: this.state.zoneId,
-          role_type: user_role
-        }
-      ]
+      zones: [{ id: this.state.zone_id, role_type: user_role }]
     };
 
     axios
@@ -197,9 +203,15 @@ export default class User extends Component {
         `${config.API_BASE_URL}users/${user_id}?company_name=${
           this.state.value
         }`,
-        data
+        data,
+        this.setState({
+          isLoading_: true
+        })
       )
       .then(res => {
+        this.setState({
+          isLoading_: false
+        });
         iziToast.show({
           title: 'SUCCESS',
           message: res.data.message,
@@ -210,13 +222,13 @@ export default class User extends Component {
         });
       })
       .catch(err => {
+        this.setState({ isLoading_: false });
         iziToast.error({
           title: 'Error',
-          message: 'An error occured!',
+          message: err.response.data.message,
           position: 'topRight'
         });
       });
-    this.cleanForms();
   };
 
   /**
@@ -232,6 +244,7 @@ export default class User extends Component {
     switch (value) {
       case 'Create User':
         this.setState({ method: 'POST' });
+        this.getZones();
         break;
       case 'Get User':
         this.setState({ method: 'GET' });
@@ -243,6 +256,8 @@ export default class User extends Component {
         break;
       case 'Update User':
         this.setState({ method: 'PUT' });
+        this.fetchUsers();
+        this.getZones();
         break;
       default:
         break;
@@ -255,12 +270,14 @@ export default class User extends Component {
    * @returns {objects} list of User components
    */
   switchComponents = () => {
+    let updateButton = this.state.isLoading_ ? 'UPDATING....' : 'UPDATE';
+    let createButton = this.state.isLoading_ ? 'LOADING....' : 'CREATE';
     switch (this.state.activeComponent) {
       case 'Get User':
         return (
           <div>
             <SubHeader info="Allows a caller to request a specific Console User resource belonging to a Tenant." />
-            <GetUser value={this.state.value}  fetchUsers={this.state.users}/>
+            <GetUser value={this.state.value} fetchUsers={this.state.users} />
           </div>
         );
       case 'Get Users':
@@ -283,10 +300,12 @@ export default class User extends Component {
             />
             <CreateUser
               handleChange={this.handleInputChange}
-              handleDropDownChange={this.handleUserRoleDropDown}
+              getZone={this.state.zones}
+              value={this.state.value}
+              handleDropDown={this.handleDropDown}
             />
             <div className="btn-bottom">
-              <Button content="CREATE USER" onClick={this.createUser} />
+              <Button content={createButton} onClick={this.createUser} />
             </div>
           </div>
         );
@@ -295,11 +314,13 @@ export default class User extends Component {
           <div>
             <SubHeader info="Allows a caller to update an existing Console User resource." />
             <UpdateUser
-              handleInputChange={this.handleInputChange}
-              handleUserRoleDropDown={this.handleUserRoleDropDown}
+              handleChange={this.handleInputChange}
+              handleDropDown={this.handleDropDown}
+              getZones={this.state.zones}
+              fetchUsers={this.state.users}
             />
             <div className="btn-bottom">
-              <Button content="UPDATE" onClick={this.updateUser} />
+              <Button content={updateButton} onClick={this.updateUser} />
             </div>
           </div>
         );
@@ -321,7 +342,6 @@ export default class User extends Component {
   };
 
   /**
-   * @returns {object}
    * @member of USer Component
    */
   render() {

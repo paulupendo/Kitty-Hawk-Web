@@ -19,6 +19,7 @@ import LoaderGraphic from '../../common/Loader/loader.component';
 import GetPolicies from './subComponents/GetPolicies/GetPolicies.component';
 import GetPolicy from './subComponents/GetPolicy/GetPolicy.component';
 import DeletePolicy from './subComponents/DeletePolicy/DeletePolicy.component';
+import DeletePolicies from './subComponents/DeleteAllPolcies/DeleteAllPolicies.component'
 
 export default class Policy extends Component {
   constructor() {
@@ -84,7 +85,6 @@ export default class Policy extends Component {
       .get(`${config.API_BASE_URL}policies?company_name=${this.state.value}`)
       .then(res => {
         this.setState({ policies: res.data.data.page_items });
-        toaster(res.data.message);
       })
       .catch(err =>
         iziToast.error({
@@ -118,9 +118,15 @@ export default class Policy extends Component {
         break;
       case 'Get Policy':
         this.setState({ method: 'GET' });
+        this.getpolicies();
         break;
       case 'Delete Policy':
         this.setState({ method: 'GET' });
+        this.getpolicies();
+        break;
+      case 'Delete Policies':
+        this.setState({ method: 'GET' });
+        this.getpolicies();
         break;
       default:
         break;
@@ -153,7 +159,7 @@ export default class Policy extends Component {
             {this.state.policies.length === 0 ? (
               <LoaderGraphic />
             ) : (
-                <GetPolicies policies={this.state.policies} />
+              <GetPolicies policies={this.state.policies} />
             )}
           </div>
         );
@@ -161,16 +167,27 @@ export default class Policy extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetPolicy value={this.state.value} />
+            <GetPolicy
+              value={this.state.value}
+              getPolicy={this.state.policies}
+            />
           </div>
         );
       case 'Delete Policy':
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <DeletePolicy value={this.state.value} />
+            <DeletePolicy
+              value={this.state.value}
+              deletePolicy={this.state.policies}
+            />
           </div>
         );
+      case 'Delete Policies':
+        return <div>
+            <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
+            <DeletePolicies value={this.state.value}/>
+          </div>;
     }
   };
 
