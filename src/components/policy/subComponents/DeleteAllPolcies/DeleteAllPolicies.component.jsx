@@ -49,10 +49,10 @@ class DeletePolicies extends Component {
     return (
       <div className="get-threat">
         <Segment>
-          <span> Policy Id </span>
+          <span> Delete All Policies </span>
           <br />
           <Checkbox
-            label="Delete All Policies ?"
+            label="Are Sure you want to Delete all Policies ?"
           />
           <Button onClick={this.handleClick} disabled={this.state.active}>
             DELETE POLICIES
