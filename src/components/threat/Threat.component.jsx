@@ -117,11 +117,9 @@ export default class Threat extends Component {
     switch (value) {
       case 'Get Threats':
         this.setState({ method: 'GET' });
-        this.getThreats();
         break;
       case 'Get Threat':
         this.setState({ method: 'GET' });
-        this.getThreats();
         break;
       case 'Get Threat Devices':
         this.setState({ method: 'PUT' });
@@ -149,7 +147,6 @@ export default class Threat extends Component {
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
             <GetThreat
               value={this.state.value}
-              getThreats={this.state.threats}
             />
           </div>
         );

@@ -204,7 +204,6 @@ export default class Device extends Component {
             <UpdateDevice
               value={this.state.value}
               handleInputChange={this.handleInputChange}
-              fetchDevices={this.state.devices}
             />
             <div className="btn-bottom">
               <Button content="UPDATE DEVICE" onClick={this.updateDevice_} />

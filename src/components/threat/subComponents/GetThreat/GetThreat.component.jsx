@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Dropdown, Segment, Button, Table } from 'semantic-ui-react';
 import { config } from '../../../../config';
+import Skeleton from 'react-loading-skeleton';
 
 // axios
 import axios from 'axios';
-import LoaderGraphic from '../../../../common/Loader/loader.component';
 import iziToast from 'izitoast';
 
 // styles
@@ -16,30 +16,48 @@ class GetThreat extends Component {
     this.state = {
       threat: {},
       selected: [],
-      value: ''
+      value: '',
+      loading: false,
+      isLoadingProps_: true
     };
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps)
-  // }
+  componentWillUpdate(nextProps) {
+    if (nextProps.value !== this.props.value) {
+      axios
+        .get(
+          `${config.API_BASE_URL}threats?company_name=${nextProps.value}`,
+          this.setState({
+            isLoadingProps_: true
+          })
+        )
+        .then(res => {
+          this.setState({
+            isLoadingProps_: false,
+            selected: res.data.data.policy.page_items.map(threat => ({
+              value: threat.sha256,
+              text: threat.sha256
+            }))
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
 
-  // // componentDidMount() {
-  // //   console.log(this.props)
-  // // }
-
-  
   handleClick = () => {
     axios
       .get(
         `${config.API_BASE_URL}threats/${this.state.value}?company_name=${
           this.props.value
-        }`
+        }`,
+        this.setState({
+          loading: true
+        })
       )
       .then(res => {
-        this.setState({
-          threat: res.data.data.threat
-        });
+        this.setState({ threat: res.data.data.threat, loading: false });
       })
       .catch(err => {
         this.props.value.length === 0 && err
@@ -58,19 +76,9 @@ class GetThreat extends Component {
             });
       });
   };
-  /**
-   * This method handles adding input for name, description, level and paths properties
-   *
-   * @param {string} name the property the value should be added to
-   * @returns {function} that sets the value for the property [name] provided
-   */
-  handleInput = event => {
-    this.setState({
-      searchTerm: event.target.value
-    });
-  };
 
   render() {
+    const buttonToShow = this.state.loading ? 'SEARCHING....' : 'SEARCH';
     return (
       <div className="get-threat">
         <Segment>
@@ -84,25 +92,30 @@ class GetThreat extends Component {
               this.setState({ value });
             }}
             options={this.state.selected}
+            loading={this.state.isLoadingProps_}
           />
-          <Button onClick={this.handleClick}>SEARCH</Button>
+          <Button onClick={this.handleClick}>{buttonToShow}</Button>
         </Segment>
-        <div className="threat-table">
-          <Table color="green" striped>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Agent Version</Table.HeaderCell>
-                <Table.HeaderCell>Date Fist Registered</Table.HeaderCell>
-                <Table.HeaderCell>Date Modified</Table.HeaderCell>
-                <Table.HeaderCell>Date Offline</Table.HeaderCell>
-                <Table.HeaderCell>Host Name</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {Object.keys(this.state.threat).length >= 1 &&
-                [this.state.threat].map(threat => {
-                  return (
+
+        {this.state.loading ? (
+          <Skeleton count={4} duration={3} />
+        ) : (
+          Object.keys(this.state.threat).length >= 1 &&
+          [this.state.threat].map(threat => {
+            return (
+              <div className="threat-table">
+                <Table color="green" striped>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell>Agent Version</Table.HeaderCell>
+                      <Table.HeaderCell>Date Fist Registered</Table.HeaderCell>
+                      <Table.HeaderCell>Date Modified</Table.HeaderCell>
+                      <Table.HeaderCell>Date Offline</Table.HeaderCell>
+                      <Table.HeaderCell>Host Name</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
                     <Table.Row key={threat.id}>
                       <Table.Cell>{threat.name}</Table.Cell>
                       <Table.Cell>{threat.classification}</Table.Cell>
@@ -110,11 +123,12 @@ class GetThreat extends Component {
                       <Table.Cell>{threat.detected_by}</Table.Cell>
                       <Table.Cell>{threat.sub_classification}</Table.Cell>
                     </Table.Row>
-                  );
-                })}
-            </Table.Body>
-          </Table>
-        </div>
+                  </Table.Body>
+                </Table>
+              </div>
+            );
+          })
+        )}
       </div>
     );
   }
