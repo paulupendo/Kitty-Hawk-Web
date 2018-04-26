@@ -54,6 +54,9 @@
     height: 100%;
     flex-direction: column;
     margin-bottom: 2rem;
+    .ui.active.entered.inline.loaderloader {
+      margin: 0 auto;
+    }
     .list-admin {
       display: flex;
       flex-direction: row;

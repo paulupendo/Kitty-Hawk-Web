@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, Button, Tab } from 'semantic-ui-react';
-
+import axios from 'axios';
+import { config } from '../../../config';
 // styles
 import './AdminActions.css';
 // components
@@ -9,12 +10,25 @@ import ListAdmins from './AdminSubComponents/ListAdmins/ListAdmins.component';
 import ChangeAdmin from './AdminSubComponents/ChangeAdmin/ChangeAdmin.component';
 
 class AdminActions extends Component {
-  // const {
-  //   handleChange,
-  //   companies,
-  //   handleDropdownchange,
-  //   deleteCompany
-  // } = props;
+  constructor() {
+    super();
+    this.state = {
+      companies: []
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies: res.data.data.companies
+        });
+      })
+      .catch(err => err);
+  }
+
   actionPanes = [
     {
       menuItem: 'Delete Company',
@@ -34,10 +48,6 @@ class AdminActions extends Component {
       render: () => (
         <Tab.Pane attached={false}>
           <ListAdmins />
-          <ListAdmins />
-          <ListAdmins />
-          <ListAdmins />
-          <ListAdmins />
         </Tab.Pane>
       )
     },
@@ -46,6 +56,7 @@ class AdminActions extends Component {
       render: () => (
         <Tab.Pane attached={false}>
           <ChangeAdmin />
+          <Button content="Upadate" />
         </Tab.Pane>
       )
     }

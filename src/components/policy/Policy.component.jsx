@@ -19,7 +19,7 @@ import LoaderGraphic from '../../common/Loader/loader.component';
 import GetPolicies from './subComponents/GetPolicies/GetPolicies.component';
 import GetPolicy from './subComponents/GetPolicy/GetPolicy.component';
 import DeletePolicy from './subComponents/DeletePolicy/DeletePolicy.component';
-import DeletePolicies from './subComponents/DeleteAllPolcies/DeleteAllPolicies.component'
+import DeletePolicies from './subComponents/DeleteAllPolcies/DeleteAllPolicies.component';
 
 export default class Policy extends Component {
   constructor() {
@@ -65,8 +65,8 @@ export default class Policy extends Component {
           loading: false,
           companies: res.data.data.companies.map(company => {
             return {
-              value: company,
-              text: company
+              value: company.name,
+              text: company.name
             };
           })
         });
@@ -84,7 +84,9 @@ export default class Policy extends Component {
     axios
       .get(`${config.API_BASE_URL}policies?company_name=${this.state.value}`)
       .then(res => {
-        this.setState({ policies: res.data.data.page_items });
+        this.setState({
+          policies: res.data.data.page_items
+        });
       })
       .catch(err =>
         iziToast.error({
@@ -184,10 +186,12 @@ export default class Policy extends Component {
           </div>
         );
       case 'Delete Policies':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <DeletePolicies value={this.state.value}/>
-          </div>;
+            <DeletePolicies value={this.state.value} />
+          </div>
+        );
     }
   };
 
@@ -210,7 +214,10 @@ export default class Policy extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value, disabled: false });
+                  this.setState({
+                    value,
+                    disabled: false
+                  });
                 }}
                 options={this.state.companies}
                 loading={this.state.loading}

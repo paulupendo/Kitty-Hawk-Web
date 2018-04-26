@@ -43,19 +43,17 @@ export default class Admin extends Component {
           loading: false,
           companies: res.data.data.companies.map(company => {
             return {
-              value: company,
-              text: company
+              value: company.name,
+              text: company.name
             };
           })
         });
       })
       .catch(err => err);
   }
-
+  
   handleDropdownchange = (_, { value }) => {
-    this.setState({
-      value
-    });
+    this.setState({ value });
   };
 
   handleDelete = () => {

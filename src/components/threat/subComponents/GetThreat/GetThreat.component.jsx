@@ -98,7 +98,7 @@ class GetThreat extends Component {
         </Segment>
 
         {this.state.loading ? (
-          <Skeleton count={4} duration={3} />
+          <Skeleton count={4} />
         ) : (
           Object.keys(this.state.threat).length >= 1 &&
           [this.state.threat].map(threat => {

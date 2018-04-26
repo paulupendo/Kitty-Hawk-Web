@@ -70,8 +70,8 @@ export default class User extends Component {
           loading: false,
           companies: res.data.data.companies.map(company => {
             return {
-              value: company,
-              text: company
+              value: company.name,
+              text: company.name
             };
           })
         });

@@ -46,8 +46,8 @@ export default class Global extends Component {
     {
       key: 'DELETE',
       value: 'Delete Device Global List',
-      text: 'Delete Device Global List',
-    },
+      text: 'Delete Device Global List'
+    }
   ];
 
   /**
@@ -60,13 +60,13 @@ export default class Global extends Component {
       .get(`${config.API_BASE_URL}company-info`)
       .then(res => {
         this.setState({
-          isLoadingCompanies: false,
+          loading: false,
           companies: res.data.data.companies.map(company => {
             return {
-              value: company,
-              text: company,
+              value: company.name,
+              text: company.name
             };
-          }),
+          })
         });
       })
       .catch(err => err);
@@ -96,19 +96,17 @@ export default class Global extends Component {
         toaster('Global Lists fetched Successfully');
       })
       .catch(err => {
-        this.setState({
-          loading: false
-        });
+        this.setState({ loading: false });
         err.message === 'Request failed with status code 404'
           ? iziToast.error({
               title: '404',
               message: 'No Global Lists found',
-              position: 'topRight',
+              position: 'topRight'
             })
           : iziToast.error({
               title: 'Error:',
               message: 'An error occured',
-              position: 'topRight',
+              position: 'topRight'
             });
       });
   };
@@ -120,7 +118,7 @@ export default class Global extends Component {
     axios
       .post(
         `${config.API_BASE_URL}global-lists?company_name=${this.state.value}`,
-        data,
+        data
       )
       .then(res => toaster(res.data.data.message))
       .catch(err => {
@@ -130,13 +128,13 @@ export default class Global extends Component {
               message: 'Please Select a Company To Continue',
               position: 'topRight',
               transitionIn: 'bounceInLeft',
-              timeout: 2000,
+              timeout: 2000
             })
           : iziToast.error({
               title: 'Error',
               message: err.message,
               position: 'topRight',
-              transitionIn: 'bounceInLeft',
+              transitionIn: 'bounceInLeft'
             });
       });
   };
@@ -157,7 +155,7 @@ export default class Global extends Component {
   handleChange = (e, { value }) => {
     this.setState({
       activeComponent: value,
-      selection: value,
+      selection: value
     });
     switch (value) {
       case 'Add To Global List':
@@ -241,7 +239,10 @@ export default class Global extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value, disabled: false });
+                  this.setState({
+                    value,
+                    disabled: false
+                  });
                 }}
                 options={this.state.companies}
                 loading={this.state.isLoadingCompanies}

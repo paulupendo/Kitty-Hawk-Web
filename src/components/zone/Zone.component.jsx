@@ -70,8 +70,8 @@ export default class Zones extends Component {
           loading: false,
           companies: res.data.data.companies.map(company => {
             return {
-              value: company,
-              text: company
+              value: company.name,
+              text: company.name
             };
           })
         });
@@ -247,15 +247,22 @@ export default class Zones extends Component {
           </div>
         );
       case 'Get Zone':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
             <GetZone value={this.state.value} getZone={this.state.zones} />
-          </div>;
+          </div>
+        );
       case 'Delete Zone':
-        return <div>
+        return (
+          <div>
             <SubHeader info="Delete (remove) a zone from your Console." />
-            <DeleteZone value={this.state.value} deleteZone={this.state.zones} />
-          </div>;
+            <DeleteZone
+              value={this.state.value}
+              deleteZone={this.state.zones}
+            />
+          </div>
+        );
       case 'Update Zone':
         return (
           <div>
