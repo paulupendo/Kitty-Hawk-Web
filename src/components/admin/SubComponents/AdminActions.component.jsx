@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Dropdown, Button, Tab } from 'semantic-ui-react';
+import { Button, Tab } from 'semantic-ui-react';
 import axios from 'axios';
+import iziToast from 'izitoast';
 import { config } from '../../../config';
+import toaster from '../../../common/Status/status.component'
 // styles
 import './AdminActions.css';
+
 // components
 import DeleteCompanies from './AdminSubComponents/DeleteCompanies/DeleteCompany.component';
 import ListAdmins from './AdminSubComponents/ListAdmins/ListAdmins.component';
@@ -13,7 +16,8 @@ class AdminActions extends Component {
   constructor() {
     super();
     this.state = {
-      companies: []
+      companies: [],
+      value: ''
     };
   }
 
@@ -23,18 +27,53 @@ class AdminActions extends Component {
       .then(res => {
         this.setState({
           loading: false,
-          companies: res.data.data.companies
+          companies: res.data.data.companies.map(company => {
+            return {
+              value: company.name,
+              text: company.name
+            };
+          })
         });
       })
       .catch(err => err);
   }
+
+  handleDropdownchange = (_, { value }) => {
+    this.setState({ value });
+  };
+
+  handleDelete = () => {
+    axios
+      .delete(
+        `${config.API_BASE_URL}company-info?company_name=${this.state.value}`
+      )
+      .then(res => {
+        toaster(res.data.data.message);
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
+  };
+
+  handleChange = (e, key) => {
+    this.setState({ [key]: e.target.value });
+  };
 
   actionPanes = [
     {
       menuItem: 'Delete Company',
       render: () => (
         <Tab.Pane attached={false}>
-          <DeleteCompanies />
+          <DeleteCompanies 
+          companies={this.state.companies}
+          handleDropdownchange={this.handleDropdownchange}
+          handleChange={this.handleChange}
+          deleteCompany={this.deleteCompany}
+          />
           {/* <Button
             content="AUTHORIZE"
             // onClick={this.handleClick}
