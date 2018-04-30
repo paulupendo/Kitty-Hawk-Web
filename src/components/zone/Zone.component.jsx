@@ -34,6 +34,7 @@ export default class Zones extends Component {
       endpoint: '/zones/v2',
       method: 'POST',
       zones: [],
+      policies: [],
       companies: [],
       value: '',
       showToaster: false,
@@ -91,6 +92,23 @@ export default class Zones extends Component {
       .then(res => {
         this.setState({
           zones: res.data.data.page_items
+        });
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'ERROR',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
+  };
+
+  getPolicies = () => {
+    axios
+      .get(`${config.API_BASE_URL}policies?company_name=${this.state.value}`)
+      .then(res => {
+        this.setState({
+          policies: res.data.data.page_items
         });
       })
       .catch(err =>
@@ -191,6 +209,8 @@ export default class Zones extends Component {
         break;
       case 'Update Zone':
         this.setState({ method: 'PUT' });
+        this.getZones();
+        this.getPolicies();
         break;
       default:
         break;
@@ -201,8 +221,8 @@ export default class Zones extends Component {
     this.setState({ [key]: e.target.value });
   };
 
-  handleDropDownChange = (e, { value }) => {
-    this.setState({ criticality: value });
+  handleDropDown = (e, key, { value }) => {
+    this.setState({ [key]: value });
   };
 
   /**
@@ -218,7 +238,8 @@ export default class Zones extends Component {
             <SubHeader info="Create (add) a zone to your Console." />
             <CreateZones
               handleChange={this.handleZonesChange}
-              handleDropDownChange={this.handleDropDownChange}
+              handleDropDown={this.handleDropDown}
+              value={this.state.value}
             />
             <div className="btn-bottom">
               <Button content="CREATE ZONE" onClick={this.postZones} />
@@ -268,9 +289,11 @@ export default class Zones extends Component {
           <div>
             <SubHeader info="Delete (remove) a zone from your Console." />
             <UpdateZones
-              value={this.state.value}
               handleChange={this.handleZonesChange}
-              handleDropDownChange={this.handleDropDownChange}
+              handleDropDown={this.handleDropDown}
+              value={this.state.value}
+              getZones={this.state.zones}
+              getPolicies={this.state.policies}
             />
             <div className="btn-bottom">
               <Button content="UPDATE ZONE" onClick={this.updateZones_} />

@@ -57,7 +57,7 @@ export default class Threat extends Component {
    * @param {object} data  companies data
    * @returns {=>Promise<TResult2|TResult1>}
    */
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get(`${config.API_BASE_URL}company-info`)
       .then(res => {
@@ -65,15 +65,14 @@ export default class Threat extends Component {
           loading: false,
           companies: res.data.data.companies.map(company => {
             return {
-              value: company,
-              text: company
+              value: company.name,
+              text: company.name
             };
           })
         });
       })
       .catch(err => err);
   }
-
   /**
    * method to get all users in a specific company
    * @returns {object} data Users
@@ -84,7 +83,9 @@ export default class Threat extends Component {
     axios
       .get(`${config.API_BASE_URL}threats?company_name=${this.state.value}`)
       .then(res => {
-        this.setState({ threats: res.data.data.policy.page_items });
+        this.setState({
+          threats: res.data.data.policy.page_items
+        });
       })
       .catch(err => {
         this.state.value.length === 0 && err
@@ -117,6 +118,7 @@ export default class Threat extends Component {
     switch (value) {
       case 'Get Threats':
         this.setState({ method: 'GET' });
+        this.getThreats();
         break;
       case 'Get Threat':
         this.setState({ method: 'GET' });
@@ -145,9 +147,7 @@ export default class Threat extends Component {
         return (
           <div>
             <SubHeader info="Allows a caller to request a page with a list of device resources belonging to a Tenant," />
-            <GetThreat
-              value={this.state.value}
-            />
+            <GetThreat value={this.state.value} />
           </div>
         );
       case 'Get Threats':
@@ -206,7 +206,10 @@ export default class Threat extends Component {
                 search
                 selection
                 onChange={(_, { value }) => {
-                  this.setState({ value, disabled: false });
+                  this.setState({
+                    value,
+                    disabled: false
+                  });
                 }}
                 options={this.state.companies}
                 loading={this.state.loading}

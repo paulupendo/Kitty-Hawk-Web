@@ -3,7 +3,7 @@ import { Button, Tab } from 'semantic-ui-react';
 import axios from 'axios';
 import iziToast from 'izitoast';
 import { config } from '../../../config';
-import toaster from '../../../common/Status/status.component'
+import toaster from '../../../common/Status/status.component';
 // styles
 import './AdminActions.css';
 
@@ -17,7 +17,13 @@ class AdminActions extends Component {
     super();
     this.state = {
       companies: [],
-      value: ''
+      companies_id: [],
+      value: '',
+      id: '',
+      name: '',
+      company: '',
+      email: '',
+      phone_number: ''
     };
   }
 
@@ -36,10 +42,52 @@ class AdminActions extends Component {
         });
       })
       .catch(err => err);
+    axios
+      .get(`${config.API_BASE_URL}company-info`)
+      .then(res => {
+        this.setState({
+          loading: false,
+          companies_id: res.data.data.companies.map(company => {
+            return {
+              value: company.id,
+              text: company.id
+            };
+          })
+        });
+      })
+      .catch(err => err);
   }
+
+  updateCompany = () => {
+    let data_ = {
+      name: this.state.name,
+      email: this.state.email,
+      phone_number: this.state.phone_number,
+      company: this.state.company
+    };
+    axios
+      .put(`${config.API_BASE_URL}company-info/${this.state.id}`, data_)
+      .then(res => {
+        this.setState({
+          name: ''
+        });
+        toaster(res.data.message);
+      })
+      .catch(err =>
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        })
+      );
+  };
 
   handleDropdownchange = (_, { value }) => {
     this.setState({ value });
+  };
+
+  handleIDchange = (_, { value }) => {
+    this.setState({ id: value });
   };
 
   handleDelete = () => {
@@ -68,11 +116,11 @@ class AdminActions extends Component {
       menuItem: 'Delete Company',
       render: () => (
         <Tab.Pane attached={false}>
-          <DeleteCompanies 
-          companies={this.state.companies}
-          handleDropdownchange={this.handleDropdownchange}
-          handleChange={this.handleChange}
-          deleteCompany={this.deleteCompany}
+          <DeleteCompanies
+            companies={this.state.companies}
+            handleDropdownchange={this.handleDropdownchange}
+            handleChange={this.handleChange}
+            deleteCompany={this.deleteCompany}
           />
           {/* <Button
             content="AUTHORIZE"
@@ -94,8 +142,12 @@ class AdminActions extends Component {
       menuItem: 'Change Admin',
       render: () => (
         <Tab.Pane attached={false}>
-          <ChangeAdmin />
-          <Button content="Upadate" />
+          <ChangeAdmin
+            handleChange={this.handleChange}
+            companies_id={this.state.companies_id}
+            handleDropdownchange={this.handleIDchange}
+          />
+          <Button content="Upadate" onClick={this.updateCompany} />
         </Tab.Pane>
       )
     }

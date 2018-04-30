@@ -17,7 +17,7 @@ class UpdateDevice extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.props.value) {
+    if (nextProps) {
       axios
         .get(
           `${config.API_BASE_URL}policies?company_name=${nextProps.value}`,
@@ -60,6 +60,7 @@ class UpdateDevice extends Component {
         .catch(err => console.log(err));
     }
   }
+  
   render() {
     const { handleChange, handleDropDown } = this.props;
     return (
@@ -72,10 +73,10 @@ class UpdateDevice extends Component {
               <Dropdown
                 search
                 selection
-                placeholder="Select policy Id"
+                placeholder="Select device Id"
                 options={this.state.selectedDevices}
                 loading={this.state.isLoadingProps_}
-                // onChange={(e, value) => handleDropDown(e, 'policy_id', value)}
+                onChange={(e, value) => handleDropDown(e, 'device_id', value)}
               />
             </div>
             <div className="id">
@@ -83,7 +84,7 @@ class UpdateDevice extends Component {
               <br />
               <Input
                 placeholder="(required):{string}"
-                // onChange={e => this.props.handleInputChange(e, 'name')}
+                onChange={e => handleChange(e, 'name')}
               />
             </div>
           </div>
@@ -97,7 +98,7 @@ class UpdateDevice extends Component {
                 placeholder="Select policy Id"
                 options={this.state.selectedPolicies}
                 loading={this.state.isLoadingProps_}
-                // onChange={(e, value) => handleDropDown(e, 'policy_id', value)}
+                onChange={(e, value) => handleDropDown(e, 'policy_id', value)}
               />
             </div>
           </div>

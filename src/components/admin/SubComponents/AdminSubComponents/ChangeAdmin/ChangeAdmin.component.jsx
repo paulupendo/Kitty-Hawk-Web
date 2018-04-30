@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Image } from 'semantic-ui-react';
+import { Input, Dropdown, Image } from 'semantic-ui-react';
 
 // styles
 // import './ChangeAdmin.css';
@@ -10,11 +10,22 @@ const ChangeAdmin = props => {
       <div className="btns">
         <div className="btns-row">
           <div>
+            <span>ID</span>
+            <br />
+            <Dropdown
+              placeholder="Select Company"
+              search
+              selection
+              options={props.companies_id}
+              onChange={props.handleDropdownchange}
+            />
+          </div>
+          <div>
             <span>Name</span>
             <br />
             <Input
               placeholder="(optional):{string}"
-              // onChange={e => handleChange(e, 'name')}
+              onChange={e => props.handleChange(e, 'name')}
             />
           </div>
           <div>
@@ -22,15 +33,7 @@ const ChangeAdmin = props => {
             <br />
             <Input
               placeholder="(optional):{string}"
-              // onChange={e => handleChange(e, 'company')}
-            />
-          </div>
-          <div>
-            <span>Email</span>
-            <br />
-            <Input
-              placeholder="(optional):{string}"
-              // onChange={e => handleChange(e, 'email')}
+              onChange={e => props.handleChange(e, 'company')}
             />
           </div>
         </div>
@@ -40,42 +43,15 @@ const ChangeAdmin = props => {
             <br />
             <Input
               placeholder="(optional):{string}"
-              // onChange={e => handleChange(e, 'phone_number')}
+              onChange={e => props.handleChange(e, 'phone_number')}
             />
           </div>
           <div>
-            <span>Tenant ID</span>
+            <span>Email</span>
             <br />
             <Input
-              placeholder="(required):{string}"
-              // onChange={e => handleChange(e, 'tenant_id')}
-            />
-          </div>
-          <div>
-            <span>Application ID</span>
-            <br />
-            <Input
-              placeholder="(required):{string}"
-              // onChange={e => handleChange(e, 'app_id')}
-            />
-          </div>
-        </div>
-        <div className="btns-row">
-          <div>
-            <span>Application Secret</span>
-            <br />
-            <Input
-              type="password"
-              placeholder="(required):{string}"
-              // onChange={e => handleChange(e, 'app_secret')}
-            />
-          </div>
-          <div>
-            <span>Comment</span>
-            <br />
-            <Input
-              placeholder="(required):{string}"
-              // onChange={e => handleChange(e, 'comment')}
+              placeholder="(optional):{string}"
+              onChange={e => props.handleChange(e, 'email')}
             />
           </div>
         </div>

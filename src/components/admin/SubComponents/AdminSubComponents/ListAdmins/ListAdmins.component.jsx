@@ -30,40 +30,34 @@ class ListAdmins extends Component {
   }
 
   render() {
-    return (
-      <div className="list-adimin-container">
-        <Table color="green" striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>App Secret</Table.HeaderCell>
-              <Table.HeaderCell>Company Name</Table.HeaderCell>
-              <Table.HeaderCell>App ID</Table.HeaderCell>
-              <Table.HeaderCell>Phome Number</Table.HeaderCell>
-              <Table.HeaderCell>Tenant ID</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {this.state.loading ? (
-              <Loader active inline="centered" className="loader" />
-            ) : (
-              this.state.companies.map(admin => {
-                return (
-                  <Table.Row key={admin.id}>
+    return <div className="list-adimin-container">
+        {this.state.loading ? <Loader active inline="centered" /> : <Table color="green" striped>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>ID</Table.HeaderCell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>App Secret</Table.HeaderCell>
+                <Table.HeaderCell>Company Name</Table.HeaderCell>
+                <Table.HeaderCell>App ID</Table.HeaderCell>
+                <Table.HeaderCell>Phome Number</Table.HeaderCell>
+                <Table.HeaderCell>Tenant ID</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {this.state.companies.map(admin => {
+                return <Table.Row key={admin.id}>
+                    <Table.Cell>{admin.id}</Table.Cell>
                     <Table.Cell>{admin.name}</Table.Cell>
                     <Table.Cell>{admin.app_secret}</Table.Cell>
                     <Table.Cell>{admin.company}</Table.Cell>
                     <Table.Cell>{admin.app_id}</Table.Cell>
                     <Table.Cell>{admin.phone_number}</Table.Cell>
                     <Table.Cell>{admin.tenant_id}</Table.Cell>
-                  </Table.Row>
-                );
-              })
-            )}
-          </Table.Body>
-        </Table>
-      </div>
-    );
+                  </Table.Row>;
+              })}
+            </Table.Body>
+          </Table>}
+      </div>;
   }
 }
 

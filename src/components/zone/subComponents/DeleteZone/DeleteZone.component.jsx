@@ -45,12 +45,12 @@ class DeleteZone extends Component {
         data
       )
       .then(res => {
-        toaster(res.data.data.message);
+        toaster(res.data.message);
       })
       .catch(err =>
         iziToast.error({
           title: 'Error',
-          message: 'An error occured!',
+          message: err.response.data.message,
           position: 'topRight'
         })
       );

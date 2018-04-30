@@ -44,7 +44,7 @@ const AddGlobalList = ({ handleChange, handleDropDown }) => {
       <div className="btns">
         <div className="btns-row">
           <div>
-            <span>Sha256</span>
+            <span>Threat Hash</span>
             <br />
             <Input
               placeholder="(required):{string}"

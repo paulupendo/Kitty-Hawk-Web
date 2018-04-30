@@ -35,7 +35,7 @@ export default class Global extends Component {
       list_type: '',
       category: '',
       reason: '',
-      loading: false,
+      loading: true,
       disabled: true,
       isLoadingCompanies: true
     };
@@ -83,7 +83,7 @@ export default class Global extends Component {
       .get(
         `${config.API_BASE_URL}global-lists?company_name=${
           this.state.value
-        }&list_typed_id=1`,
+        }&list_typed_id=0`,
         this.setState({
           loading: true
         })
@@ -245,7 +245,7 @@ export default class Global extends Component {
                   });
                 }}
                 options={this.state.companies}
-                loading={this.state.isLoadingCompanies}
+                loading={this.state.loading}
               />
             </div>
             <div>

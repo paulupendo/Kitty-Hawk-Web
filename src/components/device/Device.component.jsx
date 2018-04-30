@@ -41,7 +41,9 @@ export default class Device extends Component {
       name: null,
       policy_id: null,
       add_zone_ids: '',
-      remove_zone_ids: ''
+      remove_zone_ids: '',
+      device_id: null,
+      isLoading_: false
     };
   }
 
@@ -93,6 +95,10 @@ export default class Device extends Component {
     this.setState({ [key]: e.target.value });
   };
 
+  handleDropDown = (e, key, { value }) => {
+    this.setState({ [key]: value });
+  };
+
   updateDevice_ = () => {
     let {
       name,
@@ -104,14 +110,24 @@ export default class Device extends Component {
 
     let data = { name, policy_id };
 
-    let url_ = `${
-      config.API_BASE_URL
-    }single-device/${device_id}?comp≤any_name=${this.state.value}`;
+    let url_ = `${config.API_BASE_URL}single-device/${device_id}?company_name=${
+      this.state.value
+    }`;
 
     axios
-      .put(url_, data)
-      .then(res => console.log(res))
-      .catch(err => console.log('E', err));
+      .put(url_, data, this.setState({ isLoading_: true }))
+      .then(res => {
+        this.setState({ isLoading_: false });
+        toaster(res.data.data.message);
+      })
+      .catch(err => {
+        this.setState({ isLoading_: false });
+        iziToast.error({
+          title: 'Error',
+          message: 'An error occured!',
+          position: 'topRight'
+        });
+      });
   };
 
   /**
@@ -196,6 +212,7 @@ export default class Device extends Component {
    * @returns {objects} list of User components
    */
   switchDeviceComponents = () => {
+    let updateButton = this.state.isLoading_ ? 'UPDATING....' : 'UPDATE';
     switch (this.state.activeComponent) {
       case 'Update Device':
         return (
@@ -203,10 +220,11 @@ export default class Device extends Component {
             <SubHeader info="Allows a caller to update a specific Console device resource belonging to a Tenant." />
             <UpdateDevice
               value={this.state.value}
-              handleInputChange={this.handleInputChange}
+              handleChange={this.handleInputChange}
+              handleDropDown={this.handleDropDown}
             />
             <div className="btn-bottom">
-              <Button content="UPDATE DEVICE" onClick={this.updateDevice_} />
+              <Button content={updateButton} onClick={this.updateDevice_} />
             </div>
           </div>
         );
